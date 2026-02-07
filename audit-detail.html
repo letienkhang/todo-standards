@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Chi tiết chấm điểm - Retail Excellence</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2563eb",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        success: "#10b981",
+                        danger: "#ef4444",
+                        warning: "#f59e0b",
+                    },
+                    fontFamily: { display: ["Inter", "sans-serif"] },
+                    borderRadius: { DEFAULT: "0.5rem" },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .custom-scrollbar::-webkit-scrollbar { height: 8px; width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        .dark .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        #compareOpacitySlider::-webkit-slider-thumb {
+            appearance: none; width: 18px; height: 18px; border-radius: 50%;
+            background: #2563eb; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        #compareOpacitySlider::-moz-range-thumb {
+            width: 18px; height: 18px; border-radius: 50%; background: #2563eb; cursor: pointer; border: none;
+        }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 min-h-screen flex flex-col overflow-y-auto text-slate-900 dark:text-slate-100">
+    <header class="sticky top-0 z-30 shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm flex flex-col">
+        <div class="h-16 flex items-center justify-between px-6">
+            <a href="audit-list.html" class="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors min-w-0">
+                <span class="material-symbols-outlined shrink-0">arrow_back</span>
+                <span class="font-medium text-sm truncate" id="headerStoreName">Cửa hàng Nguyễn Huệ</span>
+            </a>
+                <div class="flex items-center gap-4">
+                    <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                        <button id="btnPrevCriteria" type="button" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-all font-medium text-xs">
+                            <span class="material-symbols-outlined text-sm">chevron_left</span> Trước
+                        </button>
+                        <div id="criteriaCounter" class="px-4 py-1.5 text-xs font-semibold text-primary self-center">05 / 12 Tiêu chí</div>
+                        <button id="btnNextCriteria" type="button" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-700 shadow-sm text-primary transition-all font-medium text-xs">
+                            <span id="btnNextCriteriaLabel">Tiếp theo</span> <span id="btnNextCriteriaIcon" class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+        </div>
+    </header>
+    <main class="flex-1 flex flex-col min-h-0">
+        <div class="flex-1 min-h-0 flex overflow-hidden bg-slate-100 dark:bg-slate-950">
+            <aside id="criteriaNavAside" class="w-full lg:w-80 shrink-0 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50/50 dark:bg-slate-900/20">
+                <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tiêu chí chấm điểm</h2>
+                        <span id="criteria-count-badge" class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">12 MỤC</span>
+                    </div>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input id="criteriaSearchInput" class="w-full pl-9 pr-4 py-2 text-xs bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-1 focus:ring-primary dark:focus:ring-primary/80 placeholder:text-slate-400" placeholder="Tìm kiếm mục..." type="text">
+                    </div>
+                </div>
+                <div id="criteriaPills" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
+                    <div data-criterion-index="0" class="criteria-pill flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-emerald-500 text-xl shrink-0 mt-0.5">check_circle</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">01</span>
+                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">Vệ sinh bề mặt</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Lau bề mặt kệ, không bụi, vết bẩn</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="1" class="criteria-pill flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-emerald-500 text-xl shrink-0 mt-0.5">check_circle</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">02</span>
+                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">Sắp xếp HSD</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">FEFO, sản phẩm gần hết hạn lên trước</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="2" class="criteria-pill flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-emerald-500 text-xl shrink-0 mt-0.5">check_circle</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">03</span>
+                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">Nhãn giá</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Tem giá đầy đủ, rõ ràng, đúng vị trí</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="3" class="criteria-pill flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-emerald-500 text-xl shrink-0 mt-0.5">check_circle</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">04</span>
+                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">Khoảng cách SP</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Đúng khoảng cách, không chồng chéo</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="4" class="criteria-pill criteria-pill-active flex items-start gap-3 p-3 rounded-lg bg-primary/5 border border-primary cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">radio_button_checked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-primary/80 uppercase tracking-wider">05</span>
+                            <p class="text-xs font-bold text-primary mt-0.5">Sơ đồ trưng bày (Planogram)</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Bố trí đúng sơ đồ, vị trí từng nhóm SP</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="5" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">06</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Biển quảng cáo</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Không rách, đúng nội dung, vị trí</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="6" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">07</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Chiếu sáng</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Đủ sáng, không chớp, bóng hỏng</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="7" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">08</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Hệ thống âm thanh</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Âm lượng phù hợp, thiết bị hoạt động</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="8" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">09</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Vệ sinh khu vực kho</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Sắp xếp FEFO, vệ sinh sàn, không ẩm mốc</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="9" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">10</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Tủ lạnh &amp; Tủ đông</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Nhiệt độ đúng, lau dọn, hạn SD ghi rõ</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="10" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">11</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Vệ sinh khu vực WC</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Nhà vệ sinh sạch, giấy, xà phòng đủ</p>
+                        </div>
+                    </div>
+                    <div data-criterion-index="11" class="criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all" role="button" tabindex="0">
+                        <span class="material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5">radio_button_unchecked</span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">12</span>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">An toàn PCCC</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 line-clamp-1">Bình chữa cháy, lối thoát hiểm, bảng chỉ dẫn</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <div class="flex-1 min-h-0 overflow-x-hidden overflow-y-auto">
+            <div class="flex flex-col p-4 sm:p-6 w-full min-w-0 gap-6">
+                <!-- Ô chứa data khi chỉ có text (media=text): hiển thị nội dung từ ô danh sách -->
+                <div id="detailTextOnlyBlock" class="hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-5 shadow-sm">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="material-symbols-outlined text-primary text-lg">description</span>
+                        <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200">Nội dung / Ghi chú ô (chỉ text)</h3>
+                    </div>
+                    <div id="detailTextOnlyContent" class="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-wrap min-h-[80px] p-4 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700"></div>
+                </div>
+                <!-- Ô chứa video thực tế (media=video): 1 video MVP -->
+                <div id="detailVideoBlock" class="hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-900 dark:bg-slate-950 overflow-hidden shadow-lg">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700">
+                        <label class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-warning text-lg">videocam</span> Video thực tế
+                        </label>
+                        <input type="datetime-local" id="videoDateTime" value="2026-02-02T10:45" class="text-[10px] font-bold text-slate-300 dark:text-slate-400 bg-slate-800 dark:bg-slate-900 border border-slate-600 dark:border-slate-700 px-2 py-0.5 rounded focus:ring-1 focus:ring-primary focus:border-primary outline-none [color-scheme:dark]" title="Chọn ngày giờ">
+                    </div>
+                    <div class="aspect-video flex items-center justify-center bg-black">
+                        <video id="videoStore" class="w-full h-full object-contain" controls playsinline preload="metadata" crossorigin="anonymous">
+                            <source id="videoStoreSource" type="video/mp4" src="" />
+                            Trình duyệt không hỗ trợ phát video.
+                        </video>
+                    </div>
+                </div>
+                <div id="detailImageBlock" class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 min-h-[260px]">
+                    <div class="flex flex-col space-y-2 h-full">
+                        <div class="flex items-center justify-between px-2">
+                            <label class="text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-lg">verified</span> Hình ảnh mẫu
+                            </label>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-200/50 dark:bg-slate-800 px-2 py-0.5 rounded">Tham chiếu</span>
+                        </div>
+                        <div id="containerStandard" class="relative flex-1 rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg group">
+                            <img id="imgStandard" alt="Standard" class="w-full h-full object-contain bg-black/5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApe3pqjru-RzmyJpd2A-JgIqF_fUvLa9TWGwuW4WiYS7nX-QJu1KpTf05iVuvTiwNd1feg70Qeg9Py48OxezK-4710VMIo1aQ0Bww7-cCzKBUIRpwazAm7Ctzs3uY2SmfxqnJABQqFIevLDbsBPrYRSgBqJwfKnaXlnpN-H3VAjBwZ1XZwHX-CyUf3lrTIf82JwioHxKoweUSrNUq4p82GuXW6N9-Oq7AdVigHDW6b93GxxXxz8Bup5EBCtp9KO2Ees25c-7SHXMcO" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                            <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <button type="button" data-action="zoom" data-target="standard" class="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white transition-all"><span class="material-symbols-outlined text-xl">zoom_in</span></button>
+                                <button type="button" data-action="fullscreen" data-target="standard" class="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white transition-all"><span class="material-symbols-outlined text-xl">fullscreen</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2 h-full">
+                        <div class="flex items-center justify-between px-2">
+                            <label class="text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-warning text-lg">photo_camera</span> Hình ảnh thực tế
+                            </label>
+                            <input type="datetime-local" id="storeImageDateTime" value="2026-02-02T10:45" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 bg-slate-200/50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded focus:ring-1 focus:ring-primary focus:border-primary outline-none min-w-0 max-w-[160px]" title="Chọn ngày giờ chụp ảnh">
+                        </div>
+                        <div id="containerStore" class="group relative flex-1 rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg flex min-h-0">
+                            <div id="storeImagesWrap" class="flex-1 flex min-w-0 h-full">
+                                <div id="storeMain" class="flex-1 min-w-0 min-h-0 relative flex items-center justify-center bg-black/5">
+                                    <img id="imgStore" alt="Store" class="max-w-full max-h-full w-full h-full object-contain store-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu4jsqPEchQrKUPQSHO2gOWhDgYWqz7hLf5YP-WqdK1xcA3ueSfSiWH936m1NhfCOmCZS1sYXoVDquhQ0_8lqh_7Kw8XCc8-iWPNThnEM-q-QuimU0EujIjvmc8_-g-npfAcj0ILWDebdqTn2M0pOSrVXA6q_HUBDA0IACW0385vznXC6qni_-9JZ37k2JamEw5ZYPMDk_jQvi5wHqU45laIRxGTWDBCDgBHDT96eBO3KE8c8KEXi5eLLzmNXvjxtDYROkFIQCQjjY" />
+                                    <div class="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                                        <button type="button" data-action="zoom" data-target="store" class="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white transition-all"><span class="material-symbols-outlined text-xl">zoom_in</span></button>
+                                        <button type="button" data-action="fullscreen" data-target="store" class="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white transition-all"><span class="material-symbols-outlined text-xl">open_in_full</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="storeThumbs" class="hidden absolute bottom-0 left-0 right-0 z-10 flex flex-row items-center justify-center gap-2 px-3 py-2 overflow-x-auto custom-scrollbar bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 max-h-20 min-h-0 rounded-t-lg"></div>
+                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 pointer-events-none">
+                                <button type="button" id="btnCompareOverlay" class="pointer-events-auto bg-white/90 hover:bg-white p-4 rounded-full text-slate-800 shadow-2xl transition-all scale-90 group-hover:scale-100 flex items-center gap-2 font-bold"><span class="material-symbols-outlined">compare</span> So sánh chồng lớp</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                (function() {
+                    var q = new URLSearchParams(window.location.search);
+                    var media = (q.get('media') || '').toLowerCase();
+                    var textBlock = document.getElementById('detailTextOnlyBlock');
+                    var videoBlock = document.getElementById('detailVideoBlock');
+                    var imageBlock = document.getElementById('detailImageBlock');
+                    if (media === 'text') {
+                        if (imageBlock) { imageBlock.style.display = 'none'; imageBlock.setAttribute('hidden', ''); }
+                        if (videoBlock) { videoBlock.style.display = 'none'; videoBlock.setAttribute('hidden', ''); }
+                        if (textBlock) { textBlock.style.display = 'block'; textBlock.removeAttribute('hidden'); }
+                        var note = q.get('note');
+                        var content = document.getElementById('detailTextOnlyContent');
+                        if (content) content.textContent = note ? decodeURIComponent(note) : '(Không có nội dung ghi chú)';
+                    } else if (media === 'video') {
+                        if (imageBlock) { imageBlock.style.display = 'none'; imageBlock.setAttribute('hidden', ''); }
+                        if (textBlock) { textBlock.style.display = 'none'; textBlock.setAttribute('hidden', ''); }
+                        if (videoBlock) { videoBlock.style.display = 'block'; videoBlock.removeAttribute('hidden'); }
+                        var videoUrl = q.get('videoUrl');
+                        if (videoUrl) {
+                            var v = document.getElementById('videoStore');
+                            var src = document.getElementById('videoStoreSource');
+                            if (v) { v.src = decodeURIComponent(videoUrl); v.load(); }
+                            if (src) src.src = decodeURIComponent(videoUrl);
+                        }
+                    } else {
+                        if (textBlock) { textBlock.style.display = 'none'; textBlock.setAttribute('hidden', ''); }
+                        if (videoBlock) { videoBlock.style.display = 'none'; videoBlock.setAttribute('hidden', ''); }
+                        if (imageBlock) { imageBlock.style.display = ''; imageBlock.removeAttribute('hidden'); }
+                    }
+                })();
+                </script>
+                <section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                    <div class="p-5 sm:p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <h2 class="text-sm font-bold text-slate-700 dark:text-slate-200">Thông tin chi tiết &amp; Phản hồi từ Giám sát</h2>
+                                <span class="h-4 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block"></span>
+                                <span id="autoSaveTime" class="text-[10px] text-slate-400 font-medium italic">Đã lưu tự động: 10:50 AM</span>
+                            </div>
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">Kết quả chấm điểm:</span>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" id="btnResultPass" data-result="pass" class="btn-result flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-500 hover:text-white transition-all font-bold text-sm"><span class="material-symbols-outlined text-lg">check_circle</span> ĐẠT</button>
+                                    <button type="button" id="btnResultFail" data-result="fail" class="btn-result flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-50 dark:bg-rose-900/20 text-danger border-2 border-danger font-bold text-sm ring-4 ring-rose-500/10"><span class="material-symbols-outlined text-lg">cancel</span> KHÔNG ĐẠT</button>
+                                </div>
+                            </div>
+                        </div>
+                        <textarea id="feedbackTextarea" class="w-full p-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none resize-none text-sm min-h-[100px]" placeholder="Nhập nhận xét chi tiết cho cửa hàng...">Thiếu tem giá ở tầng 2. Kệ hàng phía bên trái chưa được lấp đầy sản phẩm theo sơ đồ trưng bày (planogram). Cần bổ sung ngay trong ca trực tiếp theo.</textarea>
+                        <div class="flex flex-wrap justify-between items-center gap-4 mt-4 pt-1">
+                            <div class="flex gap-2">
+                                <button type="button" id="btnAttach" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium"><span class="material-symbols-outlined text-sm">attachment</span> Đính kèm thêm ảnh</button>
+                                <button type="button" id="btnHistory" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs font-medium"><span class="material-symbols-outlined text-sm">history</span> Lịch sử chấm</button>
+                            </div>
+                            <div class="flex gap-3 shrink-0">
+                                <button type="button" id="btnSaveAndNext" class="px-6 sm:px-8 py-2.5 rounded-lg bg-primary text-white font-bold hover:bg-blue-700 transition-all text-sm shadow-lg shadow-primary/25">Lưu &amp; Tiếp tục tiêu chí khác</button>
+                            </div>
+                        </div>
+                        <!-- Lịch sử phản hồi -->
+                        <div class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-700">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+                                    <h3 class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                </div>
+                                <button type="button" class="flex items-center gap-1 px-2 py-0.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400 text-[10px] font-medium uppercase tracking-wide w-fit">
+                                    Gần nhất trước
+                                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                                </button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                                    <div class="bg-blue-50/50 dark:bg-blue-900/10 px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-[10px]">GS</div>
+                                            <div class="min-w-0">
+                                                <h4 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Nguyễn Minh – Giám sát khu vực</h4>
+                                                <p class="text-[10px] text-slate-500 dark:text-slate-400">Yêu cầu đến: Cửa hàng trưởng</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 shrink-0">02/02/2026 • 10:55</span>
+                                    </div>
+                                    <div class="p-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                        <div class="lg:col-span-2">
+                                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-snug line-clamp-2">
+                                                Vui lòng bổ sung tem giá cho toàn bộ tầng 2 trong ngày hôm nay và gửi lại hình ảnh xác nhận sau khi hoàn tất.
+                                            </p>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <div class="bg-white dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-700/50">
+                                                <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 block mb-1.5">Trạng thái xác minh</span>
+                                                <div class="space-y-1.5">
+                                                    <div class="flex items-center justify-between bg-rose-50 dark:bg-rose-900/20 px-2 py-1.5 rounded-lg border border-rose-100 dark:border-rose-900/30">
+                                                        <div class="flex items-center gap-1 text-rose-700 dark:text-rose-400">
+                                                            <span class="material-symbols-outlined text-base">cancel</span>
+                                                            <span class="font-bold text-xs">Không đạt</span>
+                                                        </div>
+                                                        <span class="text-[10px] font-medium text-rose-600/70 dark:text-rose-400/70 uppercase">Kết quả</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1 px-2 py-1 text-slate-500 dark:text-slate-400 text-[10px] font-medium">
+                                                        <span class="material-symbols-outlined text-xs">image</span>
+                                                        <span>Kệ tầng 2 – Tem giá</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" data-scroll-image="store" class="w-full flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                <span class="material-symbols-outlined text-sm">attachment</span>
+                                                Hình đính kèm
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                                    <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                        <div class="flex items-center gap-2 min-w-0">
+                                            <div class="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">CH</div>
+                                            <div class="min-w-0">
+                                                <h4 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Trần Lan – Cửa hàng trưởng</h4>
+                                                <p class="text-[10px] text-slate-500 dark:text-slate-400">Báo cáo đến: Giám sát khu vực</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 shrink-0">02/02/2026 • 15:20</span>
+                                    </div>
+                                    <div class="p-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                        <div class="lg:col-span-2">
+                                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic line-clamp-2">"Đã bổ sung tem giá cho toàn bộ tầng 2, sắp xếp lại khoảng cách sản phẩm theo sơ đồ trưng bày."</p>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <div class="bg-white dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-700/50">
+                                                <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 block mb-1.5">Trạng thái xác minh</span>
+                                                <div class="space-y-1.5">
+                                                    <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-800/80 px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600">
+                                                        <div class="flex items-center gap-1 text-slate-600 dark:text-slate-400">
+                                                            <span class="material-symbols-outlined text-base">schedule</span>
+                                                            <span class="font-bold text-xs">Chờ phản hồi</span>
+                                                        </div>
+                                                        <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase">Kết quả</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1 px-2 py-1 text-slate-500 dark:text-slate-400 text-[10px] font-medium">
+                                                        <span class="material-symbols-outlined text-xs">image</span>
+                                                        <span>Kệ tầng 2 – Tem giá</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-1.5">
+                                                <button type="button" data-scroll-image="standard" class="flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                    <span class="material-symbols-outlined text-sm">image_search</span>
+                                                    Hình mẫu
+                                                </button>
+                                                <button type="button" data-scroll-image="store" class="flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                    <span class="material-symbols-outlined text-sm">camera_enhance</span>
+                                                    Hình thực tế
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                                    <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                        <div class="flex items-center gap-2 min-w-0">
+                                            <div class="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-[10px]">GS</div>
+                                            <div class="min-w-0">
+                                                <h4 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Nguyễn Minh – Giám sát khu vực</h4>
+                                                <p class="text-[10px] text-slate-500 dark:text-slate-400">Xác nhận phản hồi</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 shrink-0">02/02/2026 • 15:45</span>
+                                    </div>
+                                    <div class="p-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                        <div class="lg:col-span-2 space-y-1">
+                                            <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500">Nhận xét từ giám sát</span>
+                                            <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed line-clamp-3">
+                                                Đã kiểm tra lại qua hình ảnh, tạm thời chấp nhận kết quả <strong>ĐẠT</strong> cho tiêu chí này. Vui lòng duy trì trạng thái trưng bày trong tuần.
+                                            </p>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <div class="bg-white dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-700/50">
+                                                <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 block mb-1.5">Trạng thái xác minh</span>
+                                                <div class="space-y-1.5">
+                                                    <div class="flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-900/30">
+                                                        <div class="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
+                                                            <span class="material-symbols-outlined text-base">check_circle</span>
+                                                            <span class="font-bold text-xs">ĐẠT</span>
+                                                        </div>
+                                                        <span class="text-[10px] font-medium text-emerald-600/70 dark:text-emerald-400/70 uppercase">Kết quả</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1 px-2 py-1 text-slate-500 dark:text-slate-400 text-[10px] font-medium">
+                                                        <span class="material-symbols-outlined text-xs">image</span>
+                                                        <span>Kệ tầng 2 – Sau chỉnh sửa</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" data-scroll-image="store" class="w-full flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                <span class="material-symbols-outlined text-sm">attachment</span>
+                                                Hình đính kèm
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3 text-[10px] text-slate-500 dark:text-slate-400 hidden">
+                            <div class="flex items-center gap-2 sm:gap-4 flex-wrap"><span class="flex items-center gap-1.5 flex-wrap"><span class="font-medium">Phím tắt:</span><kbd class="inline-flex items-center justify-center min-w-[28px] px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-mono text-[10px]">←</kbd><kbd class="inline-flex items-center justify-center min-w-[28px] px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-mono text-[10px]">→</kbd><span>Di chuyển</span><span class="mx-0.5">•</span><kbd class="inline-flex items-center justify-center min-w-[36px] px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-mono text-[10px]">Enter</kbd><span>Lưu</span></span><span class="font-medium">Hotline: 1900 1234</span></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            </div>
+        </div>
+    </main>
+    <footer class="sticky bottom-0 z-20 h-11 shrink-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2 py-2 text-[10px] text-slate-400 shadow-[0_-2px_10px_rgba(0,0,0,0.06)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.2)]">
+        <div class="flex items-center gap-3 sm:gap-6 flex-wrap">
+            <span class="flex items-center gap-0.5 flex-wrap">Phím tắt: <kbd class="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 mx-0.5">←</kbd><kbd class="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 mx-0.5">→</kbd> Di chuyển • <kbd class="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 mx-0.5">Enter</kbd> Lưu</span>
+            <span>Hotline: 1900 1234</span>
+        </div>
+    </footer>
+    <input type="file" id="inputAttach" accept="image/*" multiple class="hidden" />
+    <div id="feedbackImagePopup" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/70 p-4" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Xem ảnh">
+        <div class="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center">
+            <button type="button" id="feedbackImagePopupClose" class="absolute -top-10 right-0 p-2 rounded-full bg-white/90 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors z-10" aria-label="Đóng">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <img id="feedbackImagePopupImg" src="" alt="" class="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+    <div id="standardImagesPopup" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/70 p-4" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Danh sách hình mẫu">
+        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl max-w-3xl w-full max-h-[85vh] overflow-hidden flex flex-col border border-slate-200 dark:border-slate-700">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between shrink-0">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">image_search</span>
+                    Hình mẫu
+                </h3>
+                <button type="button" id="standardImagesPopupClose" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" aria-label="Đóng">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="standardImagesPopupList" class="p-4 overflow-y-auto flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 custom-scrollbar">
+                <!-- filled by JS -->
+            </div>
+        </div>
+    </div>
+    <div id="modalHistory" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4" aria-hidden="true">
+        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl max-w-md w-full max-h-[80vh] overflow-hidden flex flex-col border border-slate-200 dark:border-slate-700">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">Lịch sử chấm</h3>
+                <button type="button" id="modalHistoryClose" class="p-2 rounded-full bg-white/90 text-slate-800 hover:bg-white"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div id="modalHistoryBody" class="p-4 overflow-y-auto text-sm text-slate-600 dark:text-slate-300"><ul class="space-y-2"></ul></div>
+        </div>
+    </div>
+    <div id="compareOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4" aria-hidden="true">
+        <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center gap-4">
+            <div class="flex items-center justify-between w-full max-w-3xl">
+                <span class="text-white/90 text-sm font-medium">So sánh chồng lớp: kéo thanh trượt để xem ảnh mẫu đè lên ảnh thực tế</span>
+                <button type="button" id="compareOverlayClose" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 text-slate-800 hover:bg-white transition-colors shrink-0"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="relative w-full flex-1 flex items-center justify-center min-h-0 rounded-xl overflow-hidden bg-black/50" style="aspect-ratio: 16/10;">
+                <img id="compareOverlayStore" alt="Thực tế" class="absolute inset-0 w-full h-full object-contain" />
+                <img id="compareOverlayStandard" alt="Mẫu" class="absolute inset-0 w-full h-full object-contain transition-opacity duration-150" style="opacity: 0.5;" />
+            </div>
+            <div class="w-full max-w-md flex flex-col gap-2">
+                <label class="text-white/90 text-xs font-medium flex justify-between"><span>Độ đậm ảnh mẫu (Standard)</span><span id="compareOpacityValue">50%</span></label>
+                <input type="range" id="compareOpacitySlider" min="0" max="100" value="50" class="w-full h-2 rounded-full appearance-none bg-white/20 accent-primary cursor-pointer" />
+            </div>
+        </div>
+    </div>
+    <script>
+(function () {
+    'use strict';
+    var TOTAL_CRITERIA = 12;
+    var currentCriterionIndex = 4;
+    var stateByCriterion = {};
+    var resultPassClasses = 'flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-500 hover:text-white transition-all font-bold text-sm';
+    var resultFailClasses = 'flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-50 dark:bg-rose-900/20 text-danger border border-rose-200 dark:border-rose-800 font-bold text-sm';
+    var resultFailActiveClasses = 'flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-50 dark:bg-rose-900/20 text-danger border-2 border-danger font-bold text-sm ring-4 ring-rose-500/10';
+    var resultPassActiveClasses = 'flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-2 border-emerald-500 font-bold text-sm ring-4 ring-emerald-500/20';
+
+    function getState() {
+        if (!stateByCriterion[currentCriterionIndex]) stateByCriterion[currentCriterionIndex] = { result: 'fail', comment: '', savedAt: null };
+        return stateByCriterion[currentCriterionIndex];
+    }
+    function loadStateForCurrent() {
+        var state = getState();
+        var textarea = document.getElementById('feedbackTextarea');
+        if (textarea) textarea.value = state.comment || '';
+        setResultUI(state.result);
+    }
+    function setResultUI(result) {
+        var btnPass = document.getElementById('btnResultPass');
+        var btnFail = document.getElementById('btnResultFail');
+        if (!btnPass || !btnFail) return;
+        if (result === 'pass') { btnPass.className = 'btn-result ' + resultPassActiveClasses; btnFail.className = 'btn-result ' + resultFailClasses; }
+        else { btnPass.className = 'btn-result ' + resultPassClasses; btnFail.className = 'btn-result ' + resultFailActiveClasses; }
+    }
+    function persistCurrentForm() {
+        var state = getState();
+        state.comment = document.getElementById('feedbackTextarea').value;
+        state.result = document.getElementById('btnResultFail').classList.contains('ring-4') ? 'fail' : 'pass';
+        state.savedAt = new Date();
+    }
+    function updateCounter() {
+        var el = document.getElementById('criteriaCounter');
+        if (el) el.textContent = (currentCriterionIndex + 1) + ' / ' + TOTAL_CRITERIA + ' Tiêu chí';
+        updateNextButtonLabel();
+    }
+    function updateNextButtonLabel() {
+        var label = document.getElementById('btnNextCriteriaLabel');
+        var icon = document.getElementById('btnNextCriteriaIcon');
+        var isLast = currentCriterionIndex >= TOTAL_CRITERIA - 1;
+        if (label) label.textContent = isLast ? 'Tiếp đến cửa hàng tiếp theo' : 'Tiếp theo';
+        if (icon) { icon.textContent = isLast ? 'store' : 'chevron_right'; icon.className = 'material-symbols-outlined text-sm'; }
+    }
+    function getStateForIndex(i) {
+        if (!stateByCriterion[i]) stateByCriterion[i] = { result: 'fail', comment: '', savedAt: null };
+        return stateByCriterion[i];
+    }
+    function updatePills() {
+        var pills = document.querySelectorAll('.criteria-pill');
+        var donePassClass = 'criteria-pill flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 cursor-pointer transition-all';
+        var doneFailClass = 'criteria-pill flex items-start gap-3 p-3 rounded-lg bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/30 cursor-pointer transition-all';
+        var activeClass = 'criteria-pill criteria-pill-active flex items-start gap-3 p-3 rounded-lg bg-primary/5 border border-primary cursor-pointer transition-all';
+        var pendingClass = 'criteria-pill flex items-start gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all';
+        pills.forEach(function (pill) {
+            var idx = parseInt(pill.getAttribute('data-criterion-index'), 10);
+            var icon = pill.querySelector('.material-symbols-outlined');
+            if (idx === currentCriterionIndex) {
+                pill.className = activeClass;
+                if (icon) { icon.textContent = 'radio_button_checked'; icon.className = 'material-symbols-outlined text-primary text-xl shrink-0 mt-0.5'; }
+            } else if (idx < currentCriterionIndex) {
+                var result = getStateForIndex(idx).result;
+                if (result === 'pass') {
+                    pill.className = donePassClass;
+                    if (icon) { icon.textContent = 'check_circle'; icon.className = 'material-symbols-outlined text-emerald-500 text-xl shrink-0 mt-0.5'; }
+                } else {
+                    pill.className = doneFailClass;
+                    if (icon) { icon.textContent = 'cancel'; icon.className = 'material-symbols-outlined text-rose-500 dark:text-rose-400 text-xl shrink-0 mt-0.5'; }
+                }
+            } else {
+                pill.className = pendingClass;
+                if (icon) { icon.textContent = 'radio_button_unchecked'; icon.className = 'material-symbols-outlined text-slate-400 text-xl shrink-0 mt-0.5'; }
+            }
+        });
+    }
+    function goPrev() {
+        if (currentCriterionIndex <= 0) return;
+        persistCurrentForm();
+        currentCriterionIndex--;
+        updateCounter();
+        updatePills();
+        loadStateForCurrent();
+    }
+    function goNext() {
+        if (currentCriterionIndex >= TOTAL_CRITERIA - 1) {
+            persistCurrentForm();
+            try { localStorage.setItem('chamDiemChiTiet_draft', JSON.stringify(stateByCriterion)); } catch (e) {}
+            window.location.href = 'audit-list.html';
+            return;
+        }
+        persistCurrentForm();
+        currentCriterionIndex++;
+        updateCounter();
+        updatePills();
+        loadStateForCurrent();
+    }
+    function goToCriterion(index) {
+        if (index === currentCriterionIndex) return;
+        persistCurrentForm();
+        currentCriterionIndex = index;
+        if (currentCriterionIndex >= TOTAL_CRITERIA) currentCriterionIndex = TOTAL_CRITERIA - 1;
+        if (currentCriterionIndex < 0) currentCriterionIndex = 0;
+        updateCounter();
+        updatePills();
+        loadStateForCurrent();
+    }
+    function updateAutoSaveTime() {
+        var el = document.getElementById('autoSaveTime');
+        if (el) el.textContent = 'Đã lưu tự động: ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    }
+    function debounce(fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; }
+    function showToast(message) {
+        var toast = document.createElement('div');
+        toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium shadow-lg z-[60]';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(function () { toast.remove(); }, 2500);
+    }
+
+    document.getElementById('btnPrevCriteria').addEventListener('click', goPrev);
+    document.getElementById('btnNextCriteria').addEventListener('click', goNext);
+    document.querySelectorAll('.criteria-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () { var idx = parseInt(this.getAttribute('data-criterion-index'), 10); if (idx >= 0 && idx < TOTAL_CRITERIA) goToCriterion(idx); });
+    });
+    var criteriaSearchInput = document.getElementById('criteriaSearchInput');
+    if (criteriaSearchInput) {
+        criteriaSearchInput.addEventListener('input', function () {
+            var q = (this.value || '').trim().toLowerCase();
+            document.querySelectorAll('.criteria-pill').forEach(function (pill) {
+                var wrap = pill.querySelector('.min-w-0');
+                var text = wrap ? (wrap.textContent || '').toLowerCase() : '';
+                pill.classList.toggle('hidden', q && text.indexOf(q) === -1);
+            });
+        });
+    }
+    document.getElementById('btnResultPass').addEventListener('click', function () { getState().result = 'pass'; setResultUI('pass'); updateAutoSaveTime(); });
+    document.getElementById('btnResultFail').addEventListener('click', function () { getState().result = 'fail'; setResultUI('fail'); updateAutoSaveTime(); });
+    var feedbackTextarea = document.getElementById('feedbackTextarea');
+    feedbackTextarea.addEventListener('input', debounce(function () { getState().comment = feedbackTextarea.value; updateAutoSaveTime(); }, 800));
+    var btnSaveDraft = document.getElementById('btnSaveDraft');
+    if (btnSaveDraft) btnSaveDraft.addEventListener('click', function () {
+        persistCurrentForm();
+        try { localStorage.setItem('chamDiemChiTiet_draft', JSON.stringify(stateByCriterion)); } catch (e) {}
+        updateAutoSaveTime();
+        showToast('Đã tạm lưu.');
+    });
+    document.getElementById('btnSaveAndNext').addEventListener('click', function () {
+        persistCurrentForm();
+        try { localStorage.setItem('chamDiemChiTiet_draft', JSON.stringify(stateByCriterion)); } catch (e) {}
+        updateAutoSaveTime();
+        showToast('Đã lưu.');
+        goNext();
+    });
+    document.getElementById('btnFinishAudit').addEventListener('click', function () {
+        if (!confirm('Bạn có chắc muốn hoàn tất buổi kiểm tra? Kết quả sẽ được gửi và KPI được cập nhật.')) return;
+        try { localStorage.removeItem('chamDiemChiTiet_draft'); } catch (e) {}
+        window.location.href = 'audit-list.html';
+    });
+    document.getElementById('btnAttach').addEventListener('click', function () { document.getElementById('inputAttach').click(); });
+    document.getElementById('inputAttach').addEventListener('change', function () { if (this.files && this.files.length) showToast('Đã chọn ' + this.files.length + ' ảnh.'); this.value = ''; });
+
+    var modalHistory = document.getElementById('modalHistory');
+    var modalHistoryBody = document.getElementById('modalHistoryBody');
+    var historyList = [{ time: '10:50 AM', result: 'Không đạt', text: 'Thiếu tem giá ở tầng 2...' }, { time: '09:15 AM', result: 'Đạt', text: 'Sắp xếp đúng planogram.' }];
+    function openHistory() { modalHistory.classList.remove('hidden'); modalHistory.classList.add('flex'); modalHistory.setAttribute('aria-hidden', 'false'); var ul = modalHistoryBody.querySelector('ul'); ul.innerHTML = historyList.map(function (h) { return '<li class="p-2 rounded-lg bg-slate-50 dark:bg-slate-800"><span class="font-medium">' + h.time + '</span> – ' + h.result + ': ' + h.text + '</li>'; }).join(''); }
+    function closeHistory() { modalHistory.classList.add('hidden'); modalHistory.classList.remove('flex'); modalHistory.setAttribute('aria-hidden', 'true'); }
+    document.getElementById('btnHistory').addEventListener('click', openHistory);
+    document.getElementById('modalHistoryClose').addEventListener('click', closeHistory);
+    modalHistory.addEventListener('click', function (e) { if (e.target === modalHistory) closeHistory(); });
+
+    (function () {
+        var popup = document.getElementById('feedbackImagePopup');
+        var popupImg = document.getElementById('feedbackImagePopupImg');
+        var popupClose = document.getElementById('feedbackImagePopupClose');
+        if (!popup || !popupImg) return;
+        document.querySelectorAll('.feedback-history-img-btn').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var img = btn.querySelector('img');
+                if (img && img.src) {
+                    popupImg.src = img.src;
+                    popupImg.alt = img.alt || 'Ảnh phản hồi';
+                    popup.classList.remove('hidden');
+                    popup.classList.add('flex');
+                    popup.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+        function closeFeedbackImagePopup() {
+            popup.classList.add('hidden');
+            popup.classList.remove('flex');
+            popup.setAttribute('aria-hidden', 'true');
+            popupImg.removeAttribute('src');
+        }
+        if (popupClose) popupClose.addEventListener('click', closeFeedbackImagePopup);
+        popup.addEventListener('click', function (e) { if (e.target === popup) closeFeedbackImagePopup(); });
+    })();
+
+    document.querySelectorAll('[data-action="zoom"]').forEach(function (btn) {
+        btn.addEventListener('click', function () { var target = this.getAttribute('data-target'); var img = document.getElementById(target === 'standard' ? 'imgStandard' : 'imgStore'); if (img && img.src) window.open(img.src, '_blank'); });
+    });
+    document.querySelectorAll('[data-action="fullscreen"]').forEach(function (btn) {
+        btn.addEventListener('click', function () { var target = this.getAttribute('data-target'); var container = document.getElementById(target === 'standard' ? 'containerStandard' : 'containerStore'); if (container) container.requestFullscreen().catch(function () {}); });
+    });
+
+    var compareOverlay = document.getElementById('compareOverlay');
+    var compareOverlayStandard = document.getElementById('compareOverlayStandard');
+    var compareOverlayStore = document.getElementById('compareOverlayStore');
+    var compareOpacitySlider = document.getElementById('compareOpacitySlider');
+    var compareOpacityValue = document.getElementById('compareOpacityValue');
+    function openCompareOverlay() {
+        var imgStandard = document.getElementById('imgStandard');
+        var imgStore = document.getElementById('imgStore');
+        if (imgStandard && imgStandard.src && imgStore && imgStore.src) {
+            compareOverlayStandard.src = imgStandard.src;
+            compareOverlayStore.src = imgStore.src;
+            var val = parseInt(compareOpacitySlider.value, 10);
+            compareOverlayStandard.style.opacity = val / 100;
+            compareOpacityValue.textContent = val + '%';
+            compareOverlay.classList.remove('hidden');
+            compareOverlay.classList.add('flex');
+        }
+    }
+    function closeCompareOverlay() { compareOverlay.classList.add('hidden'); compareOverlay.classList.remove('flex'); }
+    document.getElementById('btnCompareOverlay').addEventListener('click', openCompareOverlay);
+    document.getElementById('compareOverlayClose').addEventListener('click', closeCompareOverlay);
+    compareOverlay.addEventListener('click', function (e) { if (e.target === compareOverlay) closeCompareOverlay(); });
+    if (compareOpacitySlider) compareOpacitySlider.addEventListener('input', function () { var val = parseInt(this.value, 10); compareOverlayStandard.style.opacity = val / 100; compareOpacityValue.textContent = val + '%'; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && compareOverlay && !compareOverlay.classList.contains('hidden')) closeCompareOverlay(); });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+        if (compareOverlay && !compareOverlay.classList.contains('hidden')) return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+        if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); document.getElementById('btnSaveAndNext').click(); }
+    });
+
+    try { var saved = localStorage.getItem('chamDiemChiTiet_draft'); if (saved) stateByCriterion = JSON.parse(saved); } catch (e) {}
+    if (Object.keys(stateByCriterion).length === 0) {
+        stateByCriterion[0] = { result: 'pass', comment: '', savedAt: null };
+        stateByCriterion[1] = { result: 'pass', comment: '', savedAt: null };
+        stateByCriterion[2] = { result: 'pass', comment: '', savedAt: null };
+        stateByCriterion[3] = { result: 'fail', comment: 'Thiếu tem giá tầng 2.', savedAt: null };
+    }
+    var urlParams = new URLSearchParams(window.location.search);
+    var criterionParam = urlParams.get('criterion');
+    if (criterionParam !== null && criterionParam !== '') { var idx = parseInt(criterionParam, 10); if (!isNaN(idx) && idx >= 0 && idx < TOTAL_CRITERIA) currentCriterionIndex = idx; }
+    var mediaParam = urlParams.get('media');
+    var media = mediaParam ? mediaParam.toLowerCase() : '';
+    var detailImageBlock = document.getElementById('detailImageBlock');
+    var detailTextOnlyBlock = document.getElementById('detailTextOnlyBlock');
+    var detailTextOnlyContent = document.getElementById('detailTextOnlyContent');
+    var detailVideoBlock = document.getElementById('detailVideoBlock');
+    var videoStore = document.getElementById('videoStore');
+    var videoStoreSource = document.getElementById('videoStoreSource');
+    var storeImagesWrap = document.getElementById('storeImagesWrap');
+    var imgStore = document.getElementById('imgStore');
+
+    if (media === 'text') {
+        if (detailImageBlock) { detailImageBlock.classList.add('hidden'); detailImageBlock.style.display = 'none'; detailImageBlock.setAttribute('hidden', ''); }
+        if (detailVideoBlock) { detailVideoBlock.classList.add('hidden'); detailVideoBlock.style.display = 'none'; detailVideoBlock.setAttribute('hidden', ''); }
+        if (detailTextOnlyBlock) {
+            detailTextOnlyBlock.classList.remove('hidden');
+            detailTextOnlyBlock.style.display = '';
+            detailTextOnlyBlock.removeAttribute('hidden');
+            var noteParam = urlParams.get('note');
+            if (detailTextOnlyContent) detailTextOnlyContent.textContent = noteParam ? decodeURIComponent(noteParam) : '(Không có nội dung ghi chú)';
+        }
+    } else if (media === 'video') {
+        if (detailImageBlock) { detailImageBlock.classList.add('hidden'); detailImageBlock.style.display = 'none'; detailImageBlock.setAttribute('hidden', ''); }
+        if (detailTextOnlyBlock) { detailTextOnlyBlock.classList.add('hidden'); detailTextOnlyBlock.style.display = 'none'; detailTextOnlyBlock.setAttribute('hidden', ''); }
+        if (detailVideoBlock) {
+            detailVideoBlock.classList.remove('hidden');
+            detailVideoBlock.removeAttribute('hidden');
+            detailVideoBlock.style.display = '';
+            var videoUrlParam = urlParams.get('videoUrl');
+            var videoUrl = videoUrlParam ? decodeURIComponent(videoUrlParam) : '';
+            if (videoStore && videoUrl) {
+                if (videoStoreSource) videoStoreSource.src = videoUrl;
+                videoStore.src = videoUrl;
+                videoStore.load();
+            }
+        }
+    } else {
+        if (detailImageBlock) { detailImageBlock.classList.remove('hidden'); detailImageBlock.style.display = ''; detailImageBlock.removeAttribute('hidden'); }
+        if (detailTextOnlyBlock) { detailTextOnlyBlock.classList.add('hidden'); detailTextOnlyBlock.style.display = 'none'; detailTextOnlyBlock.setAttribute('hidden', ''); }
+        if (detailVideoBlock) { detailVideoBlock.classList.add('hidden'); detailVideoBlock.style.display = 'none'; detailVideoBlock.setAttribute('hidden', ''); }
+    }
+
+    var storeImgsParam = urlParams.get('storeImgs');
+    var storeThumbs = document.getElementById('storeThumbs');
+    var storeMain = document.getElementById('storeMain');
+    if (storeImgsParam && imgStore) {
+        var urls = storeImgsParam.split('|').map(function (s) { return decodeURIComponent(s.trim()); }).filter(Boolean);
+        if (urls.length > 1 && storeThumbs) {
+            imgStore.src = urls[0];
+            storeThumbs.classList.remove('hidden');
+            storeThumbs.innerHTML = '';
+            urls.forEach(function (url, i) {
+                var thumb = document.createElement('button');
+                thumb.type = 'button';
+                thumb.className = 'store-thumb flex-shrink-0 h-12 w-12 sm:h-14 sm:w-14 rounded-lg overflow-hidden border-2 border-transparent bg-slate-200 dark:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary ring-offset-2 transition-all hover:ring-2 hover:ring-primary/40';
+                if (i === 0) thumb.classList.add('!border-primary', 'ring-2', 'ring-primary/50');
+                var im = document.createElement('img');
+                im.alt = 'Thực tế ' + (i + 1);
+                im.className = 'w-full h-full object-cover';
+                im.src = url;
+                thumb.appendChild(im);
+                thumb.addEventListener('click', function () {
+                    imgStore.src = url;
+                    storeThumbs.querySelectorAll('.store-thumb').forEach(function (t) {
+                                        t.classList.remove('!border-primary', 'ring-2', 'ring-primary/50');
+                                        t.classList.add('border-transparent');
+                                    });
+                    thumb.classList.add('!border-primary', 'ring-2', 'ring-primary/50');
+                    thumb.classList.remove('border-transparent');
+                });
+                storeThumbs.appendChild(thumb);
+            });
+        } else if (urls.length === 1) {
+            imgStore.src = urls[0];
+        }
+    }
+    loadStateForCurrent();
+    updateCounter();
+    updatePills();
+})();
+
+    // Scroll từ lịch sử phản hồi lên đúng hình ảnh (mẫu / thực tế)
+    (function () {
+        function scrollToImage(type) {
+            var targetId = type === 'standard' ? 'containerStandard' : 'containerStore';
+            var el = document.getElementById(targetId);
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Highlight nhẹ vùng ảnh để người dùng dễ nhận biết
+            el.classList.add('ring-2', 'ring-primary', 'ring-offset-2', 'ring-offset-slate-100', 'dark:ring-offset-slate-900');
+            setTimeout(function () {
+                el.classList.remove('ring-2', 'ring-primary', 'ring-offset-2', 'ring-offset-slate-100', 'dark:ring-offset-slate-900');
+            }, 1200);
+        }
+
+        var standardImagesPopup = document.getElementById('standardImagesPopup');
+        var standardImagesPopupList = document.getElementById('standardImagesPopupList');
+        var standardImagesPopupClose = document.getElementById('standardImagesPopupClose');
+
+        function openStandardImagesPopup() {
+            var list = standardImagesPopupList;
+            if (!list) return;
+            list.innerHTML = '';
+            var imgStandard = document.getElementById('imgStandard');
+            var urls = [];
+            if (imgStandard && imgStandard.src) urls.push({ src: imgStandard.src, alt: 'Hình mẫu' });
+            if (urls.length === 0) {
+                list.innerHTML = '<p class="col-span-full text-sm text-slate-500 dark:text-slate-400 py-6 text-center">Chưa có hình mẫu</p>';
+            } else {
+                urls.forEach(function (item, i) {
+                    var wrap = document.createElement('div');
+                    wrap.className = 'rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800';
+                    var img = document.createElement('img');
+                    img.src = item.src;
+                    img.alt = item.alt + (i + 1);
+                    img.className = 'w-full aspect-video object-contain cursor-pointer hover:opacity-90 transition-opacity';
+                    img.loading = 'lazy';
+                    img.addEventListener('click', function () {
+                        var popup = document.getElementById('feedbackImagePopup');
+                        var popupImg = document.getElementById('feedbackImagePopupImg');
+                        if (popup && popupImg) {
+                            popupImg.src = img.src;
+                            popupImg.alt = img.alt;
+                            popup.classList.remove('hidden');
+                            popup.classList.add('flex');
+                            popup.setAttribute('aria-hidden', 'false');
+                        }
+                    });
+                    wrap.appendChild(img);
+                    list.appendChild(wrap);
+                });
+            }
+            if (standardImagesPopup) {
+                standardImagesPopup.classList.remove('hidden');
+                standardImagesPopup.classList.add('flex');
+                standardImagesPopup.setAttribute('aria-hidden', 'false');
+            }
+        }
+
+        function closeStandardImagesPopup() {
+            if (standardImagesPopup) {
+                standardImagesPopup.classList.add('hidden');
+                standardImagesPopup.classList.remove('flex');
+                standardImagesPopup.setAttribute('aria-hidden', 'true');
+            }
+        }
+
+        if (standardImagesPopupClose) standardImagesPopupClose.addEventListener('click', closeStandardImagesPopup);
+        if (standardImagesPopup) {
+            standardImagesPopup.addEventListener('click', function (e) {
+                if (e.target === standardImagesPopup) closeStandardImagesPopup();
+            });
+        }
+
+        document.querySelectorAll('[data-scroll-image]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var type = this.getAttribute('data-scroll-image');
+                if (type === 'standard') {
+                    openStandardImagesPopup();
+                } else {
+                    scrollToImage('store');
+                }
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

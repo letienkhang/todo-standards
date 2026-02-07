@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Checklist + Daily work - Quản lý công việc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1E293B",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply font-display text-black dark:text-slate-200 bg-background-light dark:bg-background-dark; }
+        }
+        .table-row-hover:hover {
+            background-color: rgba(59, 130, 246, 0.04);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .table-scroll::-webkit-scrollbar { height: 6px; }
+        .table-scroll::-webkit-scrollbar-track { background: transparent; }
+        .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .table-scroll::-webkit-scrollbar-thumb { background: #475569; }
+        .nav-item-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+        .dark .nav-item-active { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .filter-panel-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            overflow: hidden;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        .filter-panel-wrapper.open {
+            grid-template-rows: 1fr;
+        }
+        .filter-panel-wrapper > div {
+            min-height: 0;
+        }
+        #sidebar-nav { transition: width 0.2s ease-out; }
+        #sidebar-nav.nav-collapsed { width: 4rem; min-width: 4rem; }
+        #sidebar-nav.nav-collapsed .nav-link-text { opacity: 0; width: 0; overflow: hidden; min-width: 0; padding: 0; }
+        .nav-flyout { display: none; }
+        #sidebar-nav.nav-collapsed .nav-flyout { display: block; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+        #sidebar-nav.nav-collapsed a:hover .nav-flyout, #sidebar-nav.nav-collapsed button:hover .nav-flyout { opacity: 1; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
+        #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+    </style>
+</head>
+
+<body class="transition-colors duration-200 flex min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark">
+    <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out" aria-label="Menu chính">
+        <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">dashboard</span>
+                <span class="nav-link-text truncate">Tổng quan</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
+            </a>
+            <a href="my-tasks.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
+                <span class="nav-link-text truncate">Công việc của tôi</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
+            </a>
+            <a href="index.html" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">list_alt</span>
+                <span class="nav-link-text truncate">Danh sách công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách công việc</span>
+            </a>
+            <a href="list-person.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">person</span>
+                <span class="nav-link-text truncate">Danh sách cá nhân</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách cá nhân</span>
+            </a>
+            <a href="audit-list.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">grading</span>
+                <span class="nav-link-text truncate">Chấm điểm</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Chấm điểm</span>
+            </a>
+            <a href="#" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">bar_chart</span>
+                <span class="nav-link-text truncate">Báo cáo</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Báo cáo</span>
+            </a>
+            <a href="ui-mobile.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">phone_android</span>
+                <span class="nav-link-text truncate">Giao diện mobile</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện mobile</span>
+            </a>
+        </div>
+        <div class="border-t border-border-light dark:border-border-dark p-2 flex flex-col gap-0.5">
+            <button type="button" id="navToggle" class="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Thu gọn menu">
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-expanded">chevron_left</span>
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-collapsed">chevron_right</span>
+                <span class="nav-link-text truncate">Thu gọn</span>
+            </button>
+            <button type="button" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')" aria-label="Giao diện">
+                <span class="material-symbols-outlined text-xl shrink-0">dark_mode</span>
+                <span class="nav-link-text truncate">Giao diện</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện</span>
+            </button>
+        </div>
+    </nav>
+    <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){if(localStorage.getItem('navCollapsed')==='1')n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();</script>
+    <div class="flex-1 flex flex-col min-h-0 min-w-0">
+    <header
+        class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors inline-flex" aria-label="Quay lại danh sách" onclick="event.preventDefault(); if (window.history.length > 1) { window.history.back(); } else { window.location.href = 'index.html'; }">
+                <span class="material-symbols-outlined text-slate-500">arrow_back</span>
+            </a>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Checklist + Daily work</h1>
+                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Quản lý công việc</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-4">
+            <button type="button" id="btnToggleFilter" aria-expanded="false" aria-controls="filterPanelWrap"
+                class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                title="Bộ lọc tìm kiếm">
+                <span class="material-symbols-outlined">filter_alt</span>
+            </button>
+            <button type="button" class="hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+                onclick="document.documentElement.classList.toggle('dark')" aria-hidden="true">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <button
+                id="btnCreateWork"
+                type="button"
+                class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Tạo công việc mới
+            </button>
+        </div>
+    </header>
+    <main class="flex-1 flex flex-col min-h-0 p-4 sm:p-6 w-full min-w-0">
+        <div class="flex-1 flex flex-col gap-4 lg:gap-6 min-h-0 min-w-0">
+            <div id="filterPanelWrap" class="filter-panel-wrapper flex-shrink-0" role="region" aria-label="Bộ lọc tìm kiếm">
+                <div class="min-h-0">
+            <aside class="w-full">
+                <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-3 sm:p-4">
+                    <div class="flex flex-col gap-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 items-end">
+                            <div class="space-y-1 min-w-0">
+                                <label class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Từ khóa</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
+                                        <span class="material-symbols-outlined text-sm">search</span>
+                                    </span>
+                                    <input id="filterKeyword" class="w-full pl-8 pr-2.5 py-2 text-sm border border-border-light dark:border-border-dark rounded-lg bg-white dark:bg-slate-800 text-black dark:text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-shadow" placeholder="Tìm theo ID, tên..." type="text" />
+                                </div>
+                            </div>
+                            <div class="space-y-1 min-w-0">
+                                <label class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Phòng ban / Đơn vị</label>
+                                <div class="relative">
+                                    <select id="filterUnit" class="w-full pl-2.5 pr-8 py-2 text-sm border border-border-light dark:border-border-dark rounded-lg bg-white dark:bg-slate-800 text-black dark:text-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none transition-shadow">
+                                        <option value="">Tất cả đơn vị</option>
+                                        <option value="Nhóm Retail">Nhóm Retail</option>
+                                        <option value="Nhóm Giám sát khu vực">Nhóm Giám sát khu vực</option>
+                                        <option value="Nhóm Kinh doanh">Nhóm Kinh doanh</option>
+                                        <option value="Nhóm Vận hành cửa hàng">Nhóm Vận hành cửa hàng</option>
+                                        <option value="Nhóm Marketing">Nhóm Marketing</option>
+                                        <option value="Nhóm Hậu cần">Nhóm Hậu cần</option>
+                                        <option value="Nhóm Chất lượng">Nhóm Chất lượng</option>
+                                        <option value="Nhóm Trải nghiệm khách hàng">Nhóm Trải nghiệm khách hàng</option>
+                                    </select>
+                                    <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-slate-400">
+                                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-y-1 min-w-0">
+                                <label class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Từ ngày</label>
+                                <div class="relative">
+                                    <input id="filterDateFrom" class="w-full pl-2.5 pr-8 py-2 text-sm border border-border-light dark:border-border-dark rounded-lg bg-white dark:bg-slate-800 text-black dark:text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-shadow" placeholder="dd/mm/yyyy" type="text" title="Ví dụ: 01/02/2026" />
+                                    <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-slate-400">
+                                        <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="space-y-1 min-w-0">
+                                <label class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Đến ngày</label>
+                                <div class="relative">
+                                    <input id="filterDateTo" class="w-full pl-2.5 pr-8 py-2 text-sm border border-border-light dark:border-border-dark rounded-lg bg-white dark:bg-slate-800 text-black dark:text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-shadow" placeholder="dd/mm/yyyy" type="text" title="Ví dụ: 07/02/2026" />
+                                    <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-slate-400">
+                                        <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-border-light dark:border-border-dark">
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm text-slate-600 dark:text-slate-400">Hiện công việc con</span>
+                                <button id="toggleSubTasks" type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-slate-200 dark:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30">
+                                    <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition translate-x-1"></span>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btnFilter" type="button" class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-800">
+                                    Lọc kết quả
+                                </button>
+                                <button id="btnRefreshFilter" type="button" class="p-2 border border-border-light dark:border-border-dark rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20" title="Làm mới bộ lọc">
+                                    <span class="material-symbols-outlined text-xl">refresh</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col min-w-0 min-h-0">
+                <div
+                    class="flex-shrink-0 border-b border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-t-xl shadow-sm overflow-x-auto no-scrollbar">
+                    <nav class="flex px-2 sm:px-4" role="tablist">
+                        <button
+                            id="tabAll"
+                            type="button"
+                            role="tab"
+                            aria-selected="true"
+                            data-tab="all"
+                            class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold border-b-2 border-primary text-primary transition-all whitespace-nowrap">
+                            Tất cả công việc
+                        </button>
+                        <button
+                            id="tabOverdue"
+                            type="button"
+                            role="tab"
+                            aria-selected="false"
+                            data-tab="overdue"
+                            class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-all whitespace-nowrap flex items-center gap-2">
+                            Công việc quá hạn
+                            <span
+                                id="overdueBadge"
+                                class="bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 px-2 py-0.5 rounded-full text-[10px] font-bold">3</span>
+                        </button>
+                    </nav>
+                </div>
+                <div
+                    class="flex-1 flex flex-col min-h-0 bg-card-light dark:bg-card-dark rounded-b-xl shadow-sm border border-border-light dark:border-border-dark border-t-0 overflow-hidden">
+                    <div class="flex-shrink-0 p-3 sm:p-4 border-b border-border-light dark:border-border-dark flex items-center justify-between">
+                        <h2 id="tableSectionTitle" class="text-xs sm:text-sm font-bold text-black dark:text-slate-300 uppercase tracking-wide truncate">Danh sách các bộ công việc chấm cửa hàng <span id="tableCountLabel">(8)</span></h2>
+                    </div>
+                    <div class="flex-1 min-h-0 overflow-auto table-scroll">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
+                            <thead>
+                                <tr id="headerRowBundles"
+                                    class="bg-slate-50 dark:bg-slate-800/50 text-black dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Bộ công việc <span id="tableHeadCount">(8)</span></th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark whitespace-nowrap">
+                                        <div class="flex items-center gap-1 cursor-pointer">
+                                            Ngày bắt đầu
+                                            <span class="material-symbols-outlined text-sm">unfold_more</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark whitespace-nowrap">
+                                        <div class="flex items-center gap-1 cursor-pointer">
+                                            Ngày kết thúc
+                                            <span class="material-symbols-outlined text-sm">unfold_more</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Nhóm phòng</th>
+                                </tr>
+                                <tr id="headerRowChildren"
+                                    class="hidden bg-slate-50 dark:bg-slate-800/50 text-black dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Công việc</th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Tên người thực hiện</th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Đơn vị</th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark whitespace-nowrap">Ngày bắt đầu</th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark whitespace-nowrap">Ngày kết thúc</th>
+                                    <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="divide-y divide-border-light dark:divide-border-dark">
+                                <tr class="table-row-hover text-sm data-row" data-overdue="false" data-unit="Nhóm Retail" data-date-start="2026-02-02" data-date-end="2026-02-06">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">Checklist + Daily work – Ca sáng tuần 06</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">06:00 02/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">14:00 06/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Retail</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="false" data-unit="Nhóm Kinh doanh" data-date-start="2026-02-03" data-date-end="2026-02-07">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">ĐIỀU HÀNH KINH DOANH – Tuần 05 báo cáo</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">08:00 03/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">17:00 07/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Kinh doanh</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="false" data-unit="Nhóm Giám sát khu vực" data-date-start="2026-02-04" data-date-end="2026-02-08">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">BCHA Trade + VM – Chấm trưng bày khu vực 1</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">07:30 04/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">17:00 08/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Giám sát khu vực</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="true" data-unit="Nhóm Vận hành cửa hàng" data-date-start="2026-01-27" data-date-end="2026-01-31">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">Chấm vệ sinh & vệ sinh kỹ thuật CH – Tuần 04</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">06:00 27/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-red-500 font-medium whitespace-nowrap text-xs sm:text-sm">14:00 31/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Vận hành cửa hàng</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="true" data-unit="Nhóm Kinh doanh" data-date-start="2026-01-28" data-date-end="2026-01-31">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">Chấm nhãn giá, kệ hàng & tồn kho cuối tháng</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">08:00 28/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-red-500 font-medium whitespace-nowrap text-xs sm:text-sm">17:00 31/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Kinh doanh</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="false" data-unit="Nhóm Giám sát khu vực" data-date-start="2026-02-01" data-date-end="2026-02-05">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">Chấm trưng bày VM & Planogram theo chuẩn</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">07:00 01/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">16:30 05/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Giám sát khu vực</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="true" data-unit="Nhóm Hậu cần" data-date-start="2026-01-30" data-date-end="2026-02-01">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">Báo cáo tồn kho & đối soát cuối ngày 01/02</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">20:00 30/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-red-500 font-medium whitespace-nowrap text-xs sm:text-sm">23:59 01/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Hậu cần</td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row" data-overdue="false" data-unit="Nhóm Vận hành cửa hàng" data-date-start="2026-02-02" data-date-end="2026-02-06">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 cursor-pointer min-w-0 max-w-[220px] sm:max-w-none truncate">Chấm an toàn PCCC & thoát nạn – Định kỳ tháng 02</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">08:00 02/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">17:00 06/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] sm:max-w-none truncate">Nhóm Vận hành cửa hàng</td>
+                                </tr>
+                            </tbody>
+                            <tbody id="bodyChildren" class="hidden divide-y divide-border-light dark:divide-border-dark" aria-hidden="true">
+                                <tr class="table-row-hover text-sm data-row-child">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 min-w-0 max-w-[220px] sm:max-w-none truncate">Kiểm tra vệ sinh khu trưng bày</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 truncate">Nguyễn Văn A</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] truncate">Nhóm Retail</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">09:00 04/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">17:00 07/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4"><span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Hoàn thành</span></td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row-child">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 min-w-0 max-w-[220px] sm:max-w-none truncate">Kiểm tra nhãn giá kệ A</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 truncate">Trần Thị B</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] truncate">Nhóm Kinh doanh</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">09:15 04/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">17:00 07/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4"><span class="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Thực hiện</span></td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row-child">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 min-w-0 max-w-[220px] sm:max-w-none truncate">Chấm sơ đồ trưng bày khu vực 1</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 truncate">Lê Văn C</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] truncate">Nhóm Giám sát khu vực</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">08:30 03/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">17:00 10/02/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4"><span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-600 dark:text-slate-200">Chưa bắt đầu</span></td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row-child">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 min-w-0 max-w-[220px] sm:max-w-none truncate">Kiểm tra khoảng cách sản phẩm</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 truncate">Phạm Thị D</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] truncate">Nhóm Vận hành cửa hàng</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">07:45 28/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-red-500 font-medium whitespace-nowrap text-xs sm:text-sm">17:00 31/01/2026</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4"><span class="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">Quá hạn</span></td>
+                                </tr>
+                                <tr class="table-row-hover text-sm data-row-child">
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-medium text-black dark:text-slate-200 min-w-0 max-w-[220px] sm:max-w-none truncate">Kiểm tra chiếu sáng khu vực chính</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 truncate">Hoàng Văn E</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 font-bold text-black dark:text-slate-300 min-w-0 max-w-[140px] truncate">Nhóm Hậu cần</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 whitespace-nowrap text-xs sm:text-sm">09:20 18/12/2025</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 text-red-500 font-medium whitespace-nowrap text-xs sm:text-sm">17:00 31/12/2025</td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4"><span class="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">Quá hạn</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        class="flex-shrink-0 px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between border-t border-border-light dark:border-border-dark gap-3">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-6 text-xs sm:text-sm text-black dark:text-slate-400">
+                            <span id="paginationInfo">1 - 8 trong tổng 8</span>
+                            <div class="flex items-center gap-2">
+                                <span>Hiển thị:</span>
+                                <select
+                                    id="perPageSelect"
+                                    class="border border-border-light dark:border-border-dark rounded-lg px-2 py-1 bg-card-light dark:bg-card-dark focus:ring-1 focus:ring-primary text-sm">
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <span>Kết quả</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button
+                                id="btnPrevPage"
+                                type="button"
+                                class="px-2 sm:px-3 py-1.5 sm:py-2 border border-border-light dark:border-border-dark rounded-lg text-black dark:text-slate-500 flex items-center gap-1 text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 cursor-not-allowed">
+                                <span class="material-symbols-outlined text-sm sm:text-base">chevron_left</span>
+                                <span class="hidden sm:inline">Trang đầu</span>
+                            </button>
+                            <button
+                                id="btnCurrentPage"
+                                type="button"
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-primary text-white flex items-center justify-center rounded-lg font-medium text-xs sm:text-sm">1</button>
+                            <button
+                                id="btnNextPage"
+                                type="button"
+                                class="px-2 sm:px-3 py-1.5 sm:py-2 border border-border-light dark:border-border-dark rounded-lg text-black dark:text-slate-300 flex items-center gap-1 text-xs sm:text-sm bg-card-light dark:bg-card-dark hover:bg-slate-100 dark:hover:bg-slate-800">
+                                <span class="hidden sm:inline">Trang cuối</span>
+                                <span class="material-symbols-outlined text-sm sm:text-base">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+    <button
+        class="fixed bottom-6 right-6 p-2 text-black dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors z-50"
+        onclick="document.documentElement.classList.toggle('dark')">
+        <span class="material-symbols-outlined hidden dark:block text-yellow-400">light_mode</span>
+    </button>
+
+    <script>
+(function () {
+    'use strict';
+
+    var STORAGE_KEY = 'ds_filter_mvp';
+
+    // --- Toast đơn giản cho demo
+    function showToast(message) {
+        var el = document.createElement('div');
+        el.setAttribute('role', 'status');
+        el.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm font-medium shadow-lg z-[100] transition-opacity duration-200';
+        el.textContent = message;
+        document.body.appendChild(el);
+        setTimeout(function () {
+            el.style.opacity = '0';
+            setTimeout(function () { el.remove(); }, 200);
+        }, 2000);
+    }
+
+    // --- Chuyển sang màn hình tạo / quản lý công việc khi bấm Tạo công việc mới
+    var btnCreateWork = document.getElementById('btnCreateWork');
+    if (btnCreateWork) {
+        btnCreateWork.addEventListener('click', function () {
+            window.location.href = 'create-page.html';
+        });
+    }
+
+    var btnToggleFilter = document.getElementById('btnToggleFilter');
+    var filterPanelWrap = document.getElementById('filterPanelWrap');
+    if (btnToggleFilter && filterPanelWrap) {
+        btnToggleFilter.addEventListener('click', function () {
+            var isOpen = filterPanelWrap.classList.toggle('open');
+            btnToggleFilter.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
+
+    // --- Tab: Tất cả / Công việc quá hạn
+    var tabAll = document.getElementById('tabAll');
+    var tabOverdue = document.getElementById('tabOverdue');
+    var tableBody = document.getElementById('tableBody');
+    var overdueBadge = document.getElementById('overdueBadge');
+    var activeTab = 'all';
+    var tabActiveClasses = 'border-b-2 border-primary text-primary font-semibold';
+    var tabInactiveClasses = 'border-b-2 border-transparent text-black hover:text-slate-700 dark:hover:text-slate-300 font-medium';
+
+    function setActiveTab(tab) {
+        activeTab = tab;
+        if (tabAll) {
+            tabAll.setAttribute('aria-selected', tab === 'all');
+            tabAll.className = 'tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm border-b-2 transition-all whitespace-nowrap ' + (tab === 'all' ? tabActiveClasses : tabInactiveClasses);
+        }
+        if (tabOverdue) {
+            tabOverdue.setAttribute('aria-selected', tab === 'overdue');
+            tabOverdue.className = 'tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm border-b-2 transition-all whitespace-nowrap flex items-center gap-2 ' + (tab === 'overdue' ? tabActiveClasses : tabInactiveClasses);
+        }
+        applyFilters();
+    }
+
+    if (tabAll) tabAll.addEventListener('click', function () { setActiveTab('all'); });
+    if (tabOverdue) tabOverdue.addEventListener('click', function () { setActiveTab('overdue'); });
+
+    // --- Bộ lọc MVP
+    var filterKeyword = document.getElementById('filterKeyword');
+    var filterUnit = document.getElementById('filterUnit');
+    var filterDateFrom = document.getElementById('filterDateFrom');
+    var filterDateTo = document.getElementById('filterDateTo');
+    var btnFilter = document.getElementById('btnFilter');
+    var btnRefreshFilter = document.getElementById('btnRefreshFilter');
+    var toggleSubTasks = document.getElementById('toggleSubTasks');
+    var subTasksVisible = false;
+
+    /** Chuẩn hóa chuỗi ngày nhập (DD/MM/YYYY hoặc D/M/YYYY) thành YYYY-MM-DD để so sánh */
+    function parseDateInput(str) {
+        if (!str || !str.trim()) return null;
+        var s = str.trim().replace(/\s+/g, ' ').replace(/,/g, '');
+        var parts = s.split(/[/\-.]/);
+        if (parts.length < 3) return null;
+        var d = parseInt(parts[0], 10);
+        var m = parseInt(parts[1], 10) - 1;
+        var y = parseInt(parts[2], 10);
+        if (isNaN(d) || isNaN(m) || isNaN(y) || m < 0 || m > 11 || d < 1 || d > 31) return null;
+        var date = new Date(y, m, d);
+        if (isNaN(date.getTime()) || date.getMonth() !== m || date.getDate() !== d) return null;
+        var yy = date.getFullYear();
+        var mm = date.getMonth() + 1;
+        var dd = date.getDate();
+        return yy + '-' + (mm < 10 ? '0' : '') + mm + '-' + (dd < 10 ? '0' : '') + dd;
+    }
+
+    /** Trả về ngày hôm nay dạng YYYY-MM-DD để so sánh quá hạn */
+    function getTodayYmd() {
+        var now = new Date();
+        var y = now.getFullYear();
+        var m = now.getMonth() + 1;
+        var d = now.getDate();
+        return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+    }
+
+    /**
+     * Lọc theo khoảng thời gian: hiển thị công việc có thời gian TRÙNG với [dateFrom, dateTo].
+     * Công việc trùng khoảng khi: Ngày bắt đầu <= Đến ngày VÀ Ngày kết thúc >= Từ ngày.
+     */
+    function matchDateRange(rowStartYmd, rowEndYmd, dateFromYmd, dateToYmd) {
+        if (!rowStartYmd || !rowEndYmd) return true;
+        if (!dateFromYmd && !dateToYmd) return true;
+        if (dateFromYmd && dateToYmd) {
+            return rowStartYmd <= dateToYmd && rowEndYmd >= dateFromYmd;
+        }
+        if (dateFromYmd) return rowEndYmd >= dateFromYmd;
+        return rowStartYmd <= dateToYmd;
+    }
+
+    function getFilterState() {
+        return {
+            keyword: (filterKeyword && filterKeyword.value) ? filterKeyword.value.trim().toLowerCase() : '',
+            unit: (filterUnit && filterUnit.value) ? filterUnit.value.trim() : '',
+            dateFrom: (filterDateFrom && filterDateFrom.value) ? filterDateFrom.value.trim() : '',
+            dateTo: (filterDateTo && filterDateTo.value) ? filterDateTo.value.trim() : ''
+        };
+    }
+
+    var headerRowBundles = document.getElementById('headerRowBundles');
+    var headerRowChildren = document.getElementById('headerRowChildren');
+    var bodyChildren = document.getElementById('bodyChildren');
+    var tableSectionTitle = document.getElementById('tableSectionTitle');
+
+    function switchTableView() {
+        if (subTasksVisible) {
+            if (headerRowBundles) headerRowBundles.classList.add('hidden');
+            if (headerRowChildren) headerRowChildren.classList.remove('hidden');
+            if (tableBody) tableBody.classList.add('hidden');
+            if (tableBody) tableBody.setAttribute('aria-hidden', 'true');
+            if (bodyChildren) {
+                bodyChildren.classList.remove('hidden');
+                bodyChildren.removeAttribute('aria-hidden');
+            }
+            var childCount = bodyChildren ? bodyChildren.querySelectorAll('.data-row-child').length : 0;
+            if (tableSectionTitle) tableSectionTitle.innerHTML = 'Danh sách công việc con <span id="tableCountLabel">(' + childCount + ')</span>';
+            var labelEl = document.getElementById('tableCountLabel');
+            if (labelEl) labelEl.textContent = '(' + childCount + ')';
+            var paginationEl = document.getElementById('paginationInfo');
+            if (paginationEl) paginationEl.textContent = '1 - ' + childCount + ' trong tổng ' + childCount;
+        } else {
+            if (headerRowBundles) headerRowBundles.classList.remove('hidden');
+            if (headerRowChildren) headerRowChildren.classList.add('hidden');
+            if (tableBody) {
+                tableBody.classList.remove('hidden');
+                tableBody.removeAttribute('aria-hidden');
+            }
+            if (bodyChildren) {
+                bodyChildren.classList.add('hidden');
+                bodyChildren.setAttribute('aria-hidden', 'true');
+            }
+            if (tableSectionTitle) tableSectionTitle.innerHTML = 'Danh sách các bộ công việc chấm cửa hàng <span id="tableCountLabel">(8)</span>';
+            applyFilters(false);
+        }
+    }
+
+    function applyFilters(showToastMessage) {
+        if (subTasksVisible) return;
+        if (!tableBody) return;
+        var state = getFilterState();
+        var dateFromYmd = parseDateInput(state.dateFrom);
+        var dateToYmd = parseDateInput(state.dateTo);
+
+        if (showToastMessage) {
+            if (state.dateFrom && !dateFromYmd) {
+                showToast('"Từ ngày" không đúng định dạng. Vui lòng nhập DD/MM/YYYY (vd: 01/02/2026)');
+                showToastMessage = false;
+            } else if (state.dateTo && !dateToYmd) {
+                showToast('"Đến ngày" không đúng định dạng. Vui lòng nhập DD/MM/YYYY (vd: 07/02/2026)');
+                showToastMessage = false;
+            } else if (dateFromYmd && dateToYmd && dateFromYmd > dateToYmd) {
+                showToast('Từ ngày phải nhỏ hơn hoặc bằng Đến ngày');
+                showToastMessage = false;
+            }
+        }
+
+        var rows = tableBody.querySelectorAll('.data-row');
+        var visibleCount = 0;
+        var todayYmd = getTodayYmd();
+
+        rows.forEach(function (tr) {
+            var rowEnd = (tr.getAttribute('data-date-end') || '').trim();
+            var isOverdue = rowEnd && rowEnd < todayYmd;
+            tr.setAttribute('data-overdue', isOverdue ? 'true' : 'false');
+            var endDateCell = tr.querySelectorAll('td')[2];
+            if (endDateCell) {
+                if (isOverdue) {
+                    endDateCell.classList.add('text-red-500', 'font-medium');
+                } else {
+                    endDateCell.classList.remove('text-red-500', 'font-medium');
+                }
+            }
+
+            var name = (tr.querySelector('td') && tr.querySelector('td').textContent) ? tr.querySelector('td').textContent.trim().toLowerCase() : '';
+            var unit = (tr.getAttribute('data-unit') || '').trim();
+            var rowStart = (tr.getAttribute('data-date-start') || '').trim();
+
+            var matchKeyword = !state.keyword || name.indexOf(state.keyword) !== -1;
+            var matchUnit = !state.unit || unit === state.unit;
+            var matchTab = activeTab === 'all' || isOverdue;
+            var matchDate = matchDateRange(rowStart, rowEnd, dateFromYmd, dateToYmd);
+
+            var show = matchKeyword && matchUnit && matchTab && matchDate;
+            tr.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+        });
+
+        updatePaginationInfo(visibleCount);
+        updateTableCountLabels(visibleCount);
+
+        if (showToastMessage) {
+            showToast('Đã áp dụng bộ lọc: ' + visibleCount + ' kết quả');
+        }
+    }
+
+    function updatePaginationInfo(visibleCount) {
+        var el = document.getElementById('paginationInfo');
+        var total = (tableBody && tableBody.querySelectorAll('.data-row').length) || 0;
+        var count = typeof visibleCount === 'number' ? visibleCount : total;
+        if (el) el.textContent = '1 - ' + count + ' trong tổng ' + count;
+    }
+
+    function updateTableCountLabels(visibleCount) {
+        var count = typeof visibleCount === 'number' ? visibleCount : (tableBody ? tableBody.querySelectorAll('.data-row').length : 0);
+        var label = '(' + count + ')';
+        var labelEl = document.getElementById('tableCountLabel');
+        var headEl = document.getElementById('tableHeadCount');
+        if (labelEl) labelEl.textContent = label;
+        if (headEl) headEl.textContent = label;
+    }
+
+    if (btnFilter) {
+        btnFilter.addEventListener('click', function () {
+            applyFilters(true);
+            saveFilterToStorage();
+        });
+    }
+
+    if (btnRefreshFilter) {
+        btnRefreshFilter.addEventListener('click', function () {
+            if (filterKeyword) filterKeyword.value = '';
+            if (filterUnit) filterUnit.value = '';
+            if (filterDateFrom) filterDateFrom.value = '';
+            if (filterDateTo) filterDateTo.value = '';
+            applyFilters(false);
+            saveFilterToStorage();
+            showToast('Đã xóa bộ lọc');
+        });
+    }
+
+    // Enter trong ô Từ khóa = áp dụng lọc
+    if (filterKeyword) {
+        filterKeyword.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyFilters(true);
+                saveFilterToStorage();
+            }
+        });
+    }
+
+    function saveFilterToStorage() {
+        try {
+            var state = getFilterState();
+            state.activeTab = activeTab;
+            state.subTasks = subTasksVisible;
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (err) {}
+    }
+
+    function loadFilterFromStorage() {
+        try {
+            var raw = sessionStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            var state = JSON.parse(raw);
+            if (filterKeyword && state.keyword) filterKeyword.value = state.keyword;
+            if (filterUnit && state.unit) filterUnit.value = state.unit;
+            if (filterDateFrom && state.dateFrom) filterDateFrom.value = state.dateFrom;
+            if (filterDateTo && state.dateTo) filterDateTo.value = state.dateTo;
+            if (state.activeTab === 'overdue') setActiveTab('overdue');
+            else setActiveTab('all');
+            if (toggleSubTasks && state.subTasks) {
+                subTasksVisible = true;
+                toggleSubTasks.classList.add('bg-primary');
+                toggleSubTasks.classList.remove('bg-slate-200');
+                toggleSubTasks.classList.remove('dark:bg-slate-700');
+                var span = toggleSubTasks.querySelector('span');
+                if (span) {
+                    span.classList.remove('translate-x-1');
+                    span.classList.add('translate-x-6');
+                }
+            }
+        } catch (err) {}
+    }
+
+    // Toggle Hiển thị công việc con: đổi cột bảng (bộ công việc vs công việc con)
+    if (toggleSubTasks) {
+        toggleSubTasks.addEventListener('click', function () {
+            subTasksVisible = !subTasksVisible;
+            this.classList.toggle('bg-primary', subTasksVisible);
+            this.classList.toggle('bg-slate-200', !subTasksVisible);
+            this.classList.toggle('dark:bg-slate-700', !subTasksVisible);
+            var span = this.querySelector('span');
+            if (span) {
+                span.classList.toggle('translate-x-1', !subTasksVisible);
+                span.classList.toggle('translate-x-6', subTasksVisible);
+            }
+            switchTableView();
+            saveFilterToStorage();
+        });
+    }
+
+    var perPageSelect = document.getElementById('perPageSelect');
+    if (perPageSelect) {
+        perPageSelect.addEventListener('change', function () {
+            applyFilters(false);
+        });
+    }
+
+    // Khởi tạo: đếm quá hạn theo ngày kết thúc < hôm nay
+    var todayYmd = getTodayYmd();
+    var rows = tableBody ? tableBody.querySelectorAll('.data-row') : [];
+    var overdueTotal = 0;
+    rows.forEach(function (tr) {
+        var rowEnd = (tr.getAttribute('data-date-end') || '').trim();
+        if (rowEnd && rowEnd < todayYmd) overdueTotal++;
+    });
+    if (overdueBadge) overdueBadge.textContent = String(overdueTotal);
+
+    loadFilterFromStorage();
+    switchTableView();
+})();
+    </script>
+
+</body>
+
+</html>

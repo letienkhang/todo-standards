@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Danh sách công việc - Quản lý công việc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1E293B",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply font-display text-black dark:text-slate-200 bg-background-light dark:bg-background-dark; }
+        }
+        .nav-item-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+        .dark .nav-item-active { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .list-row-hover:hover {
+            background-color: rgba(59, 130, 246, 0.06);
+        }
+        /* Collapsible sidebar */
+        #sidebar-nav { transition: width 0.2s ease-out; }
+        #sidebar-nav.nav-collapsed { width: 4rem; min-width: 4rem; }
+        #sidebar-nav.nav-collapsed .nav-link-text { opacity: 0; width: 0; overflow: hidden; min-width: 0; padding: 0; }
+        .nav-flyout { display: none; }
+        #sidebar-nav.nav-collapsed .nav-flyout {
+            display: block;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+        #sidebar-nav.nav-collapsed a:hover .nav-flyout,
+        #sidebar-nav.nav-collapsed button:hover .nav-flyout {
+            opacity: 1;
+        }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
+        #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+    </style>
+</head>
+
+<body class="transition-colors duration-200 flex min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark">
+    <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out" aria-label="Menu chính">
+        <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
+            <a href="index.html"
+               class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">dashboard</span>
+                <span class="nav-link-text truncate">Tổng quan</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
+            </a>
+            <a href="my-tasks.html"
+               class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
+                <span class="nav-link-text truncate">Công việc của tôi</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
+            </a>
+            <a href="index.html"
+               class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">list_alt</span>
+                <span class="nav-link-text truncate">Danh sách công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách công việc</span>
+            </a>
+            <a href="list-person.html"
+               class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">person</span>
+                <span class="nav-link-text truncate">Danh sách cá nhân</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách cá nhân</span>
+            </a>
+            <a href="audit-list.html"
+               class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">grading</span>
+                <span class="nav-link-text truncate">Chấm điểm</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Chấm điểm</span>
+            </a>
+            <a href="#"
+               class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">bar_chart</span>
+                <span class="nav-link-text truncate">Báo cáo</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Báo cáo</span>
+            </a>
+            <a href="ui-mobile.html"
+               class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">phone_android</span>
+                <span class="nav-link-text truncate">Giao diện mobile</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện mobile</span>
+            </a>
+        </div>
+        <div class="border-t border-border-light dark:border-border-dark p-2 flex flex-col gap-0.5">
+            <button type="button" id="navToggle" class="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Thu gọn menu">
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-expanded">chevron_left</span>
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-collapsed">chevron_right</span>
+                <span class="nav-link-text truncate">Thu gọn</span>
+            </button>
+            <button type="button"
+                    class="nav-link group relative flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    onclick="document.documentElement.classList.toggle('dark')" aria-label="Giao diện">
+                <span class="material-symbols-outlined text-xl shrink-0">dark_mode</span>
+                <span class="nav-link-text truncate">Giao diện</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện</span>
+            </button>
+        </div>
+    </nav>
+    <script>
+        (function() {
+            var nav = document.getElementById('sidebar-nav');
+            var toggle = document.getElementById('navToggle');
+            if (nav && toggle) {
+                var collapsed = localStorage.getItem('navCollapsed') === '1';
+                if (collapsed) nav.classList.add('nav-collapsed');
+                toggle.addEventListener('click', function() {
+                    nav.classList.toggle('nav-collapsed');
+                    localStorage.setItem('navCollapsed', nav.classList.contains('nav-collapsed') ? '1' : '0');
+                });
+            }
+        })();
+    </script>
+    <div class="flex-1 flex flex-col min-h-0 min-w-0">
+        <header class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-5 flex items-center justify-between">
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Danh mục bộ tiêu chuẩn</h1>
+            <button type="button" id="btnShowCreateStandardInfo" class="bg-primary hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-semibold shadow-sm transition-colors">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Tạo bộ tiêu chuẩn mới
+            </button>
+        </header>
+        <main class="flex-1 flex flex-col min-h-0 p-5 sm:p-8 w-full min-w-0 overflow-auto">
+            <div class="w-full min-w-0 bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden shadow-sm">
+                <div class="grid grid-cols-[1fr_auto_auto] gap-4 px-5 sm:px-6 py-3.5 bg-slate-50 dark:bg-slate-800/50 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-border-light dark:border-border-dark">
+                    <div class="flex items-center gap-1.5">
+                        <span>Tên bộ tiêu chuẩn</span>
+                        <span class="material-symbols-outlined text-sm opacity-70">unfold_more</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 justify-self-end">
+                        <span>Ngày cập nhật</span>
+                        <span class="material-symbols-outlined text-sm opacity-70">unfold_more</span>
+                    </div>
+                    <div class="w-9"></div>
+                </div>
+                <div class="divide-y divide-border-light dark:divide-border-dark">
+                    <div role="button" tabindex="0" class="list-row-hover flex items-center gap-4 px-5 sm:px-6 py-4 transition-colors group cursor-pointer" onclick="window.location.href='standard-detail.html'" onkeydown="if(event.key==='Enter') window.location.href='standard-detail.html'">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                            <span class="material-symbols-outlined text-xl">folder</span>
+                        </span>
+                        <span class="flex-1 min-w-0 font-medium text-slate-900 dark:text-white truncate group-hover:text-primary">Checklist + Daily work</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider flex-shrink-0">Cập nhật 2 giờ trước</span>
+                        <span role="button" tabindex="0" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 flex-shrink-0" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Tùy chọn"><span class="material-symbols-outlined text-xl">more_horiz</span></span>
+                    </div>
+                    <div role="button" tabindex="0" class="list-row-hover flex items-center gap-4 px-5 sm:px-6 py-4 transition-colors group cursor-pointer" onclick="window.location.href='standard-detail.html'" onkeydown="if(event.key==='Enter') window.location.href='standard-detail.html'">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-900/40 flex items-center justify-center text-violet-600 dark:text-violet-400">
+                            <span class="material-symbols-outlined text-xl">folder</span>
+                        </span>
+                        <span class="flex-1 min-w-0 font-medium text-slate-900 dark:text-white truncate group-hover:text-primary">ĐIỀU HÀNH KINH DOANH</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider flex-shrink-0">Cập nhật hôm qua</span>
+                        <span role="button" tabindex="0" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 flex-shrink-0" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Tùy chọn"><span class="material-symbols-outlined text-xl">more_horiz</span></span>
+                    </div>
+                    <div role="button" tabindex="0" class="list-row-hover flex items-center gap-4 px-5 sm:px-6 py-4 transition-colors group cursor-pointer" onclick="window.location.href='standard-detail.html'" onkeydown="if(event.key==='Enter') window.location.href='standard-detail.html'">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                            <span class="material-symbols-outlined text-xl">folder</span>
+                        </span>
+                        <span class="flex-1 min-w-0 font-medium text-slate-900 dark:text-white truncate group-hover:text-primary">BCHA Trade + VM</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider flex-shrink-0">Cập nhật 3 ngày trước</span>
+                        <span role="button" tabindex="0" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 flex-shrink-0" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Tùy chọn"><span class="material-symbols-outlined text-xl">more_horiz</span></span>
+                    </div>
+                    <!-- Danh mục: Công việc cá nhân -->
+                    <div role="button" tabindex="0" class="list-row-hover flex items-center gap-4 px-5 sm:px-6 py-4 transition-colors group cursor-pointer" onclick="window.location.href='list-person.html'" onkeydown="if(event.key==='Enter') window.location.href='list-person.html'">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                            <span class="material-symbols-outlined text-xl">person</span>
+                        </span>
+                        <span class="flex-1 min-w-0 font-medium text-slate-900 dark:text-white truncate group-hover:text-primary">Công việc cho cá nhân</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider flex-shrink-0">UI giống danh sách công việc</span>
+                        <span role="button" tabindex="0" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 flex-shrink-0" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Tùy chọn"><span class="material-symbols-outlined text-xl">more_horiz</span></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast đơn giản giải thích tính năng -->
+    <div id="createStandardToast"
+         class="hidden fixed bottom-4 right-4 z-50 max-w-xs bg-slate-900 text-slate-50 text-sm px-4 py-3 rounded-lg shadow-lg flex items-start gap-2">
+        <span class="material-symbols-outlined text-base mt-0.5">info</span>
+        <div class="flex-1">
+            Đây là tính năng <span class="font-semibold">tạo danh mục cho bộ tiêu chuẩn công việc</span>. Phiên bản MVP hiện chỉ minh hoạ luồng giao diện.
+        </div>
+        <button type="button" id="btnCloseCreateStandardToast" class="ml-2 text-slate-400 hover:text-slate-200">
+            <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+    </div>
+
+    <script>
+        (function () {
+            var btn = document.getElementById('btnShowCreateStandardInfo');
+            var toast = document.getElementById('createStandardToast');
+            var btnClose = document.getElementById('btnCloseCreateStandardToast');
+            var hideTimeout;
+
+            function showToast() {
+                if (!toast) return;
+                toast.classList.remove('hidden');
+                clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(function () {
+                    toast.classList.add('hidden');
+                }, 4000);
+            }
+
+            if (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    showToast();
+                });
+            }
+
+            if (btnClose && toast) {
+                btnClose.addEventListener('click', function () {
+                    toast.classList.add('hidden');
+                    clearTimeout(hideTimeout);
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

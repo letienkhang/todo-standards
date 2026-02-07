@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Retail Excellence - Unified Standard Configuration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1E293B",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply font-display text-slate-800 dark:text-slate-200 bg-background-light dark:bg-background-dark; }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+
+<body class="transition-colors duration-200">
+    <header
+        class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                <span class="material-symbols-outlined text-slate-500">arrow_back</span>
+            </button>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Thiết lập bộ tiêu
+                    chuẩn vận hành</h1>
+                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Retail Excellence Management
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+                onclick="document.documentElement.classList.toggle('dark')">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <button
+                class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm">
+                <span class="material-symbols-outlined text-lg">save</span>
+                Lưu thay đổi
+            </button>
+        </div>
+    </header>
+    <main class="w-full max-w-[1600px] p-6 ml-0">
+        <div
+            class="bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl shadow-sm overflow-hidden flex flex-col lg:flex-row h-[calc(100vh-180px)]">
+            <aside
+                class="w-full lg:w-80 border-r border-border-light dark:border-border-dark flex flex-col bg-slate-50/50 dark:bg-slate-900/20">
+                <div class="p-4 border-b border-border-light dark:border-border-dark bg-white dark:bg-card-dark">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Cấu trúc tiêu chuẩn</h2>
+                        <span id="standard-count-badge"
+                            class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">06
+                            MỤC</span>
+                    </div>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input
+                            class="w-full pl-9 pr-4 py-2 text-xs bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-1 focus:ring-primary"
+                            placeholder="Tìm kiếm mục..." type="text" />
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
+                    <div class="standard-nav-item p-3 rounded-lg bg-primary/5 border border-primary/20 cursor-pointer transition-all group"
+                        data-scroll-to="cau-hinh-chung" role="button" tabindex="0">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-xl">settings</span>
+                            <div>
+                                <p class="text-xs font-bold text-primary uppercase">Cấu hình chung</p>
+                                <p class="text-[10px] text-slate-400">Thông tin cơ bản</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-px bg-border-light dark:border-border-dark my-2 mx-2"></div>
+                    <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                        data-scroll-to="tieu-chuan-1" role="button" tabindex="0">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">01</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vệ sinh cửa chính
+                                    &amp; Sảnh</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Kính cửa, thảm chùi chân...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                        data-scroll-to="tieu-chuan-2" role="button" tabindex="0">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">02</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Kiểm tra trưng bày
+                                    kệ A1</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Bảng giá, hạn sử dụng...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                        data-scroll-to="tieu-chuan-3" role="button" tabindex="0">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">03</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vệ sinh khu vực
+                                    kho</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Sắp xếp, FEFO, vệ sinh
+                                    sàn...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                        data-scroll-to="tieu-chuan-4" role="button" tabindex="0">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">04</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Kiểm tra tủ lạnh
+                                    &amp; Tủ đông</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhiệt độ, lau dọn, hạn
+                                    sử dụng...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                        data-scroll-to="tieu-chuan-5" role="button" tabindex="0">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">05</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vệ sinh khu vực
+                                    WC</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhà vệ sinh, bồn rửa, giấy
+                                    vệ sinh...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                        data-scroll-to="tieu-chuan-6" role="button" tabindex="0">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">06</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Kiểm tra an toàn
+                                    PCCC</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Bình chữa cháy, lối
+                                    thoát hiểm...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-standard-btn" type="button"
+                        class="w-full mt-4 py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase">
+                        <span class="material-symbols-outlined text-base">add_circle</span>
+                        Thêm tiêu chuẩn mới
+                    </button>
+                </div>
+            </aside>
+            <div class="flex-1 overflow-y-auto custom-scrollbar bg-white dark:bg-card-dark">
+                <div id="standard-sections-container" class="p-8 w-full space-y-10">
+                    <section id="cau-hinh-chung">
+                        <div
+                            class="flex items-center gap-3 mb-5 border-b border-border-light dark:border-border-dark pb-4">
+                            <div
+                                class="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-xl flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary">tune</span>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+                                    Cấu hình chung</h2>
+                                <p class="text-xs text-slate-400">Thiết lập thông tin nền tảng cho bộ tiêu chuẩn</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+                            <div class="md:col-span-12">
+                                <label
+                                    class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Tiêu
+                                    đề bộ tiêu chuẩn <span class="text-red-500">*</span></label>
+                                <input
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm focus:ring-primary focus:border-primary"
+                                    type="text" value="Quy trình vệ sinh định kỳ" />
+                            </div>
+                            <div class="md:col-span-12">
+                                <label
+                                    class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Mô
+                                    tả</label>
+                                <textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[72px] placeholder:text-slate-400"
+                                    placeholder="Nhập mô tả bộ tiêu chuẩn (VD: Quy trình vệ sinh định kỳ áp dụng cho toàn hệ thống cửa hàng...)"
+                                    rows="2"></textarea>
+                            </div>
+                            <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Cửa
+                                        hàng áp dụng <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">storefront</span>
+                                        <select
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-10 pr-10 text-sm focus:ring-primary appearance-none">
+                                            <option>Tất cả cửa hàng (Hệ thống)</option>
+                                            <option>Khu vực miền Bắc</option>
+                                            <option>Khu vực miền Nam</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">expand_more</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Thời
+                                        hạn thực hiện <span class="text-red-500">*</span></label>
+                                    <div class="flex items-center gap-2">
+                                        <div class="relative flex-1">
+                                            <span
+                                                class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
+                                            <input
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-3 text-sm focus:ring-primary"
+                                                type="date" value="2023-10-01" />
+                                        </div>
+                                        <span class="text-slate-400 text-[10px] font-bold shrink-0">đến</span>
+                                        <div class="relative flex-1">
+                                            <span
+                                                class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
+                                            <input
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-3 text-sm focus:ring-primary"
+                                                type="date" value="2023-10-31" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:col-span-12">
+                                <label
+                                    class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Người
+                                    giám sát <span class="text-red-500">*</span></label>
+                                <div
+                                    class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 p-2.5 space-y-2 max-w-2xl">
+                                    <div class="relative">
+                                        <span
+                                            class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">person_add</span>
+                                        <select id="add-supervisor-select"
+                                            class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg py-1.5 pl-8 pr-8 text-xs focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none">
+                                            <option value="">Thêm người giám sát...</option>
+                                            <option value="le-van-tuan">Lê Văn Tuấn - Cửa hàng trưởng</option>
+                                            <option value="nguyen-thi-hoa">Nguyễn Thị Hoa - Phó quản lý</option>
+                                            <option value="tran-van-nam">Trần Văn Nam - Giám sát vùng</option>
+                                            <option value="pham-thi-lan">Phạm Thị Lan - Trưởng ca</option>
+                                            <option value="hoang-minh-duc">Hoàng Minh Đức - Nhân viên kỹ thuật</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">expand_more</span>
+                                    </div>
+                                    <div id="supervisor-list" class="flex flex-wrap gap-1.5 min-h-[26px]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="tieu-chuan-1"
+                        class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                        <div class="flex items-start justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white dark:text-slate-900">01</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Vệ sinh khu vực cửa
+                                        chính &amp; Sảnh</h3>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Chi
+                                        tiết tiêu chuẩn vận hành</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all">
+                                    <span class="material-symbols-outlined text-xl">content_copy</span>
+                                </button>
+                                <button
+                                    class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all">
+                                    <span class="material-symbols-outlined text-xl">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-8">
+                            <div>
+                                <label
+                                    class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
+                                    <span class="material-symbols-outlined text-base">notes</span> Mô tả công việc
+                                </label>
+                                <textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
+                                    placeholder="Nhập mô tả chi tiết các bước thực hiện...">Đảm bảo kính cửa chính luôn sạch sẽ, không có dấu tay. Thảm chùi chân được đặt ngay ngắn và hút bụi sạch sẽ trước khi mở cửa.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                <div class="space-y-5 response-type-block">
+                                    <div class="flex items-center gap-2 text-primary">
+                                        <span class="material-symbols-outlined text-lg">fact_check</span>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest">Cách thức thực
+                                            hiện</span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Dạng
+                                            phản hồi</label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-sm shadow-primary/20"
+                                                data-type="image">
+                                                <span class="material-symbols-outlined text-sm">photo_library</span>
+                                                HÌNH ẢNH
+                                            </button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="video">
+                                                <span class="material-symbols-outlined text-sm">videocam</span> VIDEO
+                                            </button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="text">
+                                                <span class="material-symbols-outlined text-sm">description</span> VĂN
+                                                BẢN
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Số
+                                            lượng tối đa</label>
+                                        <div class="relative">
+                                            <input
+                                                class="max-files-input w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                type="number" value="3" />
+                                            <span
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">File</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-amber-500">
+                                        <span class="material-symbols-outlined text-lg">workspace_premium</span>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest">Đánh giá &amp;
+                                            Điểm</span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tiêu
+                                            chí chấm điểm</label>
+                                        <div class="relative">
+                                            <select
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm appearance-none focus:ring-primary">
+                                                <option>Thang điểm 10 (Sạch sẽ)</option>
+                                                <option>Thang điểm 100 (Chuyên nghiệp)</option>
+                                                <option>Đạt / Không Đạt</option>
+                                            </select>
+                                            <span
+                                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Mẫu
+                                            tham chiếu</label>
+                                        <div
+                                            class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+                                            <span
+                                                class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-3xl">add_a_photo</span>
+                                            <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-green-600">
+                                        <span class="material-symbols-outlined text-lg">group</span>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest">Phân quyền nhân
+                                            sự</span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Loại
+                                            trừ khu vực</label>
+                                        <div
+                                            class="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg min-h-[40px]">
+                                            <span
+                                                class="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-600 text-[10px] font-bold">
+                                                Q. Tân Bình <span
+                                                    class="material-symbols-outlined text-xs cursor-pointer text-slate-400 hover:text-red-500">close</span>
+                                            </span>
+                                            <input class="border-none bg-transparent p-0 text-[10px] focus:ring-0 w-20"
+                                                placeholder="Thêm..." type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Người
+                                            giám sát</label>
+                                        <div class="standard-supervisor-cards space-y-2">
+                                            <!-- Synced from Cấu hình chung -->
+                                        </div>
+                                        <button
+                                            class="w-full py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-[10px] font-bold text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2">
+                                            <span class="material-symbols-outlined text-base">person_add</span> GIAO
+                                            VIỆC
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="tieu-chuan-2"
+                        class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                        <div class="flex items-start justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white dark:text-slate-900">02</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kiểm tra trưng bày kệ
+                                        A1</h3>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Chi
+                                        tiết tiêu chuẩn vận hành</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">content_copy</span></button>
+                                <button
+                                    class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">delete</span></button>
+                            </div>
+                        </div>
+                        <div class="space-y-8">
+                            <div>
+                                <label
+                                    class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
+                                        class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label>
+                                <textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
+                                    placeholder="Nhập mô tả chi tiết...">Kiểm tra bảng giá, hạn sử dụng sản phẩm trên kệ A1. Đảm bảo trưng bày gọn gàng, đúng quy định.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                <div class="space-y-5 response-type-block">
+                                    <div class="flex items-center gap-2 text-primary"><span
+                                            class="material-symbols-outlined text-lg">fact_check</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Cách thức thực
+                                            hiện</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Dạng
+                                            phản hồi</label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-sm shadow-primary/20"
+                                                data-type="image"><span
+                                                    class="material-symbols-outlined text-sm">photo_library</span> HÌNH
+                                                ẢNH</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="video"><span
+                                                    class="material-symbols-outlined text-sm">videocam</span>
+                                                VIDEO</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="text"><span
+                                                    class="material-symbols-outlined text-sm">description</span> VĂN
+                                                BẢN</button>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Số
+                                            lượng tối đa</label>
+                                        <div class="relative"><input
+                                                class="max-files-input w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                type="number" value="3"><span
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">File</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-amber-500"><span
+                                            class="material-symbols-outlined text-lg">workspace_premium</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Đánh giá &amp;
+                                            Điểm</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tiêu
+                                            chí chấm điểm</label>
+                                        <div class="relative"><select
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm appearance-none focus:ring-primary">
+                                                <option>Thang điểm 10 (Sạch sẽ)</option>
+                                                <option>Thang điểm 100 (Chuyên nghiệp)</option>
+                                                <option>Đạt / Không Đạt</option>
+                                            </select><span
+                                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Mẫu
+                                            tham chiếu</label>
+                                        <div
+                                            class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all">
+                                            <span
+                                                class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-3xl">add_a_photo</span>
+                                            <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-green-600"><span
+                                            class="material-symbols-outlined text-lg">group</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Phân quyền nhân
+                                            sự</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Loại
+                                            trừ khu vực</label>
+                                        <div
+                                            class="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg min-h-[40px]">
+                                            <input class="border-none bg-transparent p-0 text-[10px] focus:ring-0 w-20"
+                                                placeholder="Thêm..." type="text">
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2"><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Người giám
+                                            sát</label>
+                                        <div class="standard-supervisor-cards space-y-2"></div>
+                                        <button
+                                            class="w-full py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-[10px] font-bold text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2"><span
+                                                class="material-symbols-outlined text-base">person_add</span> GIAO
+                                            VIỆC</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="tieu-chuan-3"
+                        class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                        <div class="flex items-start justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white dark:text-slate-900">03</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Vệ sinh khu vực kho
+                                    </h3>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Chi
+                                        tiết tiêu chuẩn vận hành</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2"><button
+                                    class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">content_copy</span></button><button
+                                    class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">delete</span></button></div>
+                        </div>
+                        <div class="space-y-8">
+                            <div><label
+                                    class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
+                                        class="material-symbols-outlined text-base">notes</span> Mô tả công
+                                    việc</label><textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
+                                    placeholder="Nhập mô tả...">Sắp xếp kho theo FEFO, vệ sinh sàn và kệ, kiểm tra nhiệt độ bảo quản.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                <div class="space-y-5 response-type-block">
+                                    <div class="flex items-center gap-2 text-primary"><span
+                                            class="material-symbols-outlined text-lg">fact_check</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Cách thức thực
+                                            hiện</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Dạng
+                                            phản hồi</label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-sm shadow-primary/20"
+                                                data-type="image"><span
+                                                    class="material-symbols-outlined text-sm">photo_library</span> HÌNH
+                                                ẢNH</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="video"><span
+                                                    class="material-symbols-outlined text-sm">videocam</span>
+                                                VIDEO</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="text"><span
+                                                    class="material-symbols-outlined text-sm">description</span> VĂN
+                                                BẢN</button>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Số
+                                            lượng tối đa</label>
+                                        <div class="relative"><input
+                                                class="max-files-input w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                type="number" value="3"><span
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">File</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-amber-500"><span
+                                            class="material-symbols-outlined text-lg">workspace_premium</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Đánh giá &amp;
+                                            Điểm</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tiêu
+                                            chí chấm điểm</label>
+                                        <div class="relative"><select
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm appearance-none focus:ring-primary">
+                                                <option>Thang điểm 10 (Sạch sẽ)</option>
+                                            </select><span
+                                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Mẫu
+                                            tham chiếu</label>
+                                        <div
+                                            class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50">
+                                            <span
+                                                class="material-symbols-outlined text-slate-300 group-hover:text-primary text-3xl">add_a_photo</span>
+                                            <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-green-600"><span
+                                            class="material-symbols-outlined text-lg">group</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Phân quyền nhân
+                                            sự</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Loại
+                                            trừ khu vực</label>
+                                        <div
+                                            class="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg min-h-[40px]">
+                                            <input class="border-none bg-transparent p-0 text-[10px] focus:ring-0 w-20"
+                                                placeholder="Thêm..." type="text">
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2"><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Người giám
+                                            sát</label>
+                                        <div class="standard-supervisor-cards space-y-2"></div>
+                                        <button
+                                            class="w-full py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-[10px] font-bold text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2"><span
+                                                class="material-symbols-outlined text-base">person_add</span> GIAO
+                                            VIỆC</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="tieu-chuan-4"
+                        class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                        <div class="flex items-start justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white dark:text-slate-900">04</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kiểm tra tủ lạnh &amp;
+                                        Tủ đông</h3>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Chi
+                                        tiết tiêu chuẩn vận hành</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2"><button
+                                    class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">content_copy</span></button><button
+                                    class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">delete</span></button></div>
+                        </div>
+                        <div class="space-y-8">
+                            <div><label
+                                    class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
+                                        class="material-symbols-outlined text-base">notes</span> Mô tả công
+                                    việc</label><textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
+                                    placeholder="Nhập mô tả...">Kiểm tra nhiệt độ tủ lạnh/tủ đông, lau dọn, kiểm tra hạn sử dụng sản phẩm bảo quản.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                <div class="space-y-5 response-type-block">
+                                    <div class="flex items-center gap-2 text-primary"><span
+                                            class="material-symbols-outlined text-lg">fact_check</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Cách thức thực
+                                            hiện</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Dạng
+                                            phản hồi</label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-sm shadow-primary/20"
+                                                data-type="image"><span
+                                                    class="material-symbols-outlined text-sm">photo_library</span> HÌNH
+                                                ẢNH</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="video"><span
+                                                    class="material-symbols-outlined text-sm">videocam</span>
+                                                VIDEO</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="text"><span
+                                                    class="material-symbols-outlined text-sm">description</span> VĂN
+                                                BẢN</button>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Số
+                                            lượng tối đa</label>
+                                        <div class="relative"><input
+                                                class="max-files-input w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                type="number" value="3"><span
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">File</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-amber-500"><span
+                                            class="material-symbols-outlined text-lg">workspace_premium</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Đánh giá &amp;
+                                            Điểm</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tiêu
+                                            chí chấm điểm</label>
+                                        <div class="relative"><select
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm appearance-none focus:ring-primary">
+                                                <option>Thang điểm 10 (Sạch sẽ)</option>
+                                            </select><span
+                                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Mẫu
+                                            tham chiếu</label>
+                                        <div
+                                            class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50">
+                                            <span
+                                                class="material-symbols-outlined text-slate-300 group-hover:text-primary text-3xl">add_a_photo</span>
+                                            <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-green-600"><span
+                                            class="material-symbols-outlined text-lg">group</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Phân quyền nhân
+                                            sự</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Loại
+                                            trừ khu vực</label>
+                                        <div
+                                            class="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg min-h-[40px]">
+                                            <input class="border-none bg-transparent p-0 text-[10px] focus:ring-0 w-20"
+                                                placeholder="Thêm..." type="text">
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2"><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Người giám
+                                            sát</label>
+                                        <div class="standard-supervisor-cards space-y-2"></div>
+                                        <button
+                                            class="w-full py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-[10px] font-bold text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2"><span
+                                                class="material-symbols-outlined text-base">person_add</span> GIAO
+                                            VIỆC</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="tieu-chuan-5"
+                        class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                        <div class="flex items-start justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white dark:text-slate-900">05</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Vệ sinh khu vực WC</h3>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Chi
+                                        tiết tiêu chuẩn vận hành</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2"><button
+                                    class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">content_copy</span></button><button
+                                    class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">delete</span></button></div>
+                        </div>
+                        <div class="space-y-8">
+                            <div><label
+                                    class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
+                                        class="material-symbols-outlined text-base">notes</span> Mô tả công
+                                    việc</label><textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
+                                    placeholder="Nhập mô tả...">Vệ sinh nhà vệ sinh, bồn rửa, bổ sung giấy vệ sinh và xà phòng. Đảm bảo khô ráo, thông thoáng.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                <div class="space-y-5 response-type-block">
+                                    <div class="flex items-center gap-2 text-primary"><span
+                                            class="material-symbols-outlined text-lg">fact_check</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Cách thức thực
+                                            hiện</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Dạng
+                                            phản hồi</label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-sm shadow-primary/20"
+                                                data-type="image"><span
+                                                    class="material-symbols-outlined text-sm">photo_library</span> HÌNH
+                                                ẢNH</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="video"><span
+                                                    class="material-symbols-outlined text-sm">videocam</span>
+                                                VIDEO</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="text"><span
+                                                    class="material-symbols-outlined text-sm">description</span> VĂN
+                                                BẢN</button>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Số
+                                            lượng tối đa</label>
+                                        <div class="relative"><input
+                                                class="max-files-input w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                type="number" value="3"><span
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">File</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-amber-500"><span
+                                            class="material-symbols-outlined text-lg">workspace_premium</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Đánh giá &amp;
+                                            Điểm</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tiêu
+                                            chí chấm điểm</label>
+                                        <div class="relative"><select
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm appearance-none focus:ring-primary">
+                                                <option>Thang điểm 10 (Sạch sẽ)</option>
+                                            </select><span
+                                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Mẫu
+                                            tham chiếu</label>
+                                        <div
+                                            class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50">
+                                            <span
+                                                class="material-symbols-outlined text-slate-300 group-hover:text-primary text-3xl">add_a_photo</span>
+                                            <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-green-600"><span
+                                            class="material-symbols-outlined text-lg">group</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Phân quyền nhân
+                                            sự</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Loại
+                                            trừ khu vực</label>
+                                        <div
+                                            class="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg min-h-[40px]">
+                                            <input class="border-none bg-transparent p-0 text-[10px] focus:ring-0 w-20"
+                                                placeholder="Thêm..." type="text">
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2"><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Người giám
+                                            sát</label>
+                                        <div class="standard-supervisor-cards space-y-2"></div>
+                                        <button
+                                            class="w-full py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-[10px] font-bold text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2"><span
+                                                class="material-symbols-outlined text-base">person_add</span> GIAO
+                                            VIỆC</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="tieu-chuan-6"
+                        class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                        <div class="flex items-start justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white dark:text-slate-900">06</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kiểm tra an toàn PCCC
+                                    </h3>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Chi
+                                        tiết tiêu chuẩn vận hành</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2"><button
+                                    class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">content_copy</span></button><button
+                                    class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="material-symbols-outlined text-xl">delete</span></button></div>
+                        </div>
+                        <div class="space-y-8">
+                            <div><label
+                                    class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
+                                        class="material-symbols-outlined text-base">notes</span> Mô tả công
+                                    việc</label><textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
+                                    placeholder="Nhập mô tả...">Kiểm tra bình chữa cháy còn hạn, lối thoát hiểm thông thoáng, bảng hướng dẫn PCCC đầy đủ.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                <div class="space-y-5 response-type-block">
+                                    <div class="flex items-center gap-2 text-primary"><span
+                                            class="material-symbols-outlined text-lg">fact_check</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Cách thức thực
+                                            hiện</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Dạng
+                                            phản hồi</label>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-sm shadow-primary/20"
+                                                data-type="image"><span
+                                                    class="material-symbols-outlined text-sm">photo_library</span> HÌNH
+                                                ẢNH</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="video"><span
+                                                    class="material-symbols-outlined text-sm">videocam</span>
+                                                VIDEO</button>
+                                            <button type="button"
+                                                class="response-type-btn flex items-center justify-center gap-2 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+                                                data-type="text"><span
+                                                    class="material-symbols-outlined text-sm">description</span> VĂN
+                                                BẢN</button>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Số
+                                            lượng tối đa</label>
+                                        <div class="relative"><input
+                                                class="max-files-input w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                type="number" value="3"><span
+                                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase">File</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-amber-500"><span
+                                            class="material-symbols-outlined text-lg">workspace_premium</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Đánh giá &amp;
+                                            Điểm</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tiêu
+                                            chí chấm điểm</label>
+                                        <div class="relative"><select
+                                                class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-lg py-2 px-3 text-sm appearance-none focus:ring-primary">
+                                                <option>Đạt / Không Đạt</option>
+                                            </select><span
+                                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Mẫu
+                                            tham chiếu</label>
+                                        <div
+                                            class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50">
+                                            <span
+                                                class="material-symbols-outlined text-slate-300 group-hover:text-primary text-3xl">add_a_photo</span>
+                                            <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-2 text-green-600"><span
+                                            class="material-symbols-outlined text-lg">group</span><span
+                                            class="text-[10px] font-bold uppercase tracking-widest">Phân quyền nhân
+                                            sự</span></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Loại
+                                            trừ khu vực</label>
+                                        <div
+                                            class="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg min-h-[40px]">
+                                            <input class="border-none bg-transparent p-0 text-[10px] focus:ring-0 w-20"
+                                                placeholder="Thêm..." type="text">
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2"><label
+                                            class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Người giám
+                                            sát</label>
+                                        <div class="standard-supervisor-cards space-y-2"></div>
+                                        <button
+                                            class="w-full py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-[10px] font-bold text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2"><span
+                                                class="material-symbols-outlined text-base">person_add</span> GIAO
+                                            VIỆC</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer
+        class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-border-light dark:border-border-dark px-8 py-4 flex items-center justify-between z-50">
+        <div class="flex items-center gap-3">
+            <div class="flex -space-x-2">
+                <div
+                    class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 flex items-center justify-center text-[10px] font-bold">
+                    AI</div>
+                <div
+                    class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-green-500 flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-xs">done_all</span>
+                </div>
+            </div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dữ liệu được bảo mật &amp; Sao lưu
+                tự động: 12:00 PM</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <button
+                class="px-6 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 transition-colors uppercase">Hủy
+                bỏ</button>
+            <button
+                class="px-6 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase">Lưu
+                nháp</button>
+            <button
+                class="px-10 py-2.5 text-xs font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition-all uppercase tracking-wide">Áp
+                dụng hệ thống</button>
+        </div>
+    </footer>
+    <div class="h-24"></div>
+
+    <script>
+        (function () {
+            document.addEventListener('click', function (e) {
+                var item = e.target.closest('.standard-nav-item');
+                if (!item) return;
+                var id = item.getAttribute('data-scroll-to');
+                if (!id) return;
+                var target = document.getElementById(id);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.querySelectorAll('.standard-nav-item').forEach(function (el) {
+                        el.classList.remove('bg-primary/5', 'border-primary/20');
+                        el.classList.add('border', 'border-transparent');
+                    });
+                    item.classList.add('bg-primary/5', 'border-primary/20');
+                    item.classList.remove('border-transparent');
+                }
+            });
+        })();
+        (function () {
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.response-type-btn');
+                if (!btn) return;
+                var block = btn.closest('.response-type-block');
+                if (!block) return;
+                var input = block.querySelector('.max-files-input');
+                var isText = btn.getAttribute('data-type') === 'text';
+                if (input) input.disabled = isText;
+                block.querySelectorAll('.response-type-btn').forEach(function (b) {
+                    b.classList.remove('bg-primary', 'text-white', 'shadow-sm', 'shadow-primary/20');
+                    b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500');
+                });
+                btn.classList.add('bg-primary', 'text-white', 'shadow-sm', 'shadow-primary/20');
+                btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500');
+            });
+        })();
+        (function () {
+            var select = document.getElementById('add-supervisor-select');
+            var list = document.getElementById('supervisor-list');
+            if (!select || !list) return;
+            var added = [];
+            var excludedBySection = {};
+            function syncSupervisorsToStandards() {
+                var chips = list.querySelectorAll('.supervisor-chip');
+                var people = [];
+                chips.forEach(function (c) {
+                    var value = c.getAttribute('data-value');
+                    var label = c.getAttribute('data-label') || c.querySelector('span')?.textContent || '';
+                    var parts = label.split(/\s*-\s*/);
+                    people.push({ value: value, name: (parts[0] || '').trim(), role: (parts[1] || 'Nhân viên').trim() });
+                });
+                document.querySelectorAll('.standard-supervisor-cards').forEach(function (el) {
+                    var section = el.closest('section[id]');
+                    var sectionId = section ? section.id : '';
+                    var excluded = excludedBySection[sectionId] || [];
+                    var shown = people.filter(function (p) { return excluded.indexOf(p.value) === -1; });
+                    var html = shown.map(function (p) {
+                        return '<div class="supervisor-card-in-standard relative flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-2 pr-9" data-value="' + escapeHtml(p.value) + '">' +
+                            '<button type="button" class="remove-supervisor-from-standard absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-red-500 transition-colors" title="Bỏ khỏi tiêu chuẩn này"><span class="material-symbols-outlined text-base">close</span></button>' +
+                            '<div class="flex items-center gap-2">' +
+                            '<span class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">' + (p.name.charAt(0) || '—') + '</span>' +
+                            '<div><p class="text-[10px] font-bold text-slate-700 dark:text-slate-300">' + escapeHtml(p.name) + '</p><p class="text-[9px] text-slate-500 uppercase">' + escapeHtml(p.role) + '</p></div>' +
+                            '</div>' +
+                            '<div class="px-2 py-0.5 bg-white dark:bg-slate-700 rounded text-[9px] font-bold border border-slate-200 dark:border-slate-600">SUPERVISOR</div>' +
+                            '</div>';
+                    }).join('');
+                    el.innerHTML = html;
+                });
+            }
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.remove-supervisor-from-standard');
+                if (!btn) return;
+                var card = btn.closest('.supervisor-card-in-standard');
+                var container = card ? card.closest('.standard-supervisor-cards') : null;
+                var section = container ? container.closest('section[id]') : null;
+                if (!card || !section) return;
+                var value = card.getAttribute('data-value');
+                var sectionId = section.id;
+                excludedBySection[sectionId] = excludedBySection[sectionId] || [];
+                if (excludedBySection[sectionId].indexOf(value) === -1) excludedBySection[sectionId].push(value);
+                syncSupervisorsToStandards();
+            });
+            function escapeHtml(s) {
+                var d = document.createElement('div');
+                d.textContent = s;
+                return d.innerHTML;
+            }
+            select.addEventListener('change', function () {
+                var value = select.value;
+                var text = select.options[select.selectedIndex].text;
+                if (!value || added.indexOf(value) >= 0) {
+                    select.selectedIndex = 0;
+                    return;
+                }
+                added.push(value);
+                var chip = document.createElement('span');
+                chip.className = 'supervisor-chip inline-flex items-center gap-1 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-md pl-2 pr-1 py-1 text-[10px] font-medium text-slate-700 dark:text-slate-200 shadow-sm';
+                chip.setAttribute('data-value', value);
+                chip.setAttribute('data-label', text);
+                chip.innerHTML = '<span class="max-w-[120px] truncate">' + escapeHtml(text.replace(/\s*-\s*.*$/, '')) + '</span><button type="button" class="remove-supervisor p-0.5 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-colors shrink-0" title="Bỏ"><span class="material-symbols-outlined text-sm">close</span></button>';
+                list.appendChild(chip);
+                chip.querySelector('.remove-supervisor').addEventListener('click', function () {
+                    added = added.filter(function (v) { return v !== value; });
+                    chip.remove();
+                    syncSupervisorsToStandards();
+                });
+                select.selectedIndex = 0;
+                syncSupervisorsToStandards();
+            });
+        })();
+        (function () {
+            var btn = document.getElementById('add-standard-btn');
+            var container = document.getElementById('standard-sections-container');
+            var badge = document.getElementById('standard-count-badge');
+            if (!btn || !container || !badge) return;
+            btn.addEventListener('click', function () {
+                var sections = container.querySelectorAll('section[id^="tieu-chuan-"]');
+                var nextNum = sections.length + 1;
+                var nextId = 'tieu-chuan-' + nextNum;
+                var numStr = nextNum < 10 ? '0' + nextNum : String(nextNum);
+                badge.textContent = nextNum + ' MỤC';
+                var sidebarItem = document.createElement('div');
+                sidebarItem.className = 'standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all';
+                sidebarItem.setAttribute('data-scroll-to', nextId);
+                sidebarItem.setAttribute('role', 'button');
+                sidebarItem.setAttribute('tabindex', '0');
+                sidebarItem.innerHTML = '<div class="flex items-start gap-3">' +
+                    '<span class="text-xs font-bold text-slate-400 mt-1">' + numStr + '</span>' +
+                    '<div><h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400">Tiêu chuẩn mới</h3>' +
+                    '<p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhập tên và mô tả bên cạnh</p></div></div>';
+                btn.parentNode.insertBefore(sidebarItem, btn);
+                var lastSection = document.getElementById('tieu-chuan-6');
+                if (!lastSection) return;
+                var newSection = lastSection.cloneNode(true);
+                newSection.id = nextId;
+                newSection.removeAttribute('data-section-index');
+                var numBadge = newSection.querySelector('div.rounded-xl.shadow-lg span.text-lg');
+                if (numBadge) numBadge.textContent = numStr;
+                var h3 = newSection.querySelector('h3.text-xl');
+                if (h3) {
+                    h3.textContent = '';
+                    var titleInput = document.createElement('input');
+                    titleInput.type = 'text';
+                    titleInput.className = 'w-full text-xl font-bold bg-transparent border-none focus:ring-0 p-0 text-slate-900 dark:text-white placeholder:text-slate-400';
+                    titleInput.placeholder = 'Nhập tên tiêu chuẩn (VD: Vệ sinh khu vực cửa chính & sảnh)';
+                    h3.parentNode.replaceChild(titleInput, h3);
+                }
+                newSection.querySelectorAll('textarea').forEach(function (el) {
+                    el.value = '';
+                    el.placeholder = 'Nhập mô tả chi tiết các bước thực hiện (VD: Đảm bảo khu vực sạch sẽ, đúng quy định...)';
+                    el.classList.add('placeholder:text-slate-400');
+                });
+                newSection.querySelectorAll('input[type="number"]').forEach(function (el) {
+                    el.value = '';
+                    el.placeholder = 'VD: 3';
+                    el.classList.add('placeholder:text-slate-400');
+                });
+                newSection.querySelectorAll('input[type="text"]').forEach(function (el) {
+                    var p = (el.placeholder || '').toLowerCase();
+                    if (p.indexOf('thêm') === -1) el.placeholder = 'Nhập nội dung';
+                    if (el.closest('[class*="min-h-[40px]"]')) el.placeholder = 'Thêm khu vực loại trừ (VD: Q. Tân Bình)...';
+                    el.value = '';
+                    el.classList.add('placeholder:text-slate-400');
+                });
+                newSection.querySelectorAll('input:not([type])').forEach(function (el) {
+                    el.value = '';
+                    if (!el.placeholder) el.placeholder = 'Thêm...';
+                    el.classList.add('placeholder:text-slate-400');
+                });
+                newSection.querySelectorAll('.standard-supervisor-cards').forEach(function (el) { el.innerHTML = ''; });
+                container.appendChild(newSection);
+                var target = document.getElementById(nextId);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

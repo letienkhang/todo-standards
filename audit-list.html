@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Siêu Bảng Giám sát Tiêu chuẩn Toàn diện</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1a2530",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#2d3944",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .sticky-column {
+            position: sticky;
+            left: 0;
+            z-index: 40;
+            background-clip: padding-box;
+        }
+
+        .matrix-table thead th.sticky-column {
+            z-index: 70;
+            background-color: #f9fafb;
+        }
+
+        .matrix-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: #f9fafb;
+            background-clip: padding-box;
+        }
+
+        .dark .matrix-table thead th {
+            background-color: #2d3944;
+        }
+
+        .matrix-table thead th.sticky-column {
+            z-index: 80;
+        }
+
+        .dark .matrix-table thead th.sticky-column {
+            background-color: #2d3944;
+        }
+
+        .matrix-table tbody td.sticky-column {
+            background-color: #ffffff;
+        }
+
+        .dark .matrix-table tbody td.sticky-column {
+            background-color: #1a2530;
+        }
+
+        .matrix-table .sticky-column {
+            box-shadow: 2px 0 0 rgba(15, 23, 42, 0.06);
+        }
+
+        .dark .matrix-table .sticky-column {
+            box-shadow: 2px 0 0 rgba(0, 0, 0, 0.35);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid #e2e8f0;
+        }
+
+        .dark .matrix-table th,
+        .dark .matrix-table td {
+            border-color: #2d3944;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+        .nav-item-active { background-color: rgba(19, 127, 236, 0.1); color: #137fec; }
+        .dark .nav-item-active { background-color: rgba(19, 127, 236, 0.2); color: #60a5fa; }
+        #sidebar-nav { transition: width 0.2s ease-out; }
+        #sidebar-nav.nav-collapsed { width: 4rem; min-width: 4rem; }
+        #sidebar-nav.nav-collapsed .nav-link-text { opacity: 0; width: 0; overflow: hidden; min-width: 0; padding: 0; }
+        .nav-flyout { display: none; }
+        #sidebar-nav.nav-collapsed .nav-flyout { display: block; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+        #sidebar-nav.nav-collapsed a:hover .nav-flyout, #sidebar-nav.nav-collapsed button:hover .nav-flyout { opacity: 1; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
+        #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white antialiased flex min-h-screen overflow-x-hidden transition-colors duration-200">
+    <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out" aria-label="Menu chính">
+        <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">dashboard</span>
+                <span class="nav-link-text truncate">Tổng quan</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
+            </a>
+            <a href="my-tasks.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
+                <span class="nav-link-text truncate">Công việc của tôi</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
+            </a>
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">list_alt</span>
+                <span class="nav-link-text truncate">Danh sách công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách công việc</span>
+            </a>
+            <a href="list-person.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">person</span>
+                <span class="nav-link-text truncate">Danh sách cá nhân</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách cá nhân</span>
+            </a>
+            <a href="audit-list.html" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">grading</span>
+                <span class="nav-link-text truncate">Chấm điểm</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Chấm điểm</span>
+            </a>
+            <a href="#" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">bar_chart</span>
+                <span class="nav-link-text truncate">Báo cáo</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Báo cáo</span>
+            </a>
+            <a href="ui-mobile.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">phone_android</span>
+                <span class="nav-link-text truncate">Giao diện mobile</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện mobile</span>
+            </a>
+        </div>
+        <div class="border-t border-border-light dark:border-border-dark p-2 flex flex-col gap-0.5">
+            <button type="button" id="navToggle" class="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Thu gọn menu">
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-expanded">chevron_left</span>
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-collapsed">chevron_right</span>
+                <span class="nav-link-text truncate">Thu gọn</span>
+            </button>
+            <button type="button" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')" aria-label="Giao diện">
+                <span class="material-symbols-outlined text-xl shrink-0">dark_mode</span>
+                <span class="nav-link-text truncate">Giao diện</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện</span>
+            </button>
+        </div>
+    </nav>
+    <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){if(localStorage.getItem('navCollapsed')==='1')n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();</script>
+    <div class="flex-1 flex flex-col min-h-0 min-w-0">
+        <div class="flex flex-col min-h-screen">
+        <header class="bg-white dark:bg-[#1a2530] border-b border-[#dbe0e6] dark:border-[#2d3944] sticky top-0 z-[60]">
+            <div class="max-w-full mx-auto px-4 lg:px-6 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-lg font-bold tracking-tight">Chi tiết chấm điểm</h2>
+                    </div>
+                    <div class="hidden items-center gap-3 ml-4"><!-- tạm ẩn: Bộ tiêu chuẩn, Khu vực, Thời gian -->
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-[#617589] uppercase tracking-wider">Bộ tiêu chuẩn</span>
+                            <select class="bg-transparent border-none text-sm font-bold p-0 focus:ring-0">
+                                <option>Vận hành Cửa hàng 2024</option>
+                                <option>An ninh &amp; PCCC</option>
+                            </select>
+                        </div>
+                        <div class="h-8 w-[1px] bg-gray-200 dark:bg-gray-700 mx-2"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-[#617589] uppercase tracking-wider">Khu vực</span>
+                            <select class="bg-transparent border-none text-sm font-bold p-0 focus:ring-0">
+                                <option>Miền Bắc</option>
+                                <option>Miền Nam</option>
+                            </select>
+                        </div>
+                        <div class="h-8 w-[1px] bg-gray-200 dark:bg-gray-700 mx-2"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-[#617589] uppercase tracking-wider">Thời gian</span>
+                            <select class="bg-transparent border-none text-sm font-bold p-0 focus:ring-0">
+                                <option>Tháng này</option>
+                                <option>Quý 1 - 2024</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="hidden items-center gap-4"><!-- tạm ẩn: Tỉ lệ tuân thủ, Lỗi nghiêm trọng -->
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-[#617589] uppercase">Tỉ lệ tuân thủ</p>
+                            <p class="text-lg font-black text-green-500 leading-none">88.5%</p>
+                        </div>
+                        <div class="text-right border-l border-gray-200 dark:border-gray-700 pl-4">
+                            <p class="text-[10px] font-bold text-[#617589] uppercase">Lỗi nghiêm trọng</p>
+                            <p class="text-lg font-black text-red-500 leading-none">24</p>
+                        </div>
+                    </div>
+                    <div class="hidden items-center gap-3 pl-6 border-l border-[#dbe0e6] dark:border-[#2d3944]"><!-- tạm ẩn: notifications, User -->
+                        <button class="p-2 text-[#617589] hover:text-primary">
+                            <span class="material-symbols-outlined">notifications</span>
+                        </button>
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs overflow-hidden border border-primary/30">
+                            <img alt="User" class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuALt0g3tazvxAH2pwcckONrYdJueAxrUxWnukuoci3aXsdZvuTorCc21gM9h5Pop0QKBgSa6In4F3la8XE9GZ4gwTV9ROZTiZL6kVMWRJir2nmv_kPdR1N0A2vv8fkwxgGVHOdWsbHkiavMHghvt1vqDJ0b9nhA93EZfMzTAyce94R6Q-Nyam7fAx1AH_xfGUNZpnvAL1F5w4zM6Pg2UdEZQDbsoKODRiGtqi-WVAKEpSKHjJtwShSDseApj0GUQXiN_IZXLImFifYq" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="flex flex-1">
+            <aside
+                class="w-full lg:w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark flex flex-col bg-slate-50/50 dark:bg-slate-900/20 sticky top-16 h-[calc(100vh-64px)] overflow-hidden hidden lg:flex">
+                <div class="p-4 border-b border-border-light dark:border-border-dark bg-white dark:bg-card-dark">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Bộ tiêu chuẩn</h2>
+                        <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">03 MỤC</span>
+                    </div>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input class="w-full pl-9 pr-4 py-2 text-xs bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-1 focus:ring-primary placeholder:text-slate-400"
+                            placeholder="Tìm kiếm bộ tiêu chuẩn..." type="search" />
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
+                    <div class="block p-3 rounded-lg bg-primary/5 border border-primary/20 cursor-default transition-all">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-primary mt-1">01</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Tiêu chuẩn Trưng bày – VM</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Visual Merchandising, kệ trưng bày...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-px bg-border-light dark:border-border-dark my-2 mx-2"></div>
+                    <div class="block p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">02</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Dịch vụ Khách hàng</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Customer Service, phục vụ...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xs font-bold text-slate-400 mt-1">03</span>
+                            <div>
+                                <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vận hành – Store Management</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Operation, quản lý cửa hàng...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <main class="flex-1 overflow-x-hidden bg-gray-50 dark:bg-[#101922]">
+                <div class="p-4 lg:p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-2xl font-black tracking-tight">Siêu Bảng Giám sát Tiêu chuẩn Toàn diện</h1>
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#617589]">
+                                <span class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">event</span>
+                                    Đợt chấm: <span
+                                        class="font-semibold text-slate-700 dark:text-slate-200">02/02/2026</span>
+                                    → <span class="font-semibold text-slate-700 dark:text-slate-200">09/02/2026</span>
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">schedule</span>
+                                    Khung giờ: <span
+                                        class="font-semibold text-slate-700 dark:text-slate-200">08:00</span>
+                                    → <span class="font-semibold text-slate-700 dark:text-slate-200">18:00</span>
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">repeat</span>
+                                    Lặp lại: <span class="font-semibold text-slate-700 dark:text-slate-200">2
+                                        lần/ngày</span>
+                                    (10:00, 16:00)
+                                </span>
+                                <span class="hidden flex items-center gap-1.5"><!-- tạm ẩn: sync Cập nhật mỗi 30 phút -->
+                                    <span class="material-symbols-outlined text-[16px]">sync</span>
+                                    Cập nhật: <span class="font-semibold text-slate-700 dark:text-slate-200">mỗi 30
+                                        phút</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button
+                                class="px-4 py-2 bg-white dark:bg-[#1a2530] border border-[#dbe0e6] dark:border-[#2d3944] rounded-lg text-sm font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">download</span> Xuất dữ liệu
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-[#1a2530] rounded-xl border border-[#dbe0e6] dark:border-[#2d3944] overflow-hidden shadow-xl">
+                        <div class="overflow-auto relative max-h-[calc(100vh-220px)]">
+                            <table class="min-w-max w-full matrix-table border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-50 dark:bg-[#2d3944]">
+                                        <th class="sticky-column p-4 text-left min-w-[240px] z-30">
+                                            <span
+                                                class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Cửa
+                                                hàng / Tiêu chuẩn</span>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Vệ
+                                                    sinh &amp; sàn</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Vận hành</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">VM
+                                                    / Trưng bày</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: VM</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">An
+                                                    ninh &amp; PCCC</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: An ninh</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Thu
+                                                    ngân</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Tài chính</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Kho
+                                                    &amp; 5S</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Kho vận</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Phòng
+                                                    thử</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Vận hành</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Giá
+                                                    / Tem</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Vận hành</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Tồn
+                                                    size</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Kho vận</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Nhân
+                                                    sự</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Nhân sự</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[220px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span
+                                                    class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">CSKH
+                                                    / Upsell</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">BP
+                                                    chấm: Kinh doanh</span>
+                                            </div>
+                                        </th>
+                                        <th class="p-4 text-center min-w-[200px]">
+                                            <div class="flex flex-col items-center gap-0.5">
+                                                <span class="text-[11px] font-bold text-[#617589] uppercase tracking-widest whitespace-nowrap">Chỉ text (test)</span>
+                                                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-300 whitespace-nowrap">Không có hình</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <a href="audit-detail.html?store=0&criterion=0" class="text-sm font-bold text-inherit hover:text-primary transition-colors">Cửa hàng A - Hoàn Kiếm</a>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-green-500 w-[92%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-green-600">92%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative group">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvoknUr64_hPngt5Mj-c38p4oVlYksLhgxRowFmgXm9Knwg9Rv6qkpxKkqQoPQsLYJdAHqcb6TzZFYVQt65P6sJMleeQNORfWPzOA-b2R4U5sUls5RVZR7HRzHir6Fef4q1QzGsr1bQ8AL8FMY_voDqkczf5w2hyy_0KaQt4cnauktRRD3m-Rk3znHZNzewKVqfsPL9byQTbERrS6hYXcNy4gzrGHHovpGLTAvksINK2LlNNyWIwIHc26bRKCow5mIrUkKY8eEDPFQ" />
+                                                    </div>
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200 relative" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNGTChJiiZZfuyIxFXpFfGY_QzZKBZUEwDQ7ljO2L_69CwQMHZ_pXBJx4o-Pb1IyyVgW8ItRr08RNSJugHO2VBn01rclU3re_eFq4aE0yuQvZuN0lPWQRFDkJ8-FQc7ZhX5wwFz4a47_2jHKrrBFL2sUIpALE-wKXnirRDtwiPIFN0iNqLjZNGqGIqeU2S-3dRQZgkehFKGAIgUXgTD11qpXFoUEnpSMzCMMqO_GnB6_Cj7ee6k0Md8xavjTnLgErKjFiB8uGboLVh" />
+                                                        <div
+                                                            class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                                            <span
+                                                                class="material-symbols-outlined text-white text-base">play_circle</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Sàn nhà khô
+                                                    ráo..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div
+                                                        class="w-12 h-12 rounded overflow-hidden bg-gray-200 border border-red-500">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuABal32-nK0KyWCFcWS8uX3JIOBlf70N86DQr7pPqkz7EUp1xXHb16RzNZzWmW9dJOjbaCNKODGvOUrkCoxiB7fJg8wsvgSQwPonhVsYjcv8HsSRulM7cXlxUptmkicX-Yfgds4HvtRXhSHUAln7-oU4v66RERUR-9lePUIcQn7Os77e5OCFSfDI4-t-9qzVKIMKHB7VWe-o1Nt2XVII1DhHKjTD1oV1ssNNLOMXyfnjXEf6IXPH_PgXVjVl05DeHs3hSn7kFyMMkEq" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Trống
+                                                    kệ hàng..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp5JbTOKejoubYgx8h7FrVptGUk9Hk12kqZApi3M1vtcCNHHVHfMV6GpqvqX5agp7xOaDEcHlL88OcAp8ih5h23CnTi5wYl86jlA8FVBb8J32v45TFaVLl1nsJ5lE_UE6tTHliyr0pKucdzmCXvcZMyxMBTpznskXBd71eVSEMIWLqc3hr1RJ03t3QyoqVhfgxWo5q6R9UDuu1B4AXmtGrATJzwtGNXtN4k4efGA8arV1oMg1__6ffhXgovS9OCCXlOs7RLSOC8dDg" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Hết hạn bình
+                                                    xịt..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">—</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <div class="flex gap-1 items-center justify-center py-2">
+                                                    <span
+                                                        class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Không
+                                                        áp dụng</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200 flex-shrink-0">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8IkcmJsIPxsR1nDosNzmwOBrQUs25jj4QTXxzvFTwyWagsgs_RZ8CRUuRYEu2Kd90T9orLyoa0hUZFnM-SD5bakEUA69YaCHE_Ni5dWl8Viiol5s82K1xDaoCUA_1ln601MJ3mkRd7cM7ygb_7gT90iIPGpKWyQu2tXixHfR1zgDwaSLMl1xe2Ig2hm_2b1vLDMVEjKOnK355LCwyA1G-3T50hRGSSRCcudBtMjuVPenQ0ppeUtWbx2ww6Rkfe7mnUfnGOAmlTC3K" />
+                                                    </div>
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200 flex-shrink-0">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp5JbTOKejoubYgx8h7FrVptGUk9Hk12kqZApi3M1vtcCNHHVHfMV6GpqvqX5agp7xOaDEcHlL88OcAp8ih5h23CnTi5wYl86jlA8FVBb8J32v45TFaVLl1nsJ5lE_UE6tTHliyr0pKucdzmCXvcZMyxMBTpznskXBd71eVSEMIWLqc3hr1RJ03t3QyoqVhfgxWo5q6R9UDuu1B4AXmtGrATJzwtGNXtN4k4efGA8arV1oMg1__6ffhXgovS9OCCXlOs7RLSOC8dDg" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Sắp xếp 5S
+                                                    tốt"
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng B - Ba Đình</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-green-500 w-[94%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-green-600">94%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative group">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1 flex-wrap items-start relative">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200 flex-shrink-0">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvoknUr64_hPngt5Mj-c38p4oVlYksLhgxRowFmgXm9Knwg9Rv6qkpxKkqQoPQsLYJdAHqcb6TzZFYVQt65P6sJMleeQNORfWPzOA-b2R4U5sUls5RVZR7HRzHir6Fef4q1QzGsr1bQ8AL8FMY_voDqkczf5w2hyy_0KaQt4cnauktRRD3m-Rk3znHZNzewKVqfsPL9byQTbERrS6hYXcNy4gzrGHHovpGLTAvksINK2LlNNyWIwIHc26bRKCow5mIrUkKY8eEDPFQ" />
+                                                    </div>
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200 flex-shrink-0 relative">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNGTChJiiZZfuyIxFXpFfGY_QzZKBZUEwDQ7ljO2L_69CwQMHZ_pXBJx4o-Pb1IyyVgW8ItRr08RNSJugHO2VBn01rclU3re_eFq4aE0yuQvZuN0lPWQRFDkJ8-FQc7ZhX5wwFz4a47_2jHKrrBFL2sUIpALE-wKXnirRDtwiPIFN0iNqLjZNGqGIqeU2S-3dRQZgkehFKGAIgUXgTD11qpXFoUEnpSMzCMMqO_GnB6_Cj7ee6k0Md8xavjTnLgErKjFiB8uGboLVh" />
+                                                        <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white">
+                                                            <span class="material-symbols-outlined text-2xl">add_circle</span>
+                                                            <span class="text-[10px] font-bold">+2</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="absolute w-0 h-0 overflow-hidden opacity-0 pointer-events-none" aria-hidden="true">
+                                                        <img alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp5JbTOKejoubYgx8h7FrVptGUk9Hk12kqZApi3M1vtcCNHHVHfMV6GpqvqX5agp7xOaDEcHlL88OcAp8ih5h23CnTi5wYl86jlA8FVBb8J32v45TFaVLl1nsJ5lE_UE6tTHliyr0pKucdzmCXvcZMyxMBTpznskXBd71eVSEMIWLqc3hr1RJ03t3QyoqVhfgxWo5q6R9UDuu1B4AXmtGrATJzwtGNXtN4k4efGA8arV1oMg1__6ffhXgovS9OCCXlOs7RLSOC8dDg" />
+                                                        <img alt="" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8IkcmJsIPxsR1nDosNzmwOBrQUs25jj4QTXxzvFTwyWagsgs_RZ8CRUuRYEu2Kd90T9orLyoa0hUZFnM-SD5bakEUA69YaCHE_Ni5dWl8Viiol5s82K1xDaoCUA_1ln601MJ3mkRd7cM7ygb_7gT90iIPGpKWyQu2tXixHfR1zgDwaSLMl1xe2Ig2hm_2b1vLDMVEjKOnK355LCwyA1G-3T50hRGSSRCcudBtMjuVPenQ0ppeUtWbx2ww6Rkfe7mnUfnGOAmlTC3K" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Checklist vệ
+                                                    sinh
+                                                    đạt chuẩn..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuABal32-nK0KyWCFcWS8uX3JIOBlf70N86DQr7pPqkz7EUp1xXHb16RzNZzWmW9dJOjbaCNKODGvOUrkCoxiB7fJg8wsvgSQwPonhVsYjcv8HsSRulM7cXlxUptmkicX-Yfgds4HvtRXhSHUAln7-oU4v66RERUR-9lePUIcQn7Os77e5OCFSfDI4-t-9qzVKIMKHB7VWe-o1Nt2XVII1DhHKjTD1oV1ssNNLOMXyfnjXEf6IXPH_PgXVjVl05DeHs3hSn7kFyMMkEq" />
+                                                    </div>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Thiếu 1 kệ POP..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp5JbTOKejoubYgx8h7FrVptGUk9Hk12kqZApi3M1vtcCNHHVHfMV6GpqvqX5agp7xOaDEcHlL88OcAp8ih5h23CnTi5wYl86jlA8FVBb8J32v45TFaVLl1nsJ5lE_UE6tTHliyr0pKucdzmCXvcZMyxMBTpznskXBd71eVSEMIWLqc3hr1RJ03t3QyoqVhfgxWo5q6R9UDuu1B4AXmtGrATJzwtGNXtN4k4efGA8arV1oMg1__6ffhXgovS9OCCXlOs7RLSOC8dDg" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"PCCC đủ
+                                                    tem/niêm
+                                                    phong..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8IkcmJsIPxsR1nDosNzmwOBrQUs25jj4QTXxzvFTwyWagsgs_RZ8CRUuRYEu2Kd90T9orLyoa0hUZFnM-SD5bakEUA69YaCHE_Ni5dWl8Viiol5s82K1xDaoCUA_1ln601MJ3mkRd7cM7ygb_7gT90iIPGpKWyQu2tXixHfR1zgDwaSLMl1xe2Ig2hm_2b1vLDMVEjKOnK355LCwyA1G-3T50hRGSSRCcudBtMjuVPenQ0ppeUtWbx2ww6Rkfe7mnUfnGOAmlTC3K" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Đối soát cuối
+                                                    ca
+                                                    đầy đủ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">—</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <div class="flex gap-1 items-center justify-center py-2">
+                                                    <span
+                                                        class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Không
+                                                        áp dụng</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="flex flex-col gap-2 p-2.5 rounded-lg border border-slate-200 bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/30 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-300">Chỉ text</span>
+                                                    <span class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-slate-600 dark:text-slate-300 line-clamp-2 italic">Ghi chú từ cửa hàng: Đã kiểm tra khu vực, không có hình ảnh đính kèm.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng D - Hai Bà Trưng</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-yellow-500 w-[86%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-yellow-600">86%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Tủ lạnh sạch,
+                                                    nhiệt độ ok..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Thiếu
+                                                    tem giá 3 SKU..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Lối thoát
+                                                    hiểm
+                                                    thông thoáng..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Chậm nộp quỹ 1 ca..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Kho gọn, dán
+                                                    nhãn
+                                                    đủ..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng E - Đống Đa</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-red-500 w-[74%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-red-600">74%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Thiếu nhật ký vệ sinh..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Trưng
+                                                    bày lệch planogram..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Bình xịt gần hết hạn..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Hóa đơn/biên
+                                                    lai
+                                                    đủ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Kho
+                                                    chưa phân khu rõ..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng F - Long Biên</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-yellow-500 w-[82%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-yellow-600">82%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Khu vực quầy
+                                                    sạch
+                                                    sẽ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Thiếu wobbler 1 line..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Biển báo PCCC
+                                                    đầy
+                                                    đủ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">—</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <div class="flex gap-1 items-center justify-center py-2">
+                                                    <span
+                                                        class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Không
+                                                        áp dụng</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Hàng hóa kê
+                                                    kệ
+                                                    đúng..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng G - Hà Đông</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-green-500 w-[91%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-green-600">91%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Khu rửa tay
+                                                    đầy
+                                                    đủ vật tư..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Trưng bày
+                                                    theo
+                                                    set tuần..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Bình chữa
+                                                    cháy đủ
+                                                    áp..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Chênh lệch quỹ nhỏ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"5S kho tốt,
+                                                    lối
+                                                    đi
+                                                    rõ..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng H - Nam Từ Liêm</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-yellow-500 w-[89%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-yellow-600">89%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Sàn khô,
+                                                    không
+                                                    trơn..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Mặt kệ sạch,
+                                                    đủ
+                                                    facing..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Thiếu biển chỉ dẫn 1 vị trí..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Thu ngân đúng
+                                                    quy
+                                                    trình..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Kho có sơ đồ,
+                                                    dán
+                                                    mã kệ..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng I - Bắc Từ Liêm</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-green-500 w-[93%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-green-600">93%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Khu vực chế
+                                                    biến
+                                                    ngăn nắp..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Trưng bày
+                                                    đồng
+                                                    bộ,
+                                                    đủ POSM..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Thiết bị PCCC
+                                                    đặt
+                                                    đúng vị trí..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Đối soát POS
+                                                    đúng,
+                                                    không sai lệch..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Kho thiếu thẻ kệ 1 khu..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng J - Thanh Xuân</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-yellow-500 w-[84%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-yellow-600">84%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Thiếu bảng phân công..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Trưng bày
+                                                    đúng
+                                                    tuyến..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Thiếu
+                                                    biên bản diễn tập..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Ca trưởng ký
+                                                    sổ
+                                                    đầy đủ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Kho chưa cập nhật sơ đồ..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng K - Hoàng Mai</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-green-500 w-[90%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-green-600">90%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Nhà vệ sinh
+                                                    sạch..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Thiếu bảng giá 1 kệ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Niêm phong tủ
+                                                    điện
+                                                    ok..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Không phát
+                                                    sinh
+                                                    sai lệch..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"FIFO chuẩn,
+                                                    tồn
+                                                    kho
+                                                    đúng..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng L - Gia Lâm</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-yellow-500 w-[80%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-yellow-600">80%</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Thùng
+                                                    rác chưa phân loại..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Mặt kệ đầy,
+                                                    đủ
+                                                    facing..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-yellow-100 bg-yellow-50/30 dark:border-yellow-900/20 dark:bg-yellow-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400">C.báo</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p
+                                                    class="text-[10px] text-yellow-700 dark:text-yellow-400 font-semibold line-clamp-1 italic">
+                                                    "Lối thoát hiểm cần dọn..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Biên bản bàn
+                                                    giao
+                                                    đủ..."</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Kho
+                                                    thiếu thẻ kiểm kê..."</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="sticky-column p-4 bg-white dark:bg-[#1a2530]">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-bold">Cửa hàng C - Cầu Giấy</span>
+                                                <div class="flex items-center gap-2">
+                                                    <div
+                                                        class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                        <div class="h-full bg-yellow-500 w-[88%]"></div>
+                                                    </div>
+                                                    <span class="text-xs font-black text-yellow-600">88%</span>
+                                                </div>
+                                                <!-- ID & thông tin quản lý được ẩn để đơn giản giao diện -->
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400">Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div class="w-12 h-12 rounded overflow-hidden bg-gray-200">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOMHHXVLmd8P_kKRJO_Fbxo2mBjb7MntUUDyPdshFc72nfRKY2GoYjdIBy4z_KalJJJNewFIkqYWLYVs5tkV0GPsg-TWH_gyiLIoKHsmcBs75ys1oUspKMiAwW4UQec7wv3Q6yeX78Y5W7dmg6Yh1OL0uWsPry61MQyx4dm1XQVFJJ_in1CNKFtmKxQ_cxcUOJDyq5Mq6abRxmGIQP-zlYbBJbUnarS2zNHXlDIUuzB-gNvqOahI8hXNKDyp8NCWiblKMNxOXXmyoY" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-[#617589] line-clamp-1 italic">"Nhân viên
+                                                    đúng
+                                                    tác phong"</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400">K.Đạt</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <div
+                                                        class="w-12 h-12 rounded overflow-hidden bg-gray-200 border border-red-500">
+                                                        <img alt="Evidence" class="w-full h-full object-cover"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtZIcTmDM8Iu0DzWOZ-7OB9KD57ZHDGPwnso1m_Y1HKgVICQCqZMBR0HkCUOup42JlzSaHPE1lJB65Hve9K8HQzHVH99p5isTokIZaIPXmVaCYT4COa45dEJgeJQlGih-0cTdXz-9hQ81oF4UiBpwcveaMQpD4V1zfzneKyX0w9sJpXct6Uo3UW0nz_g2ovzT02jwBz0PZjO2oN8r4nl0QE5EZlaGtmFjYtdNVb9-_gsjglvkmOFCNlRefFM6VT-sAyXTUCzYXp1XP" />
+                                                    </div>
+                                                </div>
+                                                <p class="text-[10px] text-red-600 font-semibold line-clamp-1 italic">
+                                                    "Thiếu
+                                                    bảng tên ca sáng"</p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">—</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 line-clamp-1 italic">"Không phát
+                                                    sinh"
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">—</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 line-clamp-1 italic">"Không áp dụng"
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div
+                                                class="flex flex-col gap-2 p-2.5 rounded-lg border border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5 h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span
+                                                        class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">—</span>
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400 cursor-help">info</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 line-clamp-1 italic">"Không áp dụng"
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <script>
+                                (() => {
+                                    const extraStandards = [
+                                        {
+                                            key: "fitting_room",
+                                            label: "Phòng thử",
+                                            notes: {
+                                                pass: ["Gương/rèm sạch, đủ móc treo", "Sàn khô, không mùi", "Đèn sáng, rèm đóng kín"],
+                                                fail: ["Bừa bộn, có rác", "Rèm hỏng/rách", "Có mùi khó chịu"],
+                                                pending: ["Chưa chấm phòng thử", "Chưa có dữ liệu phòng thử"],
+                                                na: ["Không có phòng thử", "Không áp dụng"],
+                                            },
+                                        },
+                                        {
+                                            key: "price_tag",
+                                            label: "Giá / Tem",
+                                            notes: {
+                                                pass: ["Niêm yết đủ, đúng giá", "Tem/nhãn đúng quy chuẩn", "Không phát hiện sai giá"],
+                                                fail: ["Sai giá trưng bày", "Thiếu tem nhiều vị trí", "Không đồng bộ bảng giá"],
+                                                pending: ["Chưa chấm giá/tem", "Chưa có dữ liệu giá/tem"],
+                                                na: ["Không áp dụng"],
+                                            },
+                                        },
+                                        {
+                                            key: "size_stock",
+                                            label: "Tồn size",
+                                            notes: {
+                                                pass: ["Đủ size core (S/M/L)", "Replenishment đúng tuyến", "Kệ đủ màu/size chủ lực"],
+                                                fail: ["Out size nhiều", "Không đủ size core", "Tồn không đồng đều, thiếu trưng bày"],
+                                                pending: ["Chưa chấm tồn size", "Chưa có dữ liệu tồn size"],
+                                                na: ["Không áp dụng"],
+                                            },
+                                        },
+                                        {
+                                            key: "staff_grooming",
+                                            label: "Nhân sự",
+                                            notes: {
+                                                pass: ["Đồng phục/bảng tên chuẩn", "Chào khách đúng quy trình", "Tác phong tốt, chủ động hỗ trợ"],
+                                                fail: ["Không đúng đồng phục", "Thái độ phục vụ chưa tốt", "Không tuân thủ ca trực"],
+                                                pending: ["Chưa chấm nhân sự", "Chưa có dữ liệu nhân sự"],
+                                                na: ["Không áp dụng"],
+                                            },
+                                        },
+                                        {
+                                            key: "customer_service",
+                                            label: "CSKH / Upsell",
+                                            notes: {
+                                                pass: ["Gợi ý mix & match tốt", "Upsell phụ kiện hiệu quả", "Xử lý đổi trả đúng quy trình"],
+                                                fail: ["Khách phàn nàn tư vấn", "Bỏ qua bước chào/tiễn", "Xử lý khiếu nại chậm"],
+                                                pending: ["Chưa chấm CSKH/upsell", "Chưa có dữ liệu CSKH/upsell"],
+                                                na: ["Không áp dụng"],
+                                            },
+                                        },
+                                    ];
+
+                                    const expectedTds = 1 /*store*/ + 5 /*existing*/ + extraStandards.length;
+                                    const tbody = document.querySelector("table.matrix-table tbody");
+                                    if (!tbody) return;
+
+                                    const hash = (str) => {
+                                        let h = 0;
+                                        for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+                                        return h >>> 0;
+                                    };
+
+                                    const pickStatus = (seed, colIdx) => {
+                                        const r = (seed + colIdx * 97) % 100;
+                                        if (r < 55) return "pass";
+                                        if (r < 75) return "fail";
+                                        if (r < 90) return "pending";
+                                        return "na";
+                                    };
+
+                                    const statusMeta = {
+                                        pass: {
+                                            label: "Đạt",
+                                            badge: "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400",
+                                            box: "border-green-100 bg-green-50/30 dark:border-green-900/20 dark:bg-green-900/10",
+                                            note: "text-[#617589]",
+                                        },
+                                        fail: {
+                                            label: "Không đạt",
+                                            badge: "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400",
+                                            box: "border-red-100 bg-red-50/30 dark:border-red-900/20 dark:bg-red-900/10",
+                                            note: "text-red-600 font-semibold",
+                                        },
+                                        pending: {
+                                            label: "Chưa chấm",
+                                            badge: "bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-200",
+                                            box: "border-slate-200 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800/30",
+                                            note: "text-slate-600 dark:text-slate-300 font-semibold",
+                                        },
+                                        na: {
+                                            label: "Không áp dụng",
+                                            badge: "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200",
+                                            box: "border-gray-100 bg-gray-50/30 dark:border-gray-800 dark:bg-white/5",
+                                            note: "text-gray-500 dark:text-gray-300",
+                                        },
+                                    };
+
+                                    const normalizeTableUI = () => {
+                                        const table = document.querySelector("table.matrix-table");
+                                        if (!table) return;
+
+                                        // Loại bỏ màu vàng trong bảng (để chỉ còn: đạt / không đạt / chưa chấm)
+                                        const classReplacements = [
+                                            ["border-yellow-100", "border-slate-200"],
+                                            ["bg-yellow-50/30", "bg-slate-50/60"],
+                                            ["text-yellow-700", "text-slate-600"],
+                                            ["text-yellow-600", "text-slate-600"],
+                                            ["bg-yellow-100", "bg-slate-200"],
+                                            ["bg-yellow-500", "bg-slate-500"],
+                                            ["dark:border-yellow-900/20", "dark:border-slate-700"],
+                                            ["dark:bg-yellow-900/10", "dark:bg-slate-800/30"],
+                                            ["dark:bg-yellow-900/50", "dark:bg-slate-700"],
+                                            ["dark:text-yellow-400", "dark:text-slate-200"],
+                                        ];
+
+                                        table.querySelectorAll("*").forEach((el) => {
+                                            const tokens = Array.from(el.classList);
+                                            for (const t of tokens) {
+                                                for (const [from, to] of classReplacements) {
+                                                    if (t === from) {
+                                                        el.classList.remove(from);
+                                                        el.classList.add(to);
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                        // Chuẩn hoá label trạng thái (4 trạng thái: đạt / không đạt / chưa chấm / không áp dụng)
+                                        table.querySelectorAll("span").forEach((span) => {
+                                            const txt = (span.textContent || "").trim();
+                                            if (txt === "C.báo") span.textContent = "Chưa chấm";
+                                            if (txt === "K.Đạt") span.textContent = "Không đạt";
+                                            if (txt === "—") span.textContent = "Không áp dụng";
+                                        });
+                                    };
+
+                                    normalizeTableUI();
+
+                                    const storeRows = Array.from(tbody.querySelectorAll("tr")).filter((tr) => {
+                                        const firstTd = tr.querySelector("td.sticky-column");
+                                        // bỏ qua các dòng tiêu đề phòng ban (không có td sticky)
+                                        return !!firstTd;
+                                    });
+
+                                    for (const tr of storeRows) {
+                                        const tds = tr.querySelectorAll(":scope > td");
+                                        if (tds.length >= expectedTds) continue;
+
+                                        const sticky = tr.querySelector("td.sticky-column");
+                                        const raw = (sticky?.innerText || "").replace(/\s+/g, " ").trim();
+                                        const idMatch = raw.match(/ID:\s*(ST-\d+)/);
+                                        const seed = hash(idMatch ? idMatch[1] : raw);
+
+                                        // đã có 5 tiêu chuẩn cũ; phần thiếu là các tiêu chuẩn thời trang thêm mới
+                                        const startExtraIdx = Math.max(0, (tds.length - 1) - 5);
+                                        for (let i = startExtraIdx; i < extraStandards.length; i++) {
+                                            const col = extraStandards[i];
+                                            const status = pickStatus(seed, i);
+                                            const meta = statusMeta[status];
+                                            const noteList = col.notes[status] || col.notes.pending || col.notes.na || ["Chưa chấm"];
+                                            const note = noteList[(seed + i) % noteList.length];
+
+                                            const td = document.createElement("td");
+                                            td.className = "p-2";
+                                            td.innerHTML = `
+                                            <div class="flex flex-col gap-2 p-2.5 rounded-lg border ${meta.box} h-full relative">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase ${meta.badge}">${meta.label}</span>
+                                                    <span class="material-symbols-outlined text-[14px] text-gray-400 cursor-help hover:text-primary">info</span>
+                                                </div>
+                                                <p class="text-[10px] ${meta.note} line-clamp-1 italic">"${note}..."</p>
+                                            </div>
+                                        `;
+                                            tr.appendChild(td);
+                                        }
+                                    }
+
+                                    // Chạy lại để áp cho các ô mới sinh thêm
+                                    normalizeTableUI();
+                                })();
+
+                                    // Click bất kì ô nào trong bảng -> chuyển trang chi tiết hoặc toast (N/A)
+                                    (function () {
+                                        const tbody = document.querySelector("table.matrix-table tbody");
+                                        if (!tbody) return;
+                                        function showToast(msg) {
+                                            const el = document.createElement("div");
+                                            el.className = "fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-3 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm font-medium shadow-lg z-[100]";
+                                            el.textContent = msg;
+                                            document.body.appendChild(el);
+                                            setTimeout(function () { el.remove(); }, 3000);
+                                        }
+                                        tbody.addEventListener("click", function (e) {
+                                            e.preventDefault();
+                                            const td = e.target.closest("td");
+                                            if (!td) return;
+                                            const tr = td.closest("tr");
+                                            if (!tr) return;
+                                            const rowIndex = Array.from(tbody.querySelectorAll("tr")).indexOf(tr);
+                                            const colIndex = Array.from(tr.querySelectorAll(":scope > td")).indexOf(td);
+                                            if (colIndex === 0) {
+                                                window.location.href = "audit-detail.html?store=" + rowIndex + "&criterion=0";
+                                                return;
+                                            }
+                                            const text = (td.innerText || "").replace(/\s+/g, " ").trim();
+                                            const isNA = text.includes("Không áp dụng") && td.querySelectorAll("img").length === 0;
+                                            if (isNA) {
+                                                showToast("Bạn không cần giám sát tiêu chí này.");
+                                                return;
+                                            }
+                                            const criterion = colIndex - 1;
+                                            const imgs = td.querySelectorAll("img");
+                                            const videoEl = td.querySelector("[data-video]");
+                                            const hasVideo = videoEl !== null;
+                                            let media = "image";
+                                            if (hasVideo) media = "video";
+                                            else if (imgs.length >= 2) media = "images";
+                                            else if (imgs.length === 0) media = "text";
+                                            const params = new URLSearchParams();
+                                            params.set("store", String(rowIndex));
+                                            params.set("criterion", String(criterion));
+                                            params.set("media", media);
+                                            if (media === "text") {
+                                                const noteEl = td.querySelector("p");
+                                                const note = noteEl ? noteEl.innerText.replace(/\s+/g, " ").trim() : "";
+                                                if (note) params.set("note", encodeURIComponent(note));
+                                            }
+                                            if (media === "video" && videoEl) {
+                                                const videoUrl = videoEl.getAttribute("data-video");
+                                                if (videoUrl) params.set("videoUrl", encodeURIComponent(videoUrl));
+                                            }
+                                            if (media === "image" || media === "images") {
+                                                const storeImgs = Array.from(imgs).map(function (img) { return img.src || ""; }).filter(Boolean);
+                                                if (storeImgs.length) params.set("storeImgs", storeImgs.map(function (u) { return encodeURIComponent(u); }).join("|"));
+                                            }
+                                            window.location.href = "audit-detail.html?" + params.toString();
+                                        });
+                                        tbody.classList.add("cursor-pointer");
+                                    })();
+                        </script>
+                        <div
+                            class="p-4 bg-gray-50 dark:bg-[#1a2530] border-t border-[#dbe0e6] dark:border-[#2d3944] flex items-center justify-between">
+                            <span class="text-xs font-medium text-[#617589]">Hiển thị 1 - 50 của 100 cửa hàng</span>
+                            <div class="flex items-center gap-1">
+                                <button
+                                    class="w-8 h-8 rounded border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-500"><span
+                                        class="material-symbols-outlined text-lg">chevron_left</span></button>
+                                <button class="w-8 h-8 rounded bg-primary text-white text-xs font-bold">1</button>
+                                <button
+                                    class="w-8 h-8 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-xs font-bold">2</button>
+                                <button
+                                    class="w-8 h-8 rounded border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-500"><span
+                                        class="material-symbols-outlined text-lg">chevron_right</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>
