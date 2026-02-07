@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Retail Excellence - Unified Standard Configuration</title>
+    <title>Retail Excellence - Chi tiết bộ tiêu chuẩn</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
     <link
@@ -51,10 +51,26 @@
         #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
         #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
         #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+        body.detail-view-mode .edit-only { display: none !important; }
+        /* View mode: hiển thị dạng văn bản (read-only), ẩn form */
+        body.detail-view-mode .view-display { display: block !important; }
+        body.detail-view-mode .edit-control-wrap { display: none !important; }
+        body:not(.detail-view-mode) .view-display { display: none !important; }
+        body:not(.detail-view-mode) .edit-control-wrap { display: block !important; }
+        .view-display {
+            font-size: 0.875rem;
+            color: rgb(15 23 42);
+            line-height: 1.5;
+            padding: 0.5rem 0;
+            min-height: 1.5rem;
+        }
+        .dark .view-display { color: rgb(226 232 240); }
+        .view-display.view-display-multiline { white-space: pre-wrap; word-break: break-word; }
+        .view-display:empty::before { content: '\00a0'; }
     </style>
 </head>
 
-<body class="transition-colors duration-200 flex min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark">
+<body class="detail-view-mode transition-colors duration-200 flex min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark">
     <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out nav-collapsed" aria-label="Menu chính">
         <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
             <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
@@ -107,6 +123,151 @@
         </div>
     </nav>
     <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();</script>
+    <script>
+        window.DETAIL_TASK_DATA = {
+            'task-1': { title: 'Checklist + Daily work – Ca sáng tuần 06', dateStart: '2026-02-02', dateEnd: '2026-02-06', timeStart: '06:00', timeEnd: '14:00', unitValue: 'retail', description: 'Quy trình checklist và công việc hàng ngày ca sáng tuần 06. Áp dụng cho toàn hệ thống cửa hàng.' },
+            'task-2': { title: 'ĐIỀU HÀNH KINH DOANH – Tuần 05 báo cáo', dateStart: '2026-02-03', dateEnd: '2026-02-07', timeStart: '08:00', timeEnd: '17:00', unitValue: 'kinh-doanh', description: 'Báo cáo điều hành kinh doanh tuần 05. Tổng hợp số liệu, đánh giá và kế hoạch tuần tiếp theo.' },
+            'task-3': { title: 'BCHA Trade + VM – Chấm trưng bày khu vực 1', dateStart: '2026-02-04', dateEnd: '2026-02-08', timeStart: '07:30', timeEnd: '17:00', unitValue: 'giam-sat-kv', description: 'Chấm điểm trưng bày BCHA Trade và Visual Merchandising khu vực 1 theo chuẩn.' },
+            'task-4': { title: 'Chấm vệ sinh & vệ sinh kỹ thuật CH – Tuần 04', dateStart: '2026-01-27', dateEnd: '2026-01-31', timeStart: '06:00', timeEnd: '14:00', unitValue: 'van-hanh', description: 'Chấm vệ sinh và vệ sinh kỹ thuật cửa hàng tuần 04. Kiểm tra theo checklist định kỳ.' },
+            'task-5': { title: 'Chấm nhãn giá, kệ hàng & tồn kho cuối tháng', dateStart: '2026-01-28', dateEnd: '2026-01-31', timeStart: '08:00', timeEnd: '17:00', unitValue: 'kinh-doanh', description: 'Chấm nhãn giá, kệ hàng và tồn kho cuối tháng. Đối soát và báo cáo đúng hạn.' },
+            'task-6': { title: 'Chấm trưng bày VM & Planogram theo chuẩn', dateStart: '2026-02-01', dateEnd: '2026-02-05', timeStart: '07:00', timeEnd: '16:30', unitValue: 'giam-sat-kv', description: 'Chấm trưng bày VM và Planogram theo đúng chuẩn đã quy định.' },
+            'task-7': { title: 'Báo cáo tồn kho & đối soát cuối ngày 01/02', dateStart: '2026-01-30', dateEnd: '2026-02-01', timeStart: '20:00', timeEnd: '23:59', unitValue: 'hau-can', description: 'Báo cáo tồn kho và đối soát cuối ngày 01/02. Hoàn thành trước 23:59.' },
+            'task-8': { title: 'Chấm an toàn PCCC & thoát nạn – Định kỳ tháng 02', dateStart: '2026-02-02', dateEnd: '2026-02-06', timeStart: '08:00', timeEnd: '17:00', unitValue: 'van-hanh', description: 'Chấm an toàn PCCC và thoát nạn định kỳ tháng 02. Kiểm tra bình chữa cháy, lối thoát hiểm.' }
+        };
+    </script>
+    <script>
+        (function(){
+            var body = document.body;
+            var editBtn = document.getElementById('header-edit-btn');
+            var saveBtn = document.getElementById('header-save-btn');
+            var container = document.getElementById('standard-sections-container');
+            function setViewMode() {
+                body.classList.add('detail-view-mode');
+                if (editBtn) editBtn.classList.remove('hidden');
+                if (saveBtn) saveBtn.classList.add('hidden');
+                if (container) {
+                    container.querySelectorAll('input, select, textarea').forEach(function(el) {
+                        el.disabled = true;
+                    });
+                }
+            }
+            function setEditMode() {
+                body.classList.remove('detail-view-mode');
+                if (editBtn) editBtn.classList.add('hidden');
+                if (saveBtn) saveBtn.classList.remove('hidden');
+                if (container) {
+                    container.querySelectorAll('input, select, textarea').forEach(function(el) {
+                        el.disabled = false;
+                    });
+                }
+            }
+            if (editBtn) editBtn.addEventListener('click', setEditMode);
+            if (saveBtn) saveBtn.addEventListener('click', setViewMode);
+            setViewMode();
+
+            function syncViewDisplays() {
+                var vTitle = document.getElementById('view-config-title');
+                var vDesc = document.getElementById('view-config-desc');
+                var vTags = document.getElementById('view-config-tags');
+                var vStore = document.getElementById('view-config-store');
+                var vDept = document.getElementById('view-config-department');
+                var vDatetime = document.getElementById('view-config-datetime');
+                var vRepeat = document.getElementById('view-config-repeat-days');
+                var titleInput = document.getElementById('config-title-input');
+                var descInput = document.getElementById('config-desc-input');
+                if (vTitle && titleInput) vTitle.textContent = titleInput.value || '\u00a0';
+                if (vDesc && descInput) vDesc.textContent = descInput.value || '\u00a0';
+                var tagList = document.getElementById('config-tag-list');
+                if (vTags && tagList) {
+                    var chips = tagList.querySelectorAll('span');
+                    vTags.textContent = chips.length ? Array.from(chips).map(function(s) { return s.textContent.trim(); }).filter(Boolean).join(', ') : '\u00a0';
+                }
+                var storeList = document.getElementById('store-list');
+                if (vStore) {
+                    if (storeList && storeList.children.length) {
+                        vStore.textContent = Array.from(storeList.children).map(function(el) { return el.textContent.trim(); }).filter(Boolean).join(', ') || 'Tất cả cửa hàng';
+                    } else {
+                        vStore.textContent = 'Tất cả cửa hàng';
+                    }
+                }
+                var deptSelect = document.getElementById('add-supervisor-select');
+                if (vDept && deptSelect) {
+                    var opt = deptSelect.options[deptSelect.selectedIndex];
+                    vDept.textContent = (opt && opt.value) ? opt.text : '\u00a0';
+                }
+                var dStart = document.getElementById('config-date-start');
+                var dEnd = document.getElementById('config-date-end');
+                var tStart = document.getElementById('config-time-start');
+                var tEnd = document.getElementById('config-time-end');
+                if (vDatetime && dStart && dEnd && tStart && tEnd) {
+                    var fmt = function(d, t) {
+                        if (!d || !d.value) return '';
+                        var parts = d.value.split('-');
+                        var time = (t && t.value) ? t.value : '';
+                        return (parts[2] + '/' + parts[1] + '/' + parts[0]) + (time ? ' ' + time : '');
+                    };
+                    vDatetime.textContent = (fmt(dStart, tStart) && fmt(dEnd, tEnd)) ? (fmt(dStart, tStart) + ' – ' + fmt(dEnd, tEnd)) : '\u00a0';
+                }
+                var dayLabels = { '0': 'CN', '2': 'T2', '3': 'T3', '4': 'T4', '5': 'T5', '6': 'T6', '7': 'T7' };
+                var section = document.getElementById('cau-hinh-chung');
+                if (vRepeat && section) {
+                    var checks = section.querySelectorAll('input[name="repeat-day"]:checked');
+                    vRepeat.textContent = checks.length ? Array.from(checks).map(function(c) { return dayLabels[c.value] || c.value; }).join(', ') : '\u00a0';
+                }
+            }
+            function setViewMode() {
+                body.classList.add('detail-view-mode');
+                if (editBtn) editBtn.classList.remove('hidden');
+                if (saveBtn) saveBtn.classList.add('hidden');
+                if (container) {
+                    container.querySelectorAll('input, select, textarea').forEach(function(el) {
+                        el.disabled = true;
+                    });
+                }
+                syncViewDisplays();
+            }
+            function setEditMode() {
+                body.classList.remove('detail-view-mode');
+                if (editBtn) editBtn.classList.add('hidden');
+                if (saveBtn) saveBtn.classList.remove('hidden');
+                if (container) {
+                    container.querySelectorAll('input, select, textarea').forEach(function(el) {
+                        el.disabled = false;
+                    });
+                }
+            }
+            function applyTaskFromUrl() {
+                var params = new URLSearchParams(window.location.search);
+                var id = params.get('id');
+                if (!id || !window.DETAIL_TASK_DATA || !window.DETAIL_TASK_DATA[id]) return;
+                var data = window.DETAIL_TASK_DATA[id];
+                var titleInput = document.getElementById('config-title-input');
+                if (titleInput) titleInput.value = data.title || titleInput.value;
+                var descArea = document.getElementById('config-desc-input');
+                if (descArea) descArea.value = data.description || descArea.value;
+                var dStart = document.getElementById('config-date-start');
+                var dEnd = document.getElementById('config-date-end');
+                var tStart = document.getElementById('config-time-start');
+                var tEnd = document.getElementById('config-time-end');
+                if (dStart) dStart.value = data.dateStart || '';
+                if (dEnd) dEnd.value = data.dateEnd || '';
+                if (tStart) tStart.value = data.timeStart || '';
+                if (tEnd) tEnd.value = data.timeEnd || '';
+                var unitSelect = document.getElementById('add-supervisor-select');
+                if (unitSelect && data.unitValue) unitSelect.value = data.unitValue;
+                syncViewDisplays();
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    applyTaskFromUrl();
+                    setViewMode();
+                });
+            } else {
+                applyTaskFromUrl();
+                setViewMode();
+            }
+        })();
+    </script>
     <div class="flex-1 flex flex-col min-h-0 min-w-0">
     <header
         class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">
@@ -118,15 +279,20 @@
                 <span class="material-symbols-outlined text-slate-500">arrow_back</span>
             </a>
             <div>
-                <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Thiết lập bộ tiêu
+                <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Chi tiết bộ tiêu
                     chuẩn vận hành</h1>
                 <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Retail Excellence Management
                 </p>
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <button
+            <button type="button" id="header-edit-btn"
                 class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm">
+                <span class="material-symbols-outlined text-lg">edit</span>
+                Chỉnh sửa
+            </button>
+            <button type="button" id="header-save-btn"
+                class="hidden bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm">
                 <span class="material-symbols-outlined text-lg">save</span>
                 Lưu thay đổi
             </button>
@@ -236,7 +402,7 @@
                         </div>
                     </div>
                     <button id="add-standard-btn" type="button"
-                        class="w-full mt-4 py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase">
+                        class="edit-only w-full mt-4 py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase">
                         <span class="material-symbols-outlined text-base">add_circle</span>
                         Thêm tiêu chuẩn mới
                     </button>
@@ -270,23 +436,30 @@
                                         <div>
                                             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Tiêu
                                                 đề bộ tiêu chuẩn <span class="text-red-500">*</span></label>
-                                            <input class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm focus:ring-primary focus:border-primary" type="text" value="Quy trình vệ sinh định kỳ">
+                                            <div class="view-display" id="view-config-title" data-sync-from="config-title-input">Quy trình vệ sinh định kỳ</div>
+                                            <div class="edit-control-wrap">
+                                                <input id="config-title-input" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm focus:ring-primary focus:border-primary" type="text" value="Quy trình vệ sinh định kỳ">
+                                            </div>
                                         </div>
                                         <div>
                                             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Mô
                                                 tả</label>
-                                            <textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[80px] placeholder:text-slate-400" placeholder="Nhập mô tả bộ tiêu chuẩn (VD: Quy trình vệ sinh định kỳ áp dụng cho toàn hệ thống cửa hàng...)" rows="3"></textarea>
+                                            <div class="view-display view-display-multiline" id="view-config-desc" data-sync-from="config-desc-input"></div>
+                                            <div class="edit-control-wrap">
+                                                <textarea id="config-desc-input" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 px-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[80px] placeholder:text-slate-400" placeholder="Nhập mô tả bộ tiêu chuẩn (VD: Quy trình vệ sinh định kỳ áp dụng cho toàn hệ thống cửa hàng...)" rows="3"></textarea>
+                                            </div>
                                         </div>
                                         <div>
                                             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Tag</label>
-                                            <div class="flex gap-2">
+                                            <div class="view-display" id="view-config-tags"></div>
+                                            <div class="edit-control-wrap flex gap-2 edit-only">
                                                 <div class="relative flex-1 min-w-0">
                                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">label</span>
                                                     <input id="config-tag-input" type="text" placeholder="Tag + Enter" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-3 text-sm focus:ring-primary focus:border-primary">
                                                 </div>
                                                 <button id="config-tag-add" type="button" class="shrink-0 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition-colors">Thêm</button>
                                             </div>
-                                            <div id="config-tag-list" class="flex flex-wrap gap-1.5 mt-2 min-h-[24px]">
+                                            <div id="config-tag-list" class="edit-control-wrap flex flex-wrap gap-1.5 mt-2 min-h-[24px]">
                                             </div>
                                         </div>
                                     </div>
@@ -305,7 +478,9 @@
                                             <div>
                                                 <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Cửa
                                                     hàng áp dụng <span class="text-red-500">*</span></label>
-                                                <div class="relative">
+                                                <div class="view-display" id="view-config-store">Tất cả cửa hàng</div>
+                                                <div class="edit-control-wrap">
+                                                <div class="relative edit-only">
                                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">storefront</span>
                                                     <select id="add-store-select" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-8 text-sm focus:ring-primary focus:border-primary appearance-none">
                                                         <option value="">Thêm cửa hàng...</option>
@@ -321,11 +496,14 @@
                                                 </div>
                                                 <div id="store-list" class="flex flex-wrap gap-1.5 mt-1.5 min-h-[22px]">
                                                 </div>
+                                                </div>
                                             </div>
                                             <div>
                                                 <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Bộ
                                                     phận <span class="text-red-500">*</span></label>
-                                                <div class="relative">
+                                                <div class="view-display" id="view-config-department"></div>
+                                                <div class="edit-control-wrap">
+                                                <div class="relative edit-only">
                                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">business</span>
                                                     <select id="add-supervisor-select" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-8 text-sm focus:ring-primary focus:border-primary appearance-none">
                                                         <option value="">Chọn bộ phận</option>
@@ -341,33 +519,35 @@
                                                     <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">expand_more</span>
                                                 </div>
                                                 <div id="supervisor-list" class="flex flex-wrap gap-1.5 mt-1.5 min-h-[22px]"></div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
                                             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Thời
                                                 hạn thực hiện <span class="text-red-500">*</span></label>
-                                            <div class="flex items-center gap-2 flex-wrap">
+                                            <div class="view-display" id="view-config-datetime"></div>
+                                            <div class="edit-control-wrap flex items-center gap-2 flex-wrap">
                                                 <div class="flex flex-1 min-w-0 gap-1.5 items-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 overflow-hidden">
                                                     <div class="relative flex-1 min-w-0">
                                                         <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
-                                                        <input class="w-full bg-transparent border-none py-2 pl-8 pr-2 text-sm focus:ring-0 focus:outline-none" type="date" value="2023-10-01">
+                                                        <input id="config-date-start" class="w-full bg-transparent border-none py-2 pl-8 pr-2 text-sm focus:ring-0 focus:outline-none" type="date" value="2023-10-01">
                                                     </div>
                                                     <span class="text-slate-300 dark:text-slate-600 text-xs">|</span>
                                                     <div class="relative w-20 shrink-0">
                                                         <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">schedule</span>
-                                                        <input class="w-full bg-transparent border-none py-2 pl-7 pr-1 text-sm focus:ring-0 focus:outline-none" type="time" value="08:00">
+                                                        <input id="config-time-start" class="w-full bg-transparent border-none py-2 pl-7 pr-1 text-sm focus:ring-0 focus:outline-none" type="time" value="08:00">
                                                     </div>
                                                 </div>
                                                 <span class="text-slate-400 text-[10px] font-bold shrink-0">đến</span>
                                                 <div class="flex flex-1 min-w-0 gap-1.5 items-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 overflow-hidden">
                                                     <div class="relative flex-1 min-w-0">
                                                         <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_today</span>
-                                                        <input class="w-full bg-transparent border-none py-2 pl-8 pr-2 text-sm focus:ring-0 focus:outline-none" type="date" value="2023-10-31">
+                                                        <input id="config-date-end" class="w-full bg-transparent border-none py-2 pl-8 pr-2 text-sm focus:ring-0 focus:outline-none" type="date" value="2023-10-31">
                                                     </div>
                                                     <span class="text-slate-300 dark:text-slate-600 text-xs">|</span>
                                                     <div class="relative w-20 shrink-0">
                                                         <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">schedule</span>
-                                                        <input class="w-full bg-transparent border-none py-2 pl-7 pr-1 text-sm focus:ring-0 focus:outline-none" type="time" value="17:00">
+                                                        <input id="config-time-end" class="w-full bg-transparent border-none py-2 pl-7 pr-1 text-sm focus:ring-0 focus:outline-none" type="time" value="17:00">
                                                     </div>
                                                 </div>
                                             </div>
@@ -378,7 +558,8 @@
                                                 <h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                                                     Cấu hình lặp lại</h4>
                                             </div>
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="view-display" id="view-config-repeat-days"></div>
+                                            <div class="edit-control-wrap grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div class="hidden">
                                                     <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Lặp
                                                         lại số lượng lần</label>
@@ -454,12 +635,12 @@
                                 </div>
                                 <div class="flex gap-2">
                                     <button type="button"
-                                        class="btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                                        class="edit-only btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                                         title="Sao chép nội dung tiêu chuẩn">
                                         <span class="material-symbols-outlined text-xl">content_copy</span>
                                     </button>
-                                    <button
-                                        class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all">
+                                    <button type="button"
+                                        class="edit-only p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all">
                                         <span class="material-symbols-outlined text-xl">delete</span>
                                     </button>
                                 </div>
@@ -622,10 +803,10 @@
                                 </div>
                                 <div class="flex gap-2">
                                     <button
-                                        class="btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
+                                        class="edit-only btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
                                             class="material-symbols-outlined text-xl">content_copy</span></button>
-                                    <button
-                                        class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                    <button type="button"
+                                        class="edit-only p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
                                             class="material-symbols-outlined text-xl">delete</span></button>
                                 </div>
                             </div>
@@ -761,9 +942,9 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2"><button
-                                        class="btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
-                                            class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                        class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="edit-only btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
+                                            class="material-symbols-outlined text-xl">content_copy</span></button><button type="button"
+                                        class="edit-only p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
                                             class="material-symbols-outlined text-xl">delete</span></button></div>
                             </div>
                             <div class="space-y-8">
@@ -895,9 +1076,9 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2"><button
-                                        class="btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
-                                            class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                        class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="edit-only btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
+                                            class="material-symbols-outlined text-xl">content_copy</span></button><button type="button"
+                                        class="edit-only p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
                                             class="material-symbols-outlined text-xl">delete</span></button></div>
                             </div>
                             <div class="space-y-8">
@@ -1028,9 +1209,9 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2"><button
-                                        class="btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
-                                            class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                        class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="edit-only btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
+                                            class="material-symbols-outlined text-xl">content_copy</span></button><button type="button"
+                                        class="edit-only p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
                                             class="material-symbols-outlined text-xl">delete</span></button></div>
                             </div>
                             <div class="space-y-8">
@@ -1162,9 +1343,9 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2"><button
-                                        class="btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
-                                            class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                        class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
+                                        class="edit-only btn-copy-section p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all" title="Sao chép nội dung tiêu chuẩn"><span
+                                            class="material-symbols-outlined text-xl">content_copy</span></button><button type="button"
+                                        class="edit-only p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
                                             class="material-symbols-outlined text-xl">delete</span></button></div>
                             </div>
                             <div class="space-y-8">
