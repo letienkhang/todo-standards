@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
-    <title>Thiết lập tiêu chuẩn - Mobile | Retail Excellence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <title>Inspection Upload Empty States | Retail Excellence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
@@ -16,15 +16,22 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#3B82F6",
-                        "background-light": "#F8FAFC",
-                        "background-dark": "#0F172A",
+                        primary: "#007AFF",
+                        "background-light": "#F2F2F7",
+                        "background-dark": "#000000",
                         "card-light": "#FFFFFF",
                         "card-dark": "#1E293B",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1C1C1E",
                         "border-light": "#E2E8F0",
                         "border-dark": "#334155",
                     },
-                    fontFamily: { display: ["Inter", "sans-serif"] },
+                    fontFamily: {
+                        display: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "10px",
+                    },
                 },
             },
         };
@@ -106,7 +113,7 @@
         .phone-screen h1, .phone-screen h2, .phone-screen h3, .phone-screen p, .phone-screen label { overflow-wrap: break-word; word-break: break-word; }
         .phone-screen select { overflow: hidden; text-overflow: ellipsis; }
         /* Style mobile: padding & spacing gọn cho màn hình nhỏ */
-        .phone-screen #standard-sections-container { padding: 12px 14px 24px; max-width: 100%; overflow-x: hidden; }
+        .phone-screen #standard-sections-container { padding: 0 14px 24px; max-width: 100%; overflow-x: hidden; }
         .phone-screen #standard-sections-container .space-y-6 > * + * { margin-top: 14px; }
         .phone-screen section > div.space-y-4 > * + * { margin-top: 10px; }
         .phone-screen .rounded-xl.border { padding: 12px 14px; border-radius: 12px; overflow: hidden; }
@@ -212,6 +219,21 @@
         .phone-screen #standard-detail-sections .min-h-\[160px\] .material-symbols-outlined.text-4xl { font-size: 24px; }
         .phone-screen #standard-detail-sections .min-h-\[160px\] p { font-size: 9px; }
         .phone-notch { height: 24px; width: 100px; top: 10px; }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .ios-item-card { @apply bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 p-4 mb-1; }
+        .empty-slot { @apply w-16 h-16 rounded-lg flex-shrink-0 border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/50 active:scale-95 transition-transform; }
+        .demo-img-slot { @apply w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 relative; }
+        .demo-img-slot img { @apply w-full h-full object-cover; }
+        .img-slot-remove { @apply absolute top-0.5 right-0.5 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center p-0 border-0 active:bg-red-500 transition-colors; }
+        .img-slot-remove .material-symbols-outlined { font-size: 14px; }
+        .std-img-slot { @apply w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden border border-slate-600 dark:border-slate-600 bg-slate-800 dark:bg-slate-950 relative flex flex-col items-center justify-center p-1 text-center; }
+        .std-img-slot .std-img-badge { @apply absolute bottom-0.5 right-0.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center; }
+        .std-img-slot .std-img-badge .material-symbols-outlined { font-size: 12px; color: #fff; }
+        .text-slot { @apply min-h-[72px] rounded-lg border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col items-center justify-center gap-1 p-3; }
+        .video-slot { @apply w-full aspect-video max-w-[200px] rounded-lg border border-dashed border-slate-300 dark:border-slate-700 bg-slate-900/80 flex flex-col items-center justify-center gap-1 overflow-hidden; }
+        .section-label { @apply text-[10px] font-bold text-slate-400 uppercase tracking-tight mb-2 block; }
         .nav-item-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
         .dark .nav-item-active { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
         #sidebar-nav { transition: width 0.2s ease-out; }
@@ -223,6 +245,28 @@
         #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
         #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
         #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+        .progress-fab { width: 56px; height: 56px; position: relative; }
+        .progress-fab .progress-ring-wrap { position: absolute; inset: 0; border-radius: 9999px; overflow: hidden; }
+        .progress-fab .progress-ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .progress-fab .progress-ring-bg { fill: none; stroke: rgba(226, 232, 240, 0.9); stroke-width: 3; }
+        .dark .progress-fab .progress-ring-bg { stroke: rgba(51, 65, 85, 0.9); }
+        .progress-fab .progress-ring-fill { fill: none; stroke: #007AFF; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 150.8; animation: progress-ring-in 0.6s ease-out forwards; }
+        .dark .progress-fab .progress-ring-fill { stroke: #0A84FF; }
+        @keyframes progress-ring-in { from { stroke-dashoffset: 150.8; } to { stroke-dashoffset: 105.56; } }
+        .progress-fab:hover { box-shadow: 0 10px 25px -5px rgba(0, 122, 255, 0.2), 0 8px 10px -6px rgba(0, 122, 255, 0.1); }
+        .progress-fab:active { transform: scale(0.95); }
+        #header-more-menu { opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.2s, visibility 0.2s, transform 0.2s; }
+        #header-more-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+        #header-toast { opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.25s, visibility 0.25s, transform 0.25s; }
+        #header-toast.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        #filter-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+        .criteria-card.filter-hidden { display: none !important; }
+        .submitted-badge { @apply inline-flex items-center justify-center shrink-0 w-7 h-7 rounded-full; }
+        .submitted-badge .material-symbols-outlined { font-size: 20px; }
+        .submitted-badge.yes { @apply bg-emerald-100 dark:bg-emerald-900/50; }
+        .submitted-badge.yes .material-symbols-outlined { @apply text-emerald-600 dark:text-emerald-400; }
+        .submitted-badge.no { @apply bg-slate-100 dark:bg-slate-700; }
+        .submitted-badge.no .material-symbols-outlined { @apply text-slate-400 dark:text-slate-500; }
     </style>
 </head>
 
@@ -282,243 +326,607 @@
     <div class="flex-1 flex flex-col min-h-0 min-w-0 phone-mockup-bg items-center justify-center p-6 md:p-10 relative">
     <!-- Phone mockup wrapper -->
     <div class="phone-frame relative flex flex-col shrink-0">
-        <div class="phone-screen flex flex-col relative overflow-hidden">
+        <div class="phone-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-0">
             <div class="phone-notch pointer-events-none"></div>
-            <header class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark safe-x flex items-center justify-center shadow-sm shrink-0">
-        <h1 class="text-slate-900 dark:text-white font-bold uppercase tracking-tight truncate text-center w-full">Checklist + Daily work – Ca sáng tuần 06</h1>
-    </header>
-
-            <main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar bg-card-light dark:bg-card-dark safe-x safe-bottom">
-        <div id="standard-sections-container" class="p-4 max-w-full space-y-6">
-            <!-- Cấu hình chung -->
-            <section id="cau-hinh-chung" class="w-full">
-                <div class="flex items-center gap-3 mb-4 border-b border-border-light dark:border-border-dark pb-3">
-                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-xl flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined text-primary">tune</span>
-                    </div>
-                    <div class="min-w-0">
-                        <h2 class="text-base font-bold text-slate-900 dark:text-white uppercase tracking-tight">Cấu hình chung</h2>
-                        <p class="text-xs text-slate-400">Thiết lập thông tin nền tảng cho bộ tiêu chuẩn</p>
+            <div class="h-11 w-full bg-white dark:bg-slate-900 sticky top-0 z-50">
+                <div class="flex justify-between items-center px-6 pt-3">
+                    <span class="text-sm font-semibold text-slate-900 dark:text-white">9:41</span>
+                    <div class="flex gap-1.5 items-center">
+                        <span class="material-symbols-outlined text-[18px]">signal_cellular_alt</span>
+                        <span class="material-symbols-outlined text-[18px]">wifi</span>
+                        <span class="material-symbols-outlined text-[18px]">battery_full</span>
                     </div>
                 </div>
-                <div class="space-y-4">
-                    <!-- Card: Thông tin cơ bản (chỉ hiển thị) -->
-                    <div class="rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800/40 shadow-sm overflow-hidden">
-                        <div class="flex items-center gap-3 px-4 py-3 bg-slate-50/80 dark:bg-slate-800/60 border-b border-slate-100 dark:border-slate-700/50">
-                            <span class="w-9 h-9 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center shrink-0">
-                                <span class="material-symbols-outlined text-primary text-lg">info</span>
-                            </span>
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-white">Thông tin cơ bản</h3>
+            </div>
+            <header class="bg-white dark:bg-slate-900 border-b border-slate-200/60 dark:border-slate-800 px-4 py-3 sticky top-11 z-40">
+                <div class="flex items-center justify-between">
+                    <button class="p-1 -ml-1" type="button">
+                        <span class="material-symbols-outlined text-primary text-2xl">arrow_back_ios</span>
+                    </button>
+                    <h1 class="text-[17px] font-semibold tracking-tight">Chi tiết kiểm tra</h1>
+                    <div class="relative">
+                        <button id="header-more-btn" class="p-1 -mr-1" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="header-more-menu">
+                            <span class="material-symbols-outlined text-primary text-2xl">more_horiz</span>
+                        </button>
+                        <div id="header-more-menu" class="absolute right-0 top-full mt-1 min-w-[200px] py-1 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg z-50" role="menu">
+                            <button type="button" id="header-more-leave" class="w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" role="menuitem">
+                                <span class="material-symbols-outlined text-[20px] text-slate-500 dark:text-slate-400">person_remove</span>
+                                <span>Nghỉ phép hôm nay</span>
+                            </button>
                         </div>
-                        <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                            <div class="px-4 py-3">
-                                <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Tiêu đề bộ tiêu chuẩn</p>
-                                <p class="text-sm font-medium text-slate-900 dark:text-slate-100">Quy trình vệ sinh định kỳ</p>
-                            </div>
-                            <div class="px-4 py-3">
-                                <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Mô tả</p>
-                                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Quy trình vệ sinh định kỳ áp dụng cho toàn hệ thống cửa hàng. Thực hiện theo checklist hàng ngày, báo cáo qua app trước 17h.</p>
-                            </div>
-                            <div class="px-4 py-3">
-                                <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Tag</p>
+                    </div>
+                </div>
+            </header>
+            <div id="header-toast" class="absolute left-4 right-4 bottom-24 max-w-[calc(100%-2rem)] px-4 py-3 rounded-xl bg-slate-800 dark:bg-slate-700 text-white text-[13px] leading-snug text-center shadow-xl z-[100] pointer-events-none">
+                Nhấn vào khi nhân sự hôm nay nghỉ phép để không bị giao việc
+            </div>
+            <main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden no-scrollbar pb-24">
+                <div id="standard-sections-container" class="max-w-full overflow-x-hidden">
+                    <div class="-mx-[14px] w-[calc(100%+28px)] pt-0 pb-2">
+                        <div class="rounded-none border-x-0 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 border-t border-b w-full overflow-hidden">
+                            <div class="p-4 pb-3">
+                                <h4 class="text-[16px] font-bold text-slate-900 dark:text-white mb-2 leading-tight">Quy trình vệ sinh định kỳ</h4>
+                                <p class="text-[12px] text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Đảm bảo tất cả khu vực sảnh và khu vực công cộng luôn sạch sẽ, đạt chuẩn 5 sao.</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary text-xs font-medium">Vệ sinh</span>
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary text-xs font-medium">Định kỳ</span>
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary text-xs font-medium">Cửa hàng</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold bg-primary/10 text-primary border border-primary/40 dark:bg-primary/20 dark:border-primary/50">Vệ sinh</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-600">Hàng ngày</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold bg-violet-50 text-violet-700 border border-violet-300 dark:bg-violet-900/30 dark:text-violet-300 dark:border-violet-600">Sảnh</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-slate-100 dark:border-slate-800">
+                                <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Thời gian thực hiện</span>
+                                    <p class="text-[13px] text-slate-800 dark:text-slate-200 font-medium tabular-nums">07/02/2025 · 08:00</p>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+                                    <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Người thực hiện</span>
+                                    <button type="button" class="w-9 h-9 rounded-full border-2 border-dashed border-primary/50 dark:border-primary/60 bg-primary/5 dark:bg-primary/10 flex items-center justify-center text-primary active:scale-95 transition-transform" aria-label="Chọn người thực hiện">
+                                        <span class="material-symbols-outlined text-[22px]">add</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 px-4 py-3">
+                                    <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Người giám sát</span>
+                                    <p class="text-[13px] text-slate-800 dark:text-slate-200 font-medium">Nguyễn Văn A</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Card: Thiết lập triển khai (chỉ hiển thị) -->
-                    <div class="rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800/40 shadow-sm overflow-hidden">
-                        <div class="flex items-center gap-3 px-4 py-3 bg-slate-50/80 dark:bg-slate-800/60 border-b border-slate-100 dark:border-slate-700/50">
-                            <span class="w-9 h-9 rounded-xl bg-emerald-500/10 dark:bg-emerald-400/20 flex items-center justify-center shrink-0">
-                                <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-lg">rocket_launch</span>
-                            </span>
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-white">Thiết lập triển khai</h3>
+                    <div class="px-4 py-3 flex justify-between items-center bg-transparent relative">
+                        <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-500">10 Tiêu chuẩn kiểm tra</h3>
+                        <button type="button" id="filter-btn" class="flex items-center gap-1 text-primary" aria-haspopup="true" aria-expanded="false" aria-controls="filter-menu">
+                            <span class="material-symbols-outlined text-lg">filter_list</span>
+                            <span class="text-xs font-medium">Lọc</span>
+                        </button>
+                        <div id="filter-menu" class="absolute right-0 top-full mt-1 min-w-[160px] py-1 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg z-50 opacity-0 invisible translate-y-[-4px] transition-all duration-200" role="menu">
+                            <button type="button" class="filter-option w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors font-medium text-primary" data-filter="all" role="menuitem">
+                                <span class="material-symbols-outlined text-[18px]">list</span>
+                                Tất cả
+                            </button>
+                            <button type="button" class="filter-option w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-filter="image" role="menuitem">
+                                <span class="material-symbols-outlined text-[18px]">photo_library</span>
+                                Ảnh
+                            </button>
+                            <button type="button" class="filter-option w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-filter="video" role="menuitem">
+                                <span class="material-symbols-outlined text-[18px]">videocam</span>
+                                Video
+                            </button>
+                            <button type="button" class="filter-option w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-filter="text" role="menuitem">
+                                <span class="material-symbols-outlined text-[18px]">description</span>
+                                Văn bản
+                            </button>
+                            <div class="border-t border-slate-200 dark:border-slate-700 my-1"></div>
+                            <button type="button" class="filter-option w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-filter="submitted" role="menuitem">
+                                <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                                Đã gửi ảnh
+                            </button>
+                            <button type="button" class="filter-option w-full flex items-center gap-2 px-4 py-2.5 text-left text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-filter="not-submitted" role="menuitem">
+                                <span class="material-symbols-outlined text-[18px]">pending</span>
+                                Chưa gửi ảnh
+                            </button>
                         </div>
-                        <div class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                            <div class="flex items-start gap-3 px-4 py-3">
-                                <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-lg shrink-0 mt-0.5">storefront</span>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-0.5">Cửa hàng áp dụng</p>
-                                    <p class="text-sm font-medium text-slate-900 dark:text-slate-100">Tất cả cửa hàng</p>
+                    </div>
+                    <section id="criteria-list" class="space-y-0.5">
+                    <div id="tieu-chuan-1" class="ios-item-card criteria-card" data-type="image" data-submitted="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">1</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Cửa kính sảnh chính</h4>
+                                    <p class="text-[10px] text-slate-500">Sạch bóng, không vân tay</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 px-4 py-3">
-                                <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-lg shrink-0 mt-0.5">business</span>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-0.5">Bộ phận</p>
-                                    <p class="text-sm font-medium text-slate-900 dark:text-slate-100">Nhóm Retail</p>
+                            <span class="submitted-badge yes" title="Đã gửi ảnh" aria-label="Đã gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Ảnh tiêu chuẩn</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                    <div class="demo-img-slot">
+                                        <button type="button" class="img-slot-remove" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                        <img src="https://picsum.photos/128/128?random=1" alt="Mẫu 1" />
+                                    </div>
+                                    <div class="demo-img-slot">
+                                        <button type="button" class="img-slot-remove" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                        <img src="https://picsum.photos/128/128?random=2" alt="Mẫu 2" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 px-4 py-3">
-                                <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-lg shrink-0 mt-0.5">calendar_today</span>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-0.5">Thời hạn thực hiện</p>
-                                    <p class="text-xs text-slate-700 dark:text-slate-300 font-medium">01/10/2023 08:00 – 31/10/2023 17:00</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3 px-4 py-3">
-                                <span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-lg shrink-0 mt-0.5">loop</span>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Lặp vào các thứ</p>
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 text-xs font-medium">T2</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 text-xs font-medium">T3</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 text-xs font-medium">T4</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 text-xs font-medium">T5</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 text-xs font-medium">T6</span>
+                            <div class="w-full">
+                                <span class="section-label">Ảnh thực tế</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                    <div class="demo-img-slot">
+                                        <button type="button" class="img-slot-remove" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                        <img src="https://picsum.photos/128/128?random=3" alt="Thực tế 1" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div id="tieu-chuan-2" class="ios-item-card criteria-card" data-type="image" data-submitted="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">2</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Kiểm tra thùng rác</h4>
+                                    <p class="text-[10px] text-slate-500">Vị trí góc sảnh, không tràn</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge yes" title="Đã gửi ảnh" aria-label="Đã gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Ảnh tiêu chuẩn</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                    <div class="demo-img-slot">
+                                        <button type="button" class="img-slot-remove" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                        <img src="https://picsum.photos/128/128?random=4" alt="Mẫu" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full">
+                                <span class="section-label">Ảnh thực tế</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-3" class="ios-item-card criteria-card" data-type="video" data-submitted="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">3</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Hệ thống đèn trần</h4>
+                                    <p class="text-[10px] text-slate-500">Hoạt động 100%, không cháy</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge yes" title="Đã gửi ảnh" aria-label="Đã gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Video</span>
+                                <div class="video-slot text-slate-400">
+                                    <span class="material-symbols-outlined text-3xl">videocam</span>
+                                    <span class="text-[10px] font-medium">Chưa có video</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-4" class="ios-item-card criteria-card" data-type="text" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">4</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Thảm lau chân sảnh</h4>
+                                    <p class="text-[10px] text-slate-500">Vị trí đúng, sạch sẽ</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Văn bản / Mô tả</span>
+                                <div class="text-slot text-slate-400">
+                                    <span class="material-symbols-outlined text-2xl">description</span>
+                                    <span class="text-[10px] font-medium">Chưa nhập nội dung</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-5" class="ios-item-card criteria-card" data-type="image" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">5</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Kiểm tra tủ lạnh &amp; tủ đông</h4>
+                                    <p class="text-[10px] text-slate-500">Nhiệt độ, lau dọn, hạn sử dụng</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Ảnh tiêu chuẩn</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <div class="std-img-slot" title="Ảnh tiêu chuẩn từ hệ thống">
+                                        <span class="text-[8px] font-bold text-white leading-tight uppercase">Tiêu chuẩn</span>
+                                        <span class="text-[6px] text-white/80 leading-tight">Tủ lạnh, tủ đông</span>
+                                        <span class="std-img-badge" aria-hidden="true"><span class="material-symbols-outlined">check</span></span>
+                                    </div>
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="w-full">
+                                <span class="section-label">Ảnh thực tế</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-6" class="ios-item-card criteria-card" data-type="video" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">6</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Vệ sinh khu vực WC</h4>
+                                    <p class="text-[10px] text-slate-500">Nhà vệ sinh, bồn rửa, giấy vệ sinh</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Video</span>
+                                <div class="video-slot text-slate-400">
+                                    <span class="material-symbols-outlined text-3xl">videocam</span>
+                                    <span class="text-[10px] font-medium">Chưa có video</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-7" class="ios-item-card criteria-card" data-type="text" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">7</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Kiểm tra nhãn giá kệ</h4>
+                                    <p class="text-[10px] text-slate-500">Bảng giá, hạn sử dụng đầy đủ</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Văn bản / Mô tả</span>
+                                <div class="text-slot text-slate-400">
+                                    <span class="material-symbols-outlined text-2xl">description</span>
+                                    <span class="text-[10px] font-medium">Chưa nhập nội dung</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-8" class="ios-item-card criteria-card" data-type="image" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">8</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Chấm trưng bày VM</h4>
+                                    <p class="text-[10px] text-slate-500">Planogram, kệ hàng đúng chuẩn</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Ảnh tiêu chuẩn</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="w-full">
+                                <span class="section-label">Ảnh thực tế</span>
+                                <div class="img-list flex gap-1.5 overflow-x-auto no-scrollbar">
+                                    <button type="button" class="img-add-btn empty-slot text-primary border-primary/30 bg-primary/5 shrink-0" aria-label="Thêm ảnh">
+                                        <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-9" class="ios-item-card criteria-card" data-type="video" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">9</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">An toàn PCCC &amp; thoát nạn</h4>
+                                    <p class="text-[10px] text-slate-500">Bình chữa cháy, lối thoát hiểm</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Video</span>
+                                <div class="video-slot text-slate-400">
+                                    <span class="material-symbols-outlined text-3xl">videocam</span>
+                                    <span class="text-[10px] font-medium">Chưa có video</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tieu-chuan-10" class="ios-item-card criteria-card" data-type="text" data-submitted="false">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">10</div>
+                                <div class="min-w-0">
+                                    <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Báo cáo tồn kho &amp; đối soát</h4>
+                                    <p class="text-[10px] text-slate-500">Đối soát cuối ngày, số liệu chính xác</p>
+                                </div>
+                            </div>
+                            <span class="submitted-badge no" title="Chưa gửi ảnh" aria-label="Chưa gửi ảnh"><span class="material-symbols-outlined">check_circle</span></span>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Văn bản / Mô tả</span>
+                                <div class="text-slot text-slate-400">
+                                    <span class="material-symbols-outlined text-2xl">description</span>
+                                    <span class="text-[10px] font-medium">Chưa nhập nội dung</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ios-item-card mt-4" id="report-block">
+                        <h3 class="text-[13px] font-semibold text-slate-900 dark:text-white mb-4">Báo cáo công việc</h3>
+                        <div class="flex flex-col gap-5">
+                            <div class="w-full">
+                                <span class="section-label">Tiến độ</span>
+                                <div class="flex gap-2 mt-1">
+                                    <label class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border-2 cursor-pointer transition-colors report-track-option bg-emerald-50 dark:bg-emerald-900/30 border-emerald-500 dark:border-emerald-500 text-emerald-700 dark:text-emerald-300" data-value="on">
+                                        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+                                        <span class="text-[13px] font-medium">On track</span>
+                                    </label>
+                                    <label class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border-2 cursor-pointer transition-colors report-track-option bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400" data-value="off">
+                                        <span class="material-symbols-outlined text-[18px]">trending_down</span>
+                                        <span class="text-[13px] font-medium">Off track</span>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="report-track" id="report-track" value="on" />
+                            </div>
+                            <div class="w-full">
+                                <label for="report-desc" class="section-label block mb-1">Mô tả</label>
+                                <textarea id="report-desc" name="report-desc" rows="4" placeholder="Nhập mô tả báo cáo..." class="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 text-[13px] resize-y min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"></textarea>
+                            </div>
+                            <div class="w-full">
+                                <span class="section-label block mb-1">Tải file lên</span>
+                                <div class="report-file-zone relative border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-lg p-4 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10" id="report-file-zone">
+                                    <input type="file" id="report-file-input" name="report-file" class="absolute opacity-0 w-0 h-0" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" multiple />
+                                    <label for="report-file-input" class="cursor-pointer flex flex-col items-center gap-2 py-2">
+                                        <span class="material-symbols-outlined text-3xl text-slate-400 dark:text-slate-500">upload_file</span>
+                                        <span class="text-[12px] text-slate-500 dark:text-slate-400 font-medium">Nhấn để chọn file hoặc kéo thả</span>
+                                        <span class="text-[10px] text-slate-400 dark:text-slate-500">PDF, Word, Excel, ảnh</span>
+                                    </label>
+                                    <ul class="report-file-list mt-2 text-left text-[12px] text-slate-600 dark:text-slate-300 space-y-1 hidden" id="report-file-list"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </section>
                 </div>
-            </section>
-
-            <!-- Tiêu chuẩn chi tiết -->
-            <div id="standard-detail-sections" class="w-full space-y-6">
-                <section id="tieu-chuan-1" class="pt-6 border-t border-slate-200 dark:border-slate-700 scroll-mt-4">
-                    <div class="flex items-start justify-between gap-3 mb-5">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-11 w-11 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
-                                <span class="text-base font-bold text-white dark:text-slate-900">01</span>
-                            </div>
-                            <div class="min-w-0">
-                                <h3 class="text-base font-bold text-slate-900 dark:text-white">Vệ sinh khu vực cửa chính &amp; Sảnh</h3>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Chi tiết tiêu chuẩn vận hành</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-1 shrink-0">
-                            <button type="button" class="p-3 text-slate-400 active:text-primary active:bg-slate-100 dark:active:bg-slate-800 rounded-xl transition-colors" aria-label="Sao chép"><span class="material-symbols-outlined text-xl">content_copy</span></button>
-                            <button type="button" class="p-3 text-slate-400 active:text-red-500 active:bg-red-50 dark:active:bg-red-900/10 rounded-xl transition-colors" aria-label="Xóa"><span class="material-symbols-outlined text-xl">delete</span></button>
-                        </div>
-                    </div>
-                    <div class="space-y-5">
-                        <div>
-                            <label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest"><span class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label>
-                            <textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-base focus:ring-2 focus:ring-primary resize-none min-h-[100px] outline-none" placeholder="Nhập mô tả chi tiết...">Đảm bảo kính cửa chính luôn sạch sẽ, không có dấu tay. Thảm chùi chân được đặt ngay ngắn và hút bụi sạch sẽ trước khi mở cửa.</textarea>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="space-y-2">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh mẫu</label>
-                                <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center cursor-pointer active:border-primary/50 active:bg-slate-50 dark:active:bg-slate-800/50 transition-all min-h-[160px]">
-                                    <span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span>
-                                    <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên</p>
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh thực tế</label>
-                                <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center cursor-pointer active:border-primary/50 active:bg-slate-50 dark:active:bg-slate-800/50 transition-all min-h-[160px]">
-                                    <span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span>
-                                    <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="tieu-chuan-2" class="pt-6 border-t border-slate-200 dark:border-slate-700 scroll-mt-4">
-                    <div class="flex items-start justify-between gap-3 mb-5">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-11 w-11 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0"><span class="text-base font-bold text-white dark:text-slate-900">02</span></div>
-                            <div class="min-w-0">
-                                <h3 class="text-base font-bold text-slate-900 dark:text-white">Kiểm tra trưng bày kệ A1</h3>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Chi tiết tiêu chuẩn vận hành</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-1 shrink-0">
-                            <button type="button" class="p-3 text-slate-400 active:text-primary active:bg-slate-100 dark:active:bg-slate-800 rounded-xl"><span class="material-symbols-outlined text-xl">content_copy</span></button>
-                            <button type="button" class="p-3 text-slate-400 active:text-red-500 active:bg-red-50 dark:active:bg-red-900/10 rounded-xl"><span class="material-symbols-outlined text-xl">delete</span></button>
-                        </div>
-                    </div>
-                    <div class="space-y-5">
-                        <div>
-                            <label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest"><span class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label>
-                            <textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-base focus:ring-2 focus:ring-primary resize-none min-h-[100px] outline-none" placeholder="Nhập mô tả...">Kiểm tra bảng giá, hạn sử dụng sản phẩm trên kệ A1. Đảm bảo trưng bày gọn gàng, đúng quy định.</textarea>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh mẫu</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer active:border-primary/50"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh mẫu chuẩn lên</p></div></div>
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh thực tế</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer active:border-primary/50"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh thực tế lên</p></div></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="tieu-chuan-3" class="pt-6 border-t border-slate-200 dark:border-slate-700 scroll-mt-4">
-                    <div class="flex items-start justify-between gap-3 mb-5">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-11 w-11 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0"><span class="text-base font-bold text-white dark:text-slate-900">03</span></div>
-                            <div class="min-w-0"><h3 class="text-base font-bold text-slate-900 dark:text-white">Vệ sinh khu vực kho</h3><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Chi tiết tiêu chuẩn vận hành</p></div>
-                        </div>
-                        <div class="flex gap-1 shrink-0"><button type="button" class="p-3 text-slate-400 active:text-primary rounded-xl"><span class="material-symbols-outlined text-xl">content_copy</span></button><button type="button" class="p-3 text-slate-400 active:text-red-500 rounded-xl"><span class="material-symbols-outlined text-xl">delete</span></button></div>
-                    </div>
-                    <div class="space-y-5">
-                        <div><label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-2"><span class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label><textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-base focus:ring-2 focus:ring-primary min-h-[100px] outline-none" placeholder="Nhập mô tả...">Sắp xếp kho theo FEFO, vệ sinh sàn và kệ, kiểm tra nhiệt độ bảo quản.</textarea></div>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh mẫu</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh mẫu chuẩn lên</p></div></div>
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh thực tế</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh thực tế lên</p></div></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="tieu-chuan-4" class="pt-6 border-t border-slate-200 dark:border-slate-700 scroll-mt-4">
-                    <div class="flex items-start justify-between gap-3 mb-5">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-11 w-11 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0"><span class="text-base font-bold text-white dark:text-slate-900">04</span></div>
-                            <div class="min-w-0"><h3 class="text-base font-bold text-slate-900 dark:text-white">Kiểm tra tủ lạnh &amp; Tủ đông</h3><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Chi tiết tiêu chuẩn vận hành</p></div>
-                        </div>
-                        <div class="flex gap-1 shrink-0"><button type="button" class="p-3 text-slate-400 active:text-primary rounded-xl"><span class="material-symbols-outlined text-xl">content_copy</span></button><button type="button" class="p-3 text-slate-400 active:text-red-500 rounded-xl"><span class="material-symbols-outlined text-xl">delete</span></button></div>
-                    </div>
-                    <div class="space-y-5">
-                        <div><label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-2"><span class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label><textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-base focus:ring-2 focus:ring-primary min-h-[100px] outline-none" placeholder="Nhập mô tả...">Kiểm tra nhiệt độ tủ lạnh/tủ đông, lau dọn, kiểm tra hạn sử dụng sản phẩm bảo quản.</textarea></div>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh mẫu</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh mẫu chuẩn lên</p></div></div>
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh thực tế</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh thực tế lên</p></div></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="tieu-chuan-5" class="pt-6 border-t border-slate-200 dark:border-slate-700 scroll-mt-4">
-                    <div class="flex items-start justify-between gap-3 mb-5">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-11 w-11 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0"><span class="text-base font-bold text-white dark:text-slate-900">05</span></div>
-                            <div class="min-w-0"><h3 class="text-base font-bold text-slate-900 dark:text-white">Vệ sinh khu vực WC</h3><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Chi tiết tiêu chuẩn vận hành</p></div>
-                        </div>
-                        <div class="flex gap-1 shrink-0"><button type="button" class="p-3 text-slate-400 active:text-primary rounded-xl"><span class="material-symbols-outlined text-xl">content_copy</span></button><button type="button" class="p-3 text-slate-400 active:text-red-500 rounded-xl"><span class="material-symbols-outlined text-xl">delete</span></button></div>
-                    </div>
-                    <div class="space-y-5">
-                        <div><label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-2"><span class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label><textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-base focus:ring-2 focus:ring-primary min-h-[100px] outline-none" placeholder="Nhập mô tả...">Vệ sinh nhà vệ sinh, bồn rửa, bổ sung giấy vệ sinh và xà phòng.</textarea></div>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh mẫu</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh mẫu chuẩn lên</p></div></div>
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh thực tế</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh thực tế lên</p></div></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="tieu-chuan-6" class="pt-6 border-t border-slate-200 dark:border-slate-700 scroll-mt-4">
-                    <div class="flex items-start justify-between gap-3 mb-5">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="h-11 w-11 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0"><span class="text-base font-bold text-white dark:text-slate-900">06</span></div>
-                            <div class="min-w-0"><h3 class="text-base font-bold text-slate-900 dark:text-white">Kiểm tra an toàn PCCC</h3><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Chi tiết tiêu chuẩn vận hành</p></div>
-                        </div>
-                        <div class="flex gap-1 shrink-0"><button type="button" class="p-3 text-slate-400 active:text-primary rounded-xl"><span class="material-symbols-outlined text-xl">content_copy</span></button><button type="button" class="p-3 text-slate-400 active:text-red-500 rounded-xl"><span class="material-symbols-outlined text-xl">delete</span></button></div>
-                    </div>
-                    <div class="space-y-5">
-                        <div><label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-2"><span class="material-symbols-outlined text-base">notes</span> Mô tả công việc</label><textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-base focus:ring-2 focus:ring-primary min-h-[100px] outline-none" placeholder="Nhập mô tả...">Kiểm tra bình chữa cháy còn hạn, lối thoát hiểm thông thoáng, bảng hướng dẫn PCCC đầy đủ.</textarea></div>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh mẫu</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh mẫu chuẩn lên</p></div></div>
-                            <div class="space-y-2"><label class="block text-[10px] font-bold text-slate-400 uppercase">Ảnh thực tế</label><div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 min-h-[160px] cursor-pointer"><span class="material-symbols-outlined text-slate-300 text-4xl">add_a_photo</span><p class="text-[10px] text-slate-400">Tải ảnh thực tế lên</p></div></div>
-                        </div>
-                    </div>
-                </section>
+            </main>
+            <div class="absolute bottom-0 left-0 right-0 p-4 pb-6 bg-gradient-to-t from-background-light dark:from-background-dark to-transparent pointer-events-none">
+                <div class="flex justify-end pointer-events-auto">
+                    <button type="button" class="progress-fab rounded-full bg-white dark:bg-slate-900 shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center transition-all duration-200 ring-2 ring-primary/20 hover:ring-primary/40" aria-label="Tiến trình: 3 trên 10 tiêu chuẩn">
+                        <span class="progress-ring-wrap">
+                            <svg viewBox="0 0 56 56">
+                                <circle class="progress-ring-bg" cx="28" cy="28" r="24" />
+                                <circle class="progress-ring-fill" cx="28" cy="28" r="24" stroke-dashoffset="105.56" />
+                            </svg>
+                        </span>
+                        <span class="relative z-10 text-[10px] font-bold text-slate-700 dark:text-slate-200 leading-tight text-center">3/10</span>
+                    </button>
+                </div>
             </div>
-        </div>
-    </main>
         </div>
     </div>
     <p class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400 font-medium">MVP · Giao diện mobile mockup</p>
     </div>
+    <script>
+        (function () {
+            var moreBtn = document.getElementById('header-more-btn');
+            var moreMenu = document.getElementById('header-more-menu');
+            var leaveItem = document.getElementById('header-more-leave');
+            var toast = document.getElementById('header-toast');
+            var toastTimer = null;
+            function openMenu() { moreMenu.classList.add('open'); moreBtn.setAttribute('aria-expanded', 'true'); }
+            function closeMenu() { moreMenu.classList.remove('open'); moreBtn.setAttribute('aria-expanded', 'false'); }
+            function showToast() {
+                if (toastTimer) clearTimeout(toastTimer);
+                toast.classList.add('show');
+                toastTimer = setTimeout(function () { toast.classList.remove('show'); toastTimer = null; }, 4000);
+            }
+            if (moreBtn && moreMenu) {
+                moreBtn.addEventListener('click', function (e) { e.stopPropagation(); moreMenu.classList.contains('open') ? closeMenu() : openMenu(); });
+                document.addEventListener('click', function () { if (moreMenu.classList.contains('open')) closeMenu(); });
+            }
+            if (leaveItem && toast) {
+                leaveItem.addEventListener('click', function (e) { e.stopPropagation(); closeMenu(); showToast(); });
+            }
+        })();
+        (function () {
+            var filterBtn = document.getElementById('filter-btn');
+            var filterMenu = document.getElementById('filter-menu');
+            var criteriaList = document.getElementById('criteria-list');
+            var cards = criteriaList ? criteriaList.querySelectorAll('.criteria-card') : [];
+            var currentFilter = 'all';
+            function openFilterMenu() { filterMenu.classList.add('open'); filterBtn.setAttribute('aria-expanded', 'true'); }
+            function closeFilterMenu() { filterMenu.classList.remove('open'); filterBtn.setAttribute('aria-expanded', 'false'); }
+            function applyFilter(type) {
+                currentFilter = type;
+                cards.forEach(function (card) {
+                    var cardType = card.getAttribute('data-type');
+                    var submitted = card.getAttribute('data-submitted') === 'true';
+                    var show = false;
+                    if (type === 'all') {
+                        show = true;
+                    } else if (type === 'submitted') {
+                        show = submitted;
+                    } else if (type === 'not-submitted') {
+                        show = !submitted;
+                    } else {
+                        show = cardType === type;
+                    }
+                    if (show) {
+                        card.classList.remove('filter-hidden');
+                    } else {
+                        card.classList.add('filter-hidden');
+                    }
+                });
+                filterMenu.querySelectorAll('.filter-option').forEach(function (btn) {
+                    if (btn.getAttribute('data-filter') === type) {
+                        btn.classList.add('font-medium', 'text-primary');
+                    } else {
+                        btn.classList.remove('font-medium', 'text-primary');
+                    }
+                });
+            }
+            if (filterBtn && filterMenu) {
+                filterBtn.addEventListener('click', function (e) { e.stopPropagation(); filterMenu.classList.toggle('open'); filterBtn.setAttribute('aria-expanded', filterMenu.classList.contains('open')); });
+                document.addEventListener('click', function () { if (filterMenu.classList.contains('open')) closeFilterMenu(); });
+            }
+            if (filterMenu) {
+                filterMenu.querySelectorAll('.filter-option').forEach(function (btn) {
+                    btn.addEventListener('click', function (e) { e.stopPropagation(); applyFilter(btn.getAttribute('data-filter')); closeFilterMenu(); });
+                });
+            }
+                document.addEventListener('submitted-state-changed', function () {
+                applyFilter(currentFilter);
+            });
+        })();
+        (function () {
+            var options = document.querySelectorAll('.report-track-option');
+            var hidden = document.getElementById('report-track');
+            var onClasses = ['bg-emerald-50', 'dark:bg-emerald-900/30', 'border-emerald-500', 'dark:border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300'];
+            var offClasses = ['bg-red-50', 'dark:bg-red-900/20', 'border-red-400', 'dark:border-red-500', 'text-red-600', 'dark:text-red-400'];
+            var neutralClasses = ['bg-slate-50', 'dark:bg-slate-800/50', 'border-slate-200', 'dark:border-slate-600', 'text-slate-600', 'dark:text-slate-400'];
+            function setOptionStyles() {
+                options.forEach(function (o) {
+                    o.classList.remove(...onClasses, ...offClasses, ...neutralClasses);
+                    if (o.getAttribute('data-value') === hidden.value) {
+                        if (hidden.value === 'on') o.classList.add(...onClasses);
+                        else o.classList.add(...offClasses);
+                    } else {
+                        o.classList.add(...neutralClasses);
+                    }
+                });
+            }
+            options.forEach(function (opt) {
+                opt.addEventListener('click', function () {
+                    hidden.value = opt.getAttribute('data-value');
+                    setOptionStyles();
+                });
+            });
+        })();
+        (function () {
+            var fileInput = document.getElementById('report-file-input');
+            var fileList = document.getElementById('report-file-list');
+            var fileZone = document.getElementById('report-file-zone');
+            if (fileInput && fileList) {
+                fileInput.addEventListener('change', function () {
+                    var files = Array.from(fileInput.files || []);
+                    fileList.innerHTML = '';
+                    if (files.length) {
+                        fileList.classList.remove('hidden');
+                        files.forEach(function (f) {
+                            var li = document.createElement('li');
+                            li.className = 'flex items-center gap-2';
+                            li.innerHTML = '<span class="material-symbols-outlined text-[16px] text-slate-500">insert_drive_file</span><span class="truncate flex-1">' + (f.name || 'File') + '</span>';
+                            fileList.appendChild(li);
+                        });
+                    } else {
+                        fileList.classList.add('hidden');
+                    }
+                });
+            }
+            if (fileZone && fileInput) {
+                fileZone.addEventListener('dragover', function (e) { e.preventDefault(); fileZone.classList.add('border-primary', 'bg-primary/10'); });
+                fileZone.addEventListener('dragleave', function () { fileZone.classList.remove('border-primary', 'bg-primary/10'); });
+                fileZone.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    fileZone.classList.remove('border-primary', 'bg-primary/10');
+                    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+                        fileInput.files = e.dataTransfer.files;
+                        fileInput.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
+        })();
+        (function () {
+            var imgCounter = 100;
+            function updateSubmittedState(card) {
+                if (!card || card.getAttribute('data-type') !== 'image') return;
+                var blocks = card.querySelectorAll('.flex.flex-col.gap-5 .w-full');
+                var realBlock = null;
+                blocks.forEach(function (block) {
+                    if (block.querySelector('.section-label') && block.querySelector('.section-label').textContent.trim() === 'Ảnh thực tế') {
+                        realBlock = block;
+                    }
+                });
+                if (!realBlock) return;
+                var list = realBlock.querySelector('.img-list');
+                var hasRealImg = list && list.querySelectorAll('.demo-img-slot').length > 0;
+                card.setAttribute('data-submitted', hasRealImg ? 'true' : 'false');
+                var badge = card.querySelector('.submitted-badge');
+                if (badge) {
+                    badge.className = 'submitted-badge ' + (hasRealImg ? 'yes' : 'no');
+                    badge.setAttribute('title', hasRealImg ? 'Đã gửi ảnh' : 'Chưa gửi ảnh');
+                    badge.setAttribute('aria-label', hasRealImg ? 'Đã gửi ảnh' : 'Chưa gửi ảnh');
+                }
+                document.dispatchEvent(new CustomEvent('submitted-state-changed'));
+            }
+            document.addEventListener('click', function (e) {
+                var addBtn = e.target.closest('.img-add-btn');
+                if (addBtn) {
+                    var list = addBtn.closest('.img-list');
+                    if (!list) return;
+                    imgCounter++;
+                    var slot = document.createElement('div');
+                    slot.className = 'demo-img-slot';
+                    slot.innerHTML = '<button type="button" class="img-slot-remove" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button><img src="https://picsum.photos/128/128?random=' + imgCounter + '" alt="Ảnh mới" />';
+                    list.insertBefore(slot, addBtn.nextSibling);
+                    var card = list.closest('.criteria-card');
+                    if (card) updateSubmittedState(card);
+                    return;
+                }
+                var removeBtn = e.target.closest('.img-slot-remove');
+                if (removeBtn) {
+                    var slot = removeBtn.closest('.demo-img-slot');
+                    if (slot) {
+                        var card = slot.closest('.criteria-card');
+                        slot.remove();
+                        if (card) updateSubmittedState(card);
+                    }
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
