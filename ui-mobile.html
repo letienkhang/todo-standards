@@ -261,6 +261,7 @@
         #header-toast.show { opacity: 1; visibility: visible; transform: translateY(0); }
         #filter-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
         .criteria-card.filter-hidden { display: none !important; }
+        .criteria-num { display: inline-block; min-width: 1.5rem; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; text-align: center; }
         .submitted-badge { @apply inline-flex items-center justify-center shrink-0 w-7 h-7 rounded-full; }
         .submitted-badge .material-symbols-outlined { font-size: 20px; }
         .submitted-badge.yes { @apply bg-emerald-100 dark:bg-emerald-900/50; }
@@ -374,20 +375,19 @@
                         </div>
                         <div class="rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 overflow-hidden">
                             <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-                                <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Thời gian thực hiện</span>
+                                <span class="inline-flex items-center gap-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-slate-400 dark:text-slate-500">schedule</span>Thời gian</span>
                                 <span class="text-[13px] font-medium text-slate-800 dark:text-slate-200 tabular-nums">07/02/2025 • 08:00</span>
                             </div>
                             <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-                                <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Người thực hiện</span>
-                                <div class="relative flex items-center justify-end">
-                                    <img src="https://picsum.photos/80/80?random=avatar" alt="" class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
-                                    <button type="button" class="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-sky-400 dark:bg-sky-500 flex items-center justify-center text-white active:scale-95 transition-transform" aria-label="Chọn người thực hiện">
-                                        <span class="material-symbols-outlined text-[12px] leading-none">add</span>
+                                <span class="inline-flex items-center gap-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-slate-400 dark:text-slate-500">person</span>Người thực hiện</span>
+                                <div class="flex items-center justify-end">
+                                    <button type="button" class="w-8 h-8 rounded-full border-2 border-dashed border-primary text-primary flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform" aria-label="Chọn người thực hiện">
+                                        <span class="material-symbols-outlined text-[16px]">add</span>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex items-center justify-between gap-3 px-4 py-3">
-                                <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Người giám sát</span>
+                                <span class="inline-flex items-center gap-1.5 text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-slate-400 dark:text-slate-500">supervisor_account</span>Người giám sát</span>
                                 <span class="text-[13px] font-medium text-slate-800 dark:text-slate-200">Nguyễn Văn A</span>
                             </div>
                         </div>
@@ -429,8 +429,8 @@
                     <section id="criteria-list" class="space-y-0.5">
                     <div id="tieu-chuan-1" class="ios-item-card criteria-card" data-type="image" data-submitted="true">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">1</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">1</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Cửa kính sảnh chính</h4>
                                     <p class="text-[10px] text-slate-500">Sạch bóng, không vân tay</p>
@@ -471,8 +471,8 @@
                     </div>
                     <div id="tieu-chuan-2" class="ios-item-card criteria-card" data-type="image" data-submitted="true">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">2</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">2</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Kiểm tra thùng rác</h4>
                                     <p class="text-[10px] text-slate-500">Vị trí góc sảnh, không tràn</p>
@@ -505,8 +505,8 @@
                     </div>
                     <div id="tieu-chuan-3" class="ios-item-card criteria-card" data-type="video" data-submitted="true">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">3</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">3</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Hệ thống đèn trần</h4>
                                     <p class="text-[10px] text-slate-500">Hoạt động 100%, không cháy</p>
@@ -526,8 +526,8 @@
                     </div>
                     <div id="tieu-chuan-4" class="ios-item-card criteria-card" data-type="text" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">4</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">4</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Thảm lau chân sảnh</h4>
                                     <p class="text-[10px] text-slate-500">Vị trí đúng, sạch sẽ</p>
@@ -547,8 +547,8 @@
                     </div>
                     <div id="tieu-chuan-5" class="ios-item-card criteria-card" data-type="image" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">5</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">5</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Kiểm tra tủ lạnh &amp; tủ đông</h4>
                                     <p class="text-[10px] text-slate-500">Nhiệt độ, lau dọn, hạn sử dụng</p>
@@ -582,8 +582,8 @@
                     </div>
                     <div id="tieu-chuan-6" class="ios-item-card criteria-card" data-type="video" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">6</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">6</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Vệ sinh khu vực WC</h4>
                                     <p class="text-[10px] text-slate-500">Nhà vệ sinh, bồn rửa, giấy vệ sinh</p>
@@ -603,8 +603,8 @@
                     </div>
                     <div id="tieu-chuan-7" class="ios-item-card criteria-card" data-type="text" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">7</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">7</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Kiểm tra nhãn giá kệ</h4>
                                     <p class="text-[10px] text-slate-500">Bảng giá, hạn sử dụng đầy đủ</p>
@@ -624,8 +624,8 @@
                     </div>
                     <div id="tieu-chuan-8" class="ios-item-card criteria-card" data-type="image" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">8</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">8</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Chấm trưng bày VM</h4>
                                     <p class="text-[10px] text-slate-500">Planogram, kệ hàng đúng chuẩn</p>
@@ -654,8 +654,8 @@
                     </div>
                     <div id="tieu-chuan-9" class="ios-item-card criteria-card" data-type="video" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">9</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">9</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">An toàn PCCC &amp; thoát nạn</h4>
                                     <p class="text-[10px] text-slate-500">Bình chữa cháy, lối thoát hiểm</p>
@@ -675,8 +675,8 @@
                     </div>
                     <div id="tieu-chuan-10" class="ios-item-card criteria-card" data-type="text" data-submitted="false">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0">10</div>
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <span class="criteria-num text-primary dark:text-primary">10</span>
                                 <div class="min-w-0">
                                     <h4 class="text-[14px] font-semibold text-slate-900 dark:text-white leading-tight">Báo cáo tồn kho &amp; đối soát</h4>
                                     <p class="text-[10px] text-slate-500">Đối soát cuối ngày, số liệu chính xác</p>
