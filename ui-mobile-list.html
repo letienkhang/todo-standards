@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
+    <title>Danh sách công việc | Retail Excellence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2D3282",
+                        "background-light": "#F8F9FA",
+                        "background-dark": "#121212",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1E1E1E",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "12px",
+                        large: "24px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply font-display text-slate-800 dark:text-slate-200; }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+        @supports (padding: env(safe-area-inset-bottom)) {
+            .safe-top { padding-top: env(safe-area-inset-top); }
+            .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+            .safe-x { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+        }
+        .phone-mockup-bg {
+            background: linear-gradient(160deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+        }
+        .dark .phone-mockup-bg {
+            background: linear-gradient(160deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+        }
+        .phone-frame {
+            width: 375px;
+            min-width: 375px;
+            aspect-ratio: 375 / 812;
+            height: auto;
+            max-height: min(812px, 90vh);
+            border-radius: 44px;
+            padding: 10px;
+            box-shadow:
+                0 0 0 3px #334155,
+                0 0 0 6px #1e293b,
+                0 25px 50px -12px rgba(0,0,0,0.4),
+                inset 0 0 0 2px rgba(255,255,255,0.05);
+            background: #0f172a;
+        }
+        .dark .phone-frame {
+            box-shadow:
+                0 0 0 3px #475569,
+                0 0 0 6px #334155,
+                0 25px 50px -12px rgba(0,0,0,0.6),
+                inset 0 0 0 2px rgba(255,255,255,0.06);
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            border-radius: 36px;
+            overflow: hidden;
+            background: #F8FAFC;
+            -webkit-text-size-adjust: 100%;
+            font-size: 14px;
+            overflow-x: hidden;
+        }
+        .dark .phone-screen { background: #0F172A; }
+        .phone-notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 24px;
+            background: #0f172a;
+            border-radius: 0 0 18px 18px;
+            z-index: 60;
+        }
+        .dark .phone-notch { background: #000; }
+        .phone-screen * { box-sizing: border-box; }
+        .phone-screen .min-w-0 { min-width: 0; }
+        .phone-screen .flex-1 { min-width: 0; }
+        .nav-item-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+        .dark .nav-item-active { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        #sidebar-nav { transition: width 0.2s ease-out; }
+        #sidebar-nav.nav-collapsed { width: 4rem; min-width: 4rem; }
+        #sidebar-nav.nav-collapsed .nav-link-text { opacity: 0; width: 0; overflow: hidden; min-width: 0; padding: 0; }
+        .nav-flyout { display: none; }
+        #sidebar-nav.nav-collapsed .nav-flyout { display: block; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+        #sidebar-nav.nav-collapsed a:hover .nav-flyout, #sidebar-nav.nav-collapsed button:hover .nav-flyout { opacity: 1; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
+        #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+
+<body class="min-h-screen overflow-x-hidden flex bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200 transition-colors duration-200">
+    <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out" aria-label="Menu chính">
+        <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">dashboard</span>
+                <span class="nav-link-text truncate">Tổng quan</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
+            </a>
+            <a href="my-tasks.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
+                <span class="nav-link-text truncate">Công việc của tôi</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
+            </a>
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">list_alt</span>
+                <span class="nav-link-text truncate">Danh sách công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách công việc</span>
+            </a>
+            <a href="list-person.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">person</span>
+                <span class="nav-link-text truncate">Danh sách cá nhân</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách cá nhân</span>
+            </a>
+            <a href="audit-list.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">grading</span>
+                <span class="nav-link-text truncate">Chấm điểm</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Chấm điểm</span>
+            </a>
+            <a href="#" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">bar_chart</span>
+                <span class="nav-link-text truncate">Báo cáo</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Báo cáo</span>
+            </a>
+            <a href="ui-mobile-list.html" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">phone_android</span>
+                <span class="nav-link-text truncate">Giao diện mobile</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện mobile</span>
+            </a>
+        </div>
+        <div class="border-t border-border-light dark:border-border-dark p-2 flex flex-col gap-0.5">
+            <button type="button" id="navToggle" class="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Thu gọn menu">
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-expanded">chevron_left</span>
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-collapsed">chevron_right</span>
+                <span class="nav-link-text truncate">Thu gọn</span>
+            </button>
+            <button type="button" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')" aria-label="Giao diện">
+                <span class="material-symbols-outlined text-xl shrink-0">dark_mode</span>
+                <span class="nav-link-text truncate">Giao diện</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện</span>
+            </button>
+        </div>
+    </nav>
+    <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){if(localStorage.getItem('navCollapsed')==='1')n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();</script>
+    <div class="flex-1 flex flex-col min-h-0 min-w-0 phone-mockup-bg items-center justify-center p-6 md:p-10 relative">
+        <div class="phone-frame relative flex flex-col shrink-0">
+            <div class="phone-screen flex flex-col relative overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-0 hide-scrollbar">
+                <div class="phone-notch pointer-events-none"></div>
+                <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+                    <div class="px-4 pt-6 pb-3 flex items-center gap-3">
+                        <a href="index.html" class="p-1 -ml-1 text-slate-600 dark:text-slate-300" aria-label="Quay lại">
+                            <span class="material-symbols-outlined text-xl">arrow_back_ios</span>
+                        </a>
+                        <h1 class="text-base font-semibold text-slate-900 dark:text-white">Danh sách công việc</h1>
+                    </div>
+                    <div class="flex border-t border-slate-100 dark:border-slate-700">
+                        <button type="button" class="list-tab flex-1 py-2.5 text-sm font-medium text-primary border-b-2 border-primary" data-tab="thuc-hien">Thực hiện</button>
+                        <button type="button" class="list-tab flex-1 py-2.5 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent" data-tab="theo-doi">Theo dõi &amp; duyệt</button>
+                    </div>
+                    <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1">
+                                <label for="task-search" class="sr-only">Tìm kiếm công việc</label>
+                                <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600">
+                                    <span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+                                    <input id="task-search" type="text" placeholder="Tìm kiếm công việc" class="flex-1 bg-transparent border-0 outline-none text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400" />
+                                </div>
+                            </div>
+                            <button type="button" class="p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300" id="date-picker-btn" aria-label="Chọn ngày">
+                                <span class="material-symbols-outlined text-lg">calendar_month</span>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+                <main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden hide-scrollbar px-4 py-4 pb-8">
+                    <div class="space-y-3">
+                        <a href="ui-mobile.html" class="block px-3 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">0304-04 CÔNG NGHỆ THÔNG TIN -02</p>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Người làm: Nguyễn Ngọc Châu <span class="text-slate-400 dark:text-slate-500">(YD123456)</span></p>
+                                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span>Hạn cuối: 09/02/2026 · 09:16</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">Chưa ghi nhận</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 text-lg shrink-0">chevron_right</span>
+                            </div>
+                        </a>
+                        <a href="ui-mobile.html" class="block px-3 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">chau</p>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Người làm: Nguyễn Ngọc Châu <span class="text-slate-400 dark:text-slate-500">(YD123456)</span></p>
+                                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span>Hạn cuối: 09/02/2026 · 11:57</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">Chưa ghi nhận</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 text-lg shrink-0">chevron_right</span>
+                            </div>
+                        </a>
+                        <a href="ui-mobile.html" class="block px-3 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">chautest</p>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Người làm: Nguyễn Ngọc Châu <span class="text-slate-400 dark:text-slate-500">(YD123456)</span></p>
+                                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span>Hạn cuối: 10/02/2026 · 11:59</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">Chưa ghi nhận</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 text-lg shrink-0">chevron_right</span>
+                            </div>
+                        </a>
+                        <a href="ui-mobile.html" class="block px-3 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">hiiii</p>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Người làm: Trần Văn B <span class="text-slate-400 dark:text-slate-500">(YD123457)</span></p>
+                                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span>Hạn cuối: 11/02/2026 · 17:00</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">Chưa ghi nhận</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 text-lg shrink-0">chevron_right</span>
+                            </div>
+                        </a>
+                        <a href="ui-mobile.html" class="block px-3 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">Kiểm tra tồn kho cuối ngày</p>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Người làm: Lê Thị C <span class="text-slate-400 dark:text-slate-500">(YD123458)</span></p>
+                                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span>Hạn cuối: 11/02/2026 · 21:00</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold">Đã ghi nhận</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 text-lg shrink-0">chevron_right</span>
+                            </div>
+                        </a>
+                        <a href="ui-mobile.html" class="block px-3 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[13px] font-semibold text-slate-900 dark:text-white truncate">Báo cáo vệ sinh khu vực bếp</p>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Người làm: Phạm Văn D <span class="text-slate-400 dark:text-slate-500">(YD123459)</span></p>
+                                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span>Hạn cuối: 12/02/2026 · 10:00</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">Chưa ghi nhận</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 text-lg shrink-0">chevron_right</span>
+                            </div>
+                        </a>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <p class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400 font-medium">MVP · Danh sách công việc</p>
+    </div>
+    <script>
+        (function () {
+            var tabs = document.querySelectorAll('.list-tab');
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(function (t) {
+                        if (t === tab) {
+                            t.classList.add('text-primary', 'border-primary');
+                            t.classList.remove('text-slate-500', 'dark:text-slate-400', 'border-transparent');
+                        } else {
+                            t.classList.remove('text-primary', 'border-primary');
+                            t.classList.add('text-slate-500', 'dark:text-slate-400', 'border-transparent');
+                        }
+                    });
+                });
+});
+        })();
+    </script>
+</body>
+
+</html>

@@ -52,6 +52,52 @@
         #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
         #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
         .section-label { @apply block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight mb-2; }
+        .text-slot { @apply min-h-[100px] rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col items-center justify-center gap-2 p-4; }
+        .video-slot { @apply w-full max-w-md aspect-video rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-900/80 dark:bg-slate-800/80 flex flex-col items-center justify-center gap-2 overflow-hidden cursor-pointer hover:border-primary/50 hover:bg-slate-800/80 dark:hover:bg-slate-700/50 transition-colors; }
+        /* Ảnh tiêu chuẩn / thực tế – desktop (từ ui-mobile) */
+        .img-list { @apply flex flex-wrap gap-3; }
+        .empty-slot-desk { @apply w-28 h-28 rounded-xl flex-shrink-0 border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/50 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all cursor-pointer; }
+        .empty-slot-desk .material-symbols-outlined { @apply text-slate-400 group-hover:text-primary; }
+        .demo-img-slot-desk { @apply w-28 h-28 rounded-xl flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 relative; }
+        .demo-img-slot-desk img { @apply w-full h-full object-cover; }
+        .img-slot-remove-desk { @apply absolute top-1 right-1 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center p-0 border-0 hover:bg-red-500 transition-colors cursor-pointer; }
+        .img-slot-remove-desk .material-symbols-outlined { font-size: 18px; }
+        /* Highlight lỗi báo cáo – dùng class để không bị Tailwind ghi đè */
+        .report-field-error {
+            outline: none;
+            border-radius: 0.75rem;
+            border: 2px solid rgb(239 68 68);
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+        }
+        .dark .report-field-error {
+            border-color: rgb(248 113 113);
+            box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.3);
+        }
+        #report-desc.report-field-error {
+            border: 2px solid rgb(239 68 68);
+        }
+        .dark #report-desc.report-field-error {
+            border-color: rgb(248 113 113);
+        }
+        /* Nút tiến độ: chưa đủ = trắng/xám, đủ = xanh */
+        .task-progress-btn {
+            background: #fff;
+            border-color: #e2e8f0;
+            color: #334155;
+        }
+        .task-progress-btn:hover { background: #f8fafc; }
+        .dark .task-progress-btn {
+            background: #1e293b;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+        .dark .task-progress-btn:hover { background: #334155; }
+        .task-progress-btn.state-complete {
+            background: #3B82F6;
+            border-color: #3B82F6;
+            color: #fff;
+        }
+        .task-progress-btn.state-complete:hover { background: #2563eb; }
     </style>
 </head>
 
@@ -123,10 +169,13 @@
                     onclick="document.documentElement.classList.toggle('dark')" aria-hidden="true">
                     <span class="material-symbols-outlined">dark_mode</span>
                 </button>
-                <button
-                    class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm">
-                    <span class="material-symbols-outlined text-lg">save</span>
-                    Lưu thay đổi
+                <button type="button" id="task-progress-btn"
+                    class="task-progress-btn px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm border">
+                    <span id="task-progress-icon" class="material-symbols-outlined text-lg">task_alt</span>
+                    <span id="task-progress-label" class="flex items-center">
+                        <span id="task-progress-counts"><span id="task-filled-count">0</span> / <span id="task-total-count">6</span></span>
+                        <span id="task-progress-done" class="hidden">Hoàn tất và gửi thông tin</span>
+                    </span>
                 </button>
             </div>
         </header>
@@ -528,27 +577,35 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả chi tiết các bước thực hiện...">Đảm bảo kính cửa chính luôn sạch sẽ, không có dấu tay. Thảm chùi chân được đặt ngay ngắn và hút bụi sạch sẽ trước khi mở cửa.</textarea>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                mẫu</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên
-                                                </p>
+                                    <div class="space-y-6">
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh tiêu chuẩn</span>
+                                            <div class="img-list">
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=1" alt="Mẫu 1" />
+                                                </div>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=2" alt="Mẫu 2" />
+                                                </div>
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                thực tế</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên
-                                                </p>
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh thực tế</span>
+                                            <div class="img-list">
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=3" alt="Thực tế 1" />
+                                                </div>
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -592,27 +649,31 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả chi tiết...">Kiểm tra bảng giá, hạn sử dụng sản phẩm trên kệ A1. Đảm bảo trưng bày gọn gàng, đúng quy định.</textarea>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                mẫu</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên
-                                                </p>
+                                    <div class="space-y-6">
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh tiêu chuẩn</span>
+                                            <div class="img-list">
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=4" alt="Mẫu kệ A1" />
+                                                </div>
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                thực tế</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên
-                                                </p>
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh thực tế</span>
+                                            <div class="img-list">
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=5" alt="Thực tế kệ A1" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -650,28 +711,11 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Sắp xếp kho theo FEFO, vệ sinh sàn và kệ, kiểm tra nhiệt độ bảo quản.</textarea>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                mẫu</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                thực tế</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên
-                                                </p>
-                                            </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Video</label>
+                                        <div class="video-slot text-slate-400" role="button" tabindex="0">
+                                            <span class="material-symbols-outlined text-4xl">videocam</span>
+                                            <span class="text-xs font-medium">Chưa có video — nhấn để tải lên hoặc quay</span>
                                         </div>
                                     </div>
                                 </div>
@@ -709,29 +753,11 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Kiểm tra nhiệt độ tủ lạnh/tủ đông, lau dọn, kiểm tra hạn sử dụng sản phẩm bảo quản.</textarea>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                mẫu</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                thực tế</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên
-                                                </p>
-                                            </div>
-                                        </div>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase mb-2"><span class="material-symbols-outlined text-base">description</span> Văn bản / Mô tả</label>
+                                        <textarea
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-y min-h-[120px] placeholder:text-slate-400"
+                                            placeholder="Nhập nội dung mô tả hoặc ghi chú cho tiêu chí này..."></textarea>
                                     </div>
                                 </div>
                             </section>
@@ -767,27 +793,27 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Vệ sinh nhà vệ sinh, bồn rửa, bổ sung giấy vệ sinh và xà phòng. Đảm bảo khô ráo, thông thoáng.</textarea>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                mẫu</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên
-                                                </p>
+                                    <div class="space-y-6">
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh tiêu chuẩn</span>
+                                            <div class="img-list">
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=6" alt="Mẫu WC" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                thực tế</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên
-                                                </p>
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh thực tế</span>
+                                            <div class="img-list">
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -826,36 +852,202 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Kiểm tra bình chữa cháy còn hạn, lối thoát hiểm thông thoáng, bảng hướng dẫn PCCC đầy đủ.</textarea>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                mẫu</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh mẫu chuẩn lên
-                                                </p>
+                                    <div class="space-y-6">
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh tiêu chuẩn</span>
+                                            <div class="img-list">
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=7" alt="Mẫu PCCC" />
+                                                </div>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=8" alt="Mẫu PCCC 2" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="space-y-2">
-                                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Ảnh
-                                                thực tế</label>
-                                            <div
-                                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center gap-2 text-center group cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all min-h-[200px]">
-                                                <span
-                                                    class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors text-4xl">add_a_photo</span>
-                                                <p class="text-[10px] text-slate-400 font-medium">Tải ảnh thực tế lên
-                                                </p>
+                                        <div class="w-full">
+                                            <span class="section-label">Ảnh thực tế</span>
+                                            <div class="img-list">
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
+                                                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
+                                                </button>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=9" alt="Thực tế PCCC" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </section>
+                            <section id="report-block" class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                <div id="report-block-card" class="rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 shadow-sm">
+                                    <div id="report-block-errors" class="hidden mb-4 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50">
+                                        <p class="text-sm font-semibold text-red-700 dark:text-red-300 flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-lg">error</span>
+                                            <span id="report-block-errors-text"></span>
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-2 mb-5">
+                                        <span class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary text-lg">assessment</span>
+                                        </span>
+                                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase">Báo cáo công việc</h3>
+                                    </div>
+                                    <div class="flex flex-col gap-6">
+                                        <div class="w-full" id="report-track-wrap">
+                                            <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-2 tracking-widest">Tiến độ</label>
+                                            <div class="flex gap-3">
+                                                <label class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 cursor-pointer transition-colors report-track-option bg-emerald-50 dark:bg-emerald-900/30 border-emerald-500 dark:border-emerald-500 text-emerald-700 dark:text-emerald-300" data-value="on">
+                                                    <span class="material-symbols-outlined text-xl">trending_up</span>
+                                                    <span class="text-sm font-medium">On track</span>
+                                                </label>
+                                                <label class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 cursor-pointer transition-colors report-track-option bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400" data-value="off">
+                                                    <span class="material-symbols-outlined text-xl">trending_down</span>
+                                                    <span class="text-sm font-medium">Off track</span>
+                                                </label>
+                                            </div>
+                                            <input type="hidden" name="report-track" id="report-track" value="on" />
+                                        </div>
+                                        <div class="w-full" id="report-desc-wrap">
+                                            <label for="report-desc" class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-2 tracking-widest">Mô tả / Góp ý</label>
+                                            <textarea id="report-desc" name="report-desc" rows="4" placeholder="Nhập mô tả báo cáo hoặc góp ý..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 placeholder-slate-400 text-sm resize-y min-h-[100px] focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+                                        </div>
+                                        <div class="w-full">
+                                            <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-2 tracking-widest">Tải file lên</label>
+                                            <div class="report-file-zone relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10" id="report-file-zone">
+                                                <input type="file" id="report-file-input" name="report-file" class="absolute opacity-0 w-0 h-0" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" multiple />
+                                                <label for="report-file-input" class="cursor-pointer flex flex-col items-center gap-2 py-2">
+                                                    <span class="material-symbols-outlined text-4xl text-slate-400 dark:text-slate-500">upload_file</span>
+                                                    <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Nhấn để chọn file hoặc kéo thả</span>
+                                                    <span class="text-[10px] text-slate-400 dark:text-slate-500">PDF, Word, Excel, ảnh</span>
+                                                </label>
+                                                <ul class="report-file-list mt-3 text-left text-sm text-slate-600 dark:text-slate-300 space-y-1.5 hidden" id="report-file-list"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
         </main>
 
         <script>
+            (function () {
+                function updateTaskFilledCount() {
+                    var container = document.getElementById('standard-detail-sections');
+                    var totalEl = document.getElementById('task-total-count');
+                    var filledEl = document.getElementById('task-filled-count');
+                    if (!container || !filledEl) return;
+                    var sections = container.querySelectorAll('section[id^="tieu-chuan-"]');
+                    var total = sections.length;
+                    var filled = 0;
+                    sections.forEach(function (section) {
+                        var hasContent = false;
+                        section.querySelectorAll('textarea').forEach(function (ta) {
+                            if ((ta.value || '').trim().length > 0) hasContent = true;
+                        });
+                        if (hasContent) filled++;
+                    });
+                    filledEl.textContent = filled;
+                    if (totalEl) totalEl.textContent = total;
+                    document.dispatchEvent(new CustomEvent('task-filled-count-updated'));
+                }
+                updateTaskFilledCount();
+                document.getElementById('standard-detail-sections') && document.getElementById('standard-detail-sections').addEventListener('input', function (e) {
+                    if (e.target && e.target.tagName === 'TEXTAREA') updateTaskFilledCount();
+                });
+            })();
+            (function () {
+                var btn = document.getElementById('task-progress-btn');
+                var reportBlock = document.getElementById('report-block');
+                var errorsEl = document.getElementById('report-block-errors');
+                var errorsTextEl = document.getElementById('report-block-errors-text');
+                var reportTrack = document.getElementById('report-track');
+                var reportDesc = document.getElementById('report-desc');
+                var trackWrap = document.getElementById('report-track-wrap');
+                var countsEl = document.getElementById('task-progress-counts');
+                var doneEl = document.getElementById('task-progress-done');
+                var iconEl = document.getElementById('task-progress-icon');
+                function clearReportErrors() {
+                    if (errorsEl) errorsEl.classList.add('hidden');
+                    if (trackWrap) trackWrap.classList.remove('report-field-error');
+                    if (reportDesc) reportDesc.classList.remove('report-field-error');
+                }
+                function showReportErrors(messages) {
+                    if (errorsTextEl) errorsTextEl.textContent = messages.join(' ');
+                    if (errorsEl) errorsEl.classList.remove('hidden');
+                    if (messages.some(function (m) { return m.indexOf('Tiến độ') !== -1 || m.indexOf('On track') !== -1; }) && trackWrap) trackWrap.classList.add('report-field-error');
+                    if (messages.some(function (m) { return m.indexOf('mô tả') !== -1 || m.indexOf('góp ý') !== -1; }) && reportDesc) {
+                        reportDesc.classList.add('report-field-error');
+                    }
+                }
+                function isFormComplete() {
+                    var filledEl = document.getElementById('task-filled-count');
+                    var totalEl = document.getElementById('task-total-count');
+                    var filled = filledEl ? parseInt(filledEl.textContent, 10) : 0;
+                    var total = totalEl ? parseInt(totalEl.textContent, 10) : 0;
+                    var track = (reportTrack && reportTrack.value) ? reportTrack.value.trim() : '';
+                    var desc = reportDesc ? (reportDesc.value || '').trim() : '';
+                    return total > 0 && filled >= total && (track === 'on' || track === 'off') && desc.length > 0;
+                }
+                function updateProgressButtonState() {
+                    if (!btn || !countsEl || !doneEl || !iconEl) return;
+                    var complete = isFormComplete();
+                    if (complete) {
+                        btn.classList.add('state-complete');
+                        countsEl.classList.add('hidden');
+                        doneEl.classList.remove('hidden');
+                        iconEl.textContent = 'check_circle';
+                    } else {
+                        btn.classList.remove('state-complete');
+                        countsEl.classList.remove('hidden');
+                        doneEl.classList.add('hidden');
+                        iconEl.textContent = 'task_alt';
+                    }
+                }
+                updateProgressButtonState();
+                document.addEventListener('task-filled-count-updated', updateProgressButtonState);
+                if (reportDesc) {
+                    reportDesc.addEventListener('input', function () { clearReportErrors(); updateProgressButtonState(); });
+                    reportDesc.addEventListener('focus', clearReportErrors);
+                }
+                document.addEventListener('click', function (e) {
+                    if (e.target.closest('.report-track-option')) {
+                        setTimeout(function () { clearReportErrors(); updateProgressButtonState(); }, 0);
+                    }
+                });
+                if (btn && reportBlock) {
+                    btn.addEventListener('click', function () {
+                        clearReportErrors();
+                        var track = (reportTrack && reportTrack.value) ? reportTrack.value.trim() : '';
+                        var desc = reportDesc ? (reportDesc.value || '').trim() : '';
+                        var errors = [];
+                        if (track !== 'on' && track !== 'off') {
+                            errors.push('Vui lòng chọn tiến độ: On track hoặc Off track.');
+                        }
+                        if (!desc) {
+                            errors.push('Vui lòng nhập mô tả / góp ý báo cáo.');
+                        }
+                        if (errors.length > 0) {
+                            reportBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            showReportErrors(errors);
+                            updateProgressButtonState();
+                            return;
+                        }
+                        if (isFormComplete()) {
+                            updateProgressButtonState();
+                            alert('Đã gửi thông tin.');
+                        }
+                    });
+                }
+            })();
             (function () {
                 document.addEventListener('click', function (e) {
                     var item = e.target.closest('.standard-nav-item');
@@ -1016,6 +1208,92 @@
                 }
                 addBtn.addEventListener('click', addTag);
                 input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addTag(); } });
+            })();
+            (function () {
+                var options = document.querySelectorAll('.report-track-option');
+                var hidden = document.getElementById('report-track');
+                if (!options.length || !hidden) return;
+                var onClasses = ['bg-emerald-50', 'dark:bg-emerald-900/30', 'border-emerald-500', 'dark:border-emerald-500', 'text-emerald-700', 'dark:text-emerald-300'];
+                var offClasses = ['bg-red-50', 'dark:bg-red-900/20', 'border-red-400', 'dark:border-red-500', 'text-red-600', 'dark:text-red-400'];
+                var neutralClasses = ['bg-slate-50', 'dark:bg-slate-800/50', 'border-slate-200', 'dark:border-slate-600', 'text-slate-600', 'dark:text-slate-400'];
+                function setOptionStyles() {
+                    var all = onClasses.concat(offClasses, neutralClasses);
+                    options.forEach(function (o) {
+                        all.forEach(function (c) { o.classList.remove(c); });
+                        if (o.getAttribute('data-value') === hidden.value) {
+                            if (hidden.value === 'on') onClasses.forEach(function (c) { o.classList.add(c); });
+                            else offClasses.forEach(function (c) { o.classList.add(c); });
+                        } else {
+                            neutralClasses.forEach(function (c) { o.classList.add(c); });
+                        }
+                    });
+                }
+                options.forEach(function (opt) {
+                    opt.addEventListener('click', function () {
+                        hidden.value = opt.getAttribute('data-value');
+                        setOptionStyles();
+                    });
+                });
+                setOptionStyles();
+            })();
+            (function () {
+                var fileInput = document.getElementById('report-file-input');
+                var fileList = document.getElementById('report-file-list');
+                var fileZone = document.getElementById('report-file-zone');
+                if (fileInput && fileList) {
+                    fileInput.addEventListener('change', function () {
+                        var files = Array.from(fileInput.files || []);
+                        fileList.innerHTML = '';
+                        if (files.length) {
+                            fileList.classList.remove('hidden');
+                            files.forEach(function (f) {
+                                var li = document.createElement('li');
+                                li.className = 'flex items-center gap-2';
+                                li.innerHTML = '<span class="material-symbols-outlined text-[16px] text-slate-500">insert_drive_file</span><span class="truncate flex-1">' + (f.name || 'File') + '</span>';
+                                fileList.appendChild(li);
+                            });
+                        } else {
+                            fileList.classList.add('hidden');
+                        }
+                    });
+                }
+                if (fileZone && fileInput) {
+                    fileZone.addEventListener('dragover', function (e) { e.preventDefault(); fileZone.classList.add('border-primary', 'bg-primary/10'); });
+                    fileZone.addEventListener('dragleave', function () { fileZone.classList.remove('border-primary', 'bg-primary/10'); });
+                    fileZone.addEventListener('drop', function (e) {
+                        e.preventDefault();
+                        fileZone.classList.remove('border-primary', 'bg-primary/10');
+                        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+                            fileInput.files = e.dataTransfer.files;
+                            fileInput.dispatchEvent(new Event('change'));
+                        }
+                    });
+                }
+            })();
+            (function () {
+                var imgCounter = 100;
+                document.addEventListener('click', function (e) {
+                    var addBtn = e.target.closest('.img-add-btn');
+                    if (addBtn) {
+                        var list = addBtn.closest('.img-list');
+                        if (!list) return;
+                        imgCounter++;
+                        var slot = document.createElement('div');
+                        slot.className = 'demo-img-slot-desk';
+                        slot.innerHTML = '<button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button><img src="https://picsum.photos/280/280?random=' + imgCounter + '" alt="Ảnh mới" />';
+                        if (addBtn.nextSibling) {
+                            list.appendChild(slot);
+                        } else {
+                            list.insertBefore(slot, addBtn);
+                        }
+                        return;
+                    }
+                    var removeBtn = e.target.closest('.img-slot-remove-desk');
+                    if (removeBtn) {
+                        var slot = removeBtn.closest('.demo-img-slot-desk');
+                        if (slot) slot.remove();
+                    }
+                });
             })();
             (function () {
                 var btn = document.getElementById('add-standard-btn');
