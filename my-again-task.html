@@ -92,6 +92,26 @@
             color: #e2e8f0;
         }
         .dark .task-progress-btn:hover { background: #334155; }
+        /* Khung bao cả ô tiêu chí (criterion-section--pass / --fail), không đổi theo JS */
+        .criterion-section-card {
+            border: 2px solid rgb(148 163 184);
+            transition: border-color 0.2s ease;
+        }
+        .criterion-section-card.criterion-section--pass {
+            border-color: rgb(16 185 129);
+        }
+        .criterion-section-card.criterion-section--fail {
+            border-color: rgb(239 68 68);
+        }
+        .dark .criterion-section-card {
+            border-color: rgb(100 116 139);
+        }
+        .dark .criterion-section-card.criterion-section--pass {
+            border-color: rgb(52 211 153);
+        }
+        .dark .criterion-section-card.criterion-section--fail {
+            border-color: rgb(248 113 113);
+        }
         .criterion-check-indicator.is-complete {
             color: #10b981;
             border-color: rgba(16, 185, 129, 0.45);
@@ -102,31 +122,12 @@
             border-color: rgba(52, 211, 153, 0.45);
             background: rgba(6, 78, 59, 0.35);
         }
-        /* Deep link từ execute-task.html (?task=…) */
-        #task-deep-link-banner {
-            display: none;
-        }
-        #task-deep-link-banner.is-visible {
-            display: flex;
-        }
         .task-progress-btn.state-complete {
             background: #3B82F6;
             border-color: #3B82F6;
             color: #fff;
         }
         .task-progress-btn.state-complete:hover { background: #2563eb; }
-        .task-draft-btn {
-            background: #fff;
-            border-color: #cbd5e1;
-            color: #475569;
-        }
-        .task-draft-btn:hover { background: #f8fafc; }
-        .dark .task-draft-btn {
-            background: #1e293b;
-            border-color: #475569;
-            color: #cbd5e1;
-        }
-        .dark .task-draft-btn:hover { background: #334155; }
         /* Sidebar tiêu chí: đủ điều kiện + neo khi cuộn nội dung */
         .standard-nav-item .standard-nav-check {
             display: none;
@@ -205,7 +206,7 @@
                 <span class="nav-link-text truncate">Tổng quan</span>
                 <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
             </a>
-            <a href="my-tasks.html" id="nav-my-tasks" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+            <a href="my-tasks.html" id="nav-my-tasks" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                 <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
                 <span class="nav-link-text truncate">Công việc của tôi</span>
                 <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
@@ -265,9 +266,12 @@
             class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <div>
-                    <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Công việc của
-                        tôi</h1>
-                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Quản lý công việc</p>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Công việc của
+                            tôi</h1>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide bg-amber-100 text-amber-900 dark:bg-amber-500/20 dark:text-amber-300 border border-amber-200/80 dark:border-amber-500/30">Mở lại</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">Quản lý công việc</p>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -275,32 +279,16 @@
                     onclick="document.documentElement.classList.toggle('dark')" aria-hidden="true">
                     <span class="material-symbols-outlined">dark_mode</span>
                 </button>
-                <div class="flex items-center gap-2 shrink-0">
-                <button type="button" id="task-draft-btn"
-                    class="task-draft-btn px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm border"
-                    title="Lưu bản nháp (không cần hoàn tất tất cả tiêu chí)" aria-label="Lưu nháp">
-                    <span class="material-symbols-outlined text-lg" aria-hidden="true">save</span>
-                    <span class="task-draft-label">Lưu nháp</span>
-                </button>
                 <button type="button" id="task-progress-btn"
-                    class="task-progress-btn px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm border"
-                    title="Chuyển đến tiêu chí chưa hoàn thành đầu tiên" aria-label="Chuyển đến tiêu chí chưa hoàn thành đầu tiên">
+                    class="task-progress-btn px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm border">
                     <span id="task-progress-icon" class="material-symbols-outlined text-lg">task_alt</span>
                     <span id="task-progress-label" class="flex items-center">
                         <span id="task-progress-counts"><span id="task-filled-count">0</span> / <span id="task-total-count">7</span></span>
                         <span id="task-progress-done" class="hidden">Hoàn tất và gửi thông tin</span>
                     </span>
                 </button>
-                </div>
             </div>
         </header>
-        <div id="task-deep-link-banner" class="shrink-0 z-40 items-center justify-between gap-3 px-6 py-2.5 border-b border-primary/20 bg-primary/5 dark:bg-primary/10 text-sm text-slate-700 dark:text-slate-200" role="status" aria-live="polite">
-            <div class="flex items-center gap-2 min-w-0">
-                <span class="material-symbols-outlined text-primary shrink-0 text-lg" aria-hidden="true">engineering</span>
-                <span class="min-w-0"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Công việc đã chọn</span><span class="block font-semibold text-slate-900 dark:text-white truncate"><span id="task-deep-link-title">—</span><span id="task-deep-link-id" class="text-slate-500 dark:text-slate-400 font-mono text-xs font-normal ml-1"></span></span></span>
-            </div>
-            <a href="execute-task.html" class="shrink-0 inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline">Lọc công việc<span class="material-symbols-outlined text-sm">filter_alt</span></a>
-        </div>
         <main class="w-full min-w-0 flex-1 min-h-0 p-6 ml-0 flex flex-col overflow-hidden">
             <div
                 class="bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
@@ -698,7 +686,7 @@
                         </section>
                         <div id="standard-detail-sections" class="max-w-5xl w-full space-y-10">
                             <section id="tieu-chuan-1"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--fail scroll-mt-4 rounded-xl p-4 md:p-6 pt-6 my-2 mx-0">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -764,10 +752,168 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Lịch sử phản hồi (audit-detail) — dưới khối thêm ảnh/video/văn bản -->
+                                    <div id="tieu-chuan-1-feedback-panel" class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-1-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-1-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 01</span>
+                                            </div>
+                                            <button type="button" class="flex items-center gap-1 px-2 py-0.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400 text-[10px] font-medium uppercase tracking-wide w-fit" aria-label="Sắp xếp: Gần nhất trước">
+                                                Gần nhất trước
+                                                <span class="material-symbols-outlined text-sm" aria-hidden="true">expand_more</span>
+                                            </button>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                                                <div class="bg-blue-50/50 dark:bg-blue-900/10 px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-[10px]">GS</div>
+                                                        <div class="min-w-0">
+                                                            <h4 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Nguyễn Minh – Giám sát khu vực</h4>
+                                                            <p class="text-[10px] text-slate-500 dark:text-slate-400">Yêu cầu đến: Cửa hàng trưởng</p>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 shrink-0">28/03/2026 • 09:12</span>
+                                                </div>
+                                                <div class="p-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                                    <div class="lg:col-span-2">
+                                                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-snug line-clamp-3">
+                                                            Vui lòng bổ sung đủ ảnh thực tế khu vực cửa chính &amp; sảnh (tối thiểu 2 ảnh), đảm bảo kính và thảm chùi chân đúng quy định trước khi gửi lại.
+                                                        </p>
+                                                        <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] mt-2">
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Kính cửa sạch, không dấu tay</span></div>
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-rose-500 text-xs shrink-0">cancel</span><span class="truncate text-slate-600 dark:text-slate-300">Đủ ảnh thực tế (tối thiểu 2)</span></div>
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-rose-500 text-xs shrink-0">cancel</span><span class="truncate text-slate-600 dark:text-slate-300">Thảm chùi chân đúng vị trí</span></div>
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Sảnh gọn gàng</span></div>
+                                                            <div class="flex items-center gap-1 truncate col-span-2"><span class="material-symbols-outlined text-rose-500 text-xs shrink-0">cancel</span><span class="truncate text-slate-600 dark:text-slate-300">Hút bụi thảm trước mở cửa</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col gap-2">
+                                                        <div class="bg-white dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-700/50">
+                                                            <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 block mb-1.5">Trạng thái xác minh</span>
+                                                            <div class="space-y-1.5">
+                                                                <div class="flex items-center justify-between bg-rose-50 dark:bg-rose-900/20 px-2 py-1.5 rounded-lg border border-rose-100 dark:border-rose-900/30">
+                                                                    <div class="flex items-center gap-1 text-rose-700 dark:text-rose-400">
+                                                                        <span class="material-symbols-outlined text-base">cancel</span>
+                                                                        <span class="font-bold text-xs">Không đạt</span>
+                                                                    </div>
+                                                                    <span class="text-[10px] font-medium text-rose-600/70 dark:text-rose-400/70 uppercase">Kết quả</span>
+                                                                </div>
+                                                                <div class="flex items-center gap-1 px-2 py-1 text-slate-500 dark:text-slate-400 text-[10px] font-medium">
+                                                                    <span class="material-symbols-outlined text-xs">image</span>
+                                                                    <span>Cửa chính – Ảnh thực tế</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-1" class="w-full flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                            <span class="material-symbols-outlined text-sm">attachment</span>
+                                                            Hình đính kèm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                                                <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                                    <div class="flex items-center gap-2 min-w-0">
+                                                        <div class="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">CH</div>
+                                                        <div class="min-w-0">
+                                                            <h4 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Trần Lan – Cửa hàng trưởng</h4>
+                                                            <p class="text-[10px] text-slate-500 dark:text-slate-400">Báo cáo đến: Giám sát khu vực</p>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 shrink-0">28/03/2026 • 14:40</span>
+                                                </div>
+                                                <div class="p-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                                    <div class="lg:col-span-2">
+                                                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic line-clamp-3">"Đã bổ sung ảnh thực tế khu cửa chính và thảm; đã hút bụi thảm và lau kính trước giờ mở cửa."</p>
+                                                    </div>
+                                                    <div class="flex flex-col gap-2">
+                                                        <div class="bg-white dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-700/50">
+                                                            <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 block mb-1.5">Trạng thái xác minh</span>
+                                                            <div class="space-y-1.5">
+                                                                <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-800/80 px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600">
+                                                                    <div class="flex items-center gap-1 text-slate-600 dark:text-slate-400">
+                                                                        <span class="material-symbols-outlined text-base">schedule</span>
+                                                                        <span class="font-bold text-xs">Chờ phản hồi</span>
+                                                                    </div>
+                                                                    <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase">Kết quả</span>
+                                                                </div>
+                                                                <div class="flex items-center gap-1 px-2 py-1 text-slate-500 dark:text-slate-400 text-[10px] font-medium">
+                                                                    <span class="material-symbols-outlined text-xs">image</span>
+                                                                    <span>Cửa chính – Ảnh đã gửi</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="grid grid-cols-2 gap-1.5">
+                                                            <button type="button" data-criterion-scroll="standard" data-criterion-section="tieu-chuan-1" class="flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                                <span class="material-symbols-outlined text-sm">image_search</span>
+                                                                Hình mẫu
+                                                            </button>
+                                                            <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-1" class="flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                                <span class="material-symbols-outlined text-sm">camera_enhance</span>
+                                                                Hình thực tế
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                                                <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                                    <div class="flex items-center gap-2 min-w-0">
+                                                        <div class="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-[10px]">GS</div>
+                                                        <div class="min-w-0">
+                                                            <h4 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Nguyễn Minh – Giám sát khu vực</h4>
+                                                            <p class="text-[10px] text-slate-500 dark:text-slate-400">Xác nhận phản hồi</p>
+                                                        </div>
+                                                    </div>
+                                                    <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500 shrink-0">28/03/2026 • 15:45</span>
+                                                </div>
+                                                <div class="p-3 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                                    <div class="lg:col-span-2 space-y-1">
+                                                        <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500">Nhận xét từ giám sát</span>
+                                                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed line-clamp-4">
+                                                            Đã đối chiếu ảnh thực tế và mô tả tiêu chí 01. Tạm thời chấp nhận kết quả <strong>ĐẠT</strong> cho mục vệ sinh cửa chính &amp; sảnh. Vui lòng duy trì trong các ca tiếp theo.
+                                                        </p>
+                                                        <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] mt-2">
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Kính cửa sạch, không dấu tay</span></div>
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Đủ ảnh thực tế (tối thiểu 2)</span></div>
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Thảm chùi chân đúng vị trí</span></div>
+                                                            <div class="flex items-center gap-1 truncate"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Sảnh gọn gàng</span></div>
+                                                            <div class="flex items-center gap-1 truncate col-span-2"><span class="material-symbols-outlined text-emerald-500 text-xs shrink-0">check_circle</span><span class="truncate text-slate-600 dark:text-slate-300">Hút bụi thảm trước mở cửa</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col gap-2">
+                                                        <div class="bg-white dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-700/50">
+                                                            <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 block mb-1.5">Trạng thái xác minh</span>
+                                                            <div class="space-y-1.5">
+                                                                <div class="flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-900/30">
+                                                                    <div class="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
+                                                                        <span class="material-symbols-outlined text-base">check_circle</span>
+                                                                        <span class="font-bold text-xs">ĐẠT</span>
+                                                                    </div>
+                                                                    <span class="text-[10px] font-medium text-emerald-600/70 dark:text-emerald-400/70 uppercase">Kết quả</span>
+                                                                </div>
+                                                                <div class="flex items-center gap-1 px-2 py-1 text-slate-500 dark:text-slate-400 text-[10px] font-medium">
+                                                                    <span class="material-symbols-outlined text-xs">image</span>
+                                                                    <span>Cửa chính – Sau chỉnh sửa</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-1" class="w-full flex flex-col items-center justify-center gap-0 py-2 px-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                                                            <span class="material-symbols-outlined text-sm">attachment</span>
+                                                            Hình đính kèm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-2"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--pass scroll-mt-4 rounded-xl p-4 md:p-6 pt-8">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -829,10 +975,30 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-2-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-2-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 02</span>
+                                            </div>
+                                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Gần nhất trước</span>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-300">
+                                                <p class="font-semibold text-slate-800 dark:text-slate-100 mb-1">GS · 27/03/2026</p>
+                                                <p>Nhắc đối chiếu tem giá và ảnh thực tế kệ A1 với ảnh mẫu; bổ sung nếu thiếu góc chụp.</p>
+                                            </div>
+                                            <div class="flex flex-wrap gap-2">
+                                                <button type="button" data-criterion-scroll="standard" data-criterion-section="tieu-chuan-2" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Hình mẫu</button>
+                                                <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-2" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Hình thực tế</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-3"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--fail scroll-mt-4 rounded-xl p-4 md:p-6 pt-8">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -874,10 +1040,25 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-3-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-3-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 03</span>
+                                            </div>
+                                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Gần nhất trước</span>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-300">
+                                            <p class="font-semibold text-slate-800 dark:text-slate-100 mb-1">GS · 26/03/2026</p>
+                                            <p>Video kho cần quay rõ lối đi và khu FEFO; tối thiểu 2 clip theo quy định.</p>
+                                            <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-3" class="mt-2 inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700"><span class="material-symbols-outlined text-sm">videocam</span> Khối thêm video</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-4"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--fail scroll-mt-4 rounded-xl p-4 md:p-6 pt-8">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -915,10 +1096,25 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-300 dark:focus:border-slate-600 resize-none min-h-[120px] placeholder:text-slate-400"
                                             placeholder="Nhập nội dung mô tả hoặc ghi chú cho tiêu chí này..."></textarea>
                                     </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-4-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-4-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 04</span>
+                                            </div>
+                                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Gần nhất trước</span>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-300">
+                                            <p class="font-semibold text-slate-800 dark:text-slate-100 mb-1">GS · 25/03/2026</p>
+                                            <p>Tiêu chí chỉ cần văn bản: ghi rõ nhiệt độ tủ và ghi nhận bất thường (nếu có).</p>
+                                            <button type="button" data-criterion-scroll="text" data-criterion-section="tieu-chuan-4" class="mt-2 inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700"><span class="material-symbols-outlined text-sm">description</span> Ô văn bản / mô tả</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-5"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--fail scroll-mt-4 rounded-xl p-4 md:p-6 pt-8">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -973,10 +1169,30 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-5-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-5-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 05</span>
+                                            </div>
+                                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Gần nhất trước</span>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-300">
+                                                <p class="font-semibold text-slate-800 dark:text-slate-100 mb-1">GS · 24/03/2026</p>
+                                                <p>Kiểm tra ảnh thực tế WC: đủ góc tổng thể và chi tiết bồn rửa/giấy.</p>
+                                            </div>
+                                            <div class="flex flex-wrap gap-2">
+                                                <button type="button" data-criterion-scroll="standard" data-criterion-section="tieu-chuan-5" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Hình mẫu</button>
+                                                <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-5" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Hình thực tế</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-6"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--pass scroll-mt-4 rounded-xl p-4 md:p-6 pt-8">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -1040,10 +1256,30 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-6-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-6-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 06</span>
+                                            </div>
+                                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Gần nhất trước</span>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-300">
+                                                <p class="font-semibold text-slate-800 dark:text-slate-100 mb-1">GS · 23/03/2026</p>
+                                                <p>Ảnh PCCC cần thấy rõ tem kiểm định và lối thoát; bổ sung nếu thiếu.</p>
+                                            </div>
+                                            <div class="flex flex-wrap gap-2">
+                                                <button type="button" data-criterion-scroll="standard" data-criterion-section="tieu-chuan-6" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Hình mẫu</button>
+                                                <button type="button" data-criterion-scroll="actual" data-criterion-section="tieu-chuan-6" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Hình thực tế</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-7"
-                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                class="criterion-section-card criterion-section--pass scroll-mt-4 rounded-xl p-4 md:p-6 pt-8">
                                 <div class="mb-8">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4 min-w-0">
@@ -1080,6 +1316,21 @@
                                         <textarea readonly
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-300 dark:focus:border-slate-600 resize-none min-h-[120px] placeholder:text-slate-400"
                                             placeholder="Nhập nội dung báo cáo chi tiết (văn bản) cho tiêu chí này..."></textarea>
+                                    </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700" role="region" aria-labelledby="tieu-chuan-7-feedback-heading">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">history_edu</span>
+                                                <h3 id="tieu-chuan-7-feedback-heading" class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Lịch sử phản hồi</h3>
+                                                <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">· Tiêu chí 07</span>
+                                            </div>
+                                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Gần nhất trước</span>
+                                        </div>
+                                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-xs text-slate-600 dark:text-slate-300">
+                                            <p class="font-semibold text-slate-800 dark:text-slate-100 mb-1">GS · 22/03/2026</p>
+                                            <p>Báo cáo văn bản: tóm tắt doanh thu ca, tồn kho và sự cố (nếu có) theo biểu mẫu.</p>
+                                            <button type="button" data-criterion-scroll="text" data-criterion-section="tieu-chuan-7" class="mt-2 inline-flex items-center gap-1 px-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700"><span class="material-symbols-outlined text-sm">description</span> Ô báo cáo văn bản</button>
+                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -1126,27 +1377,6 @@
         </main>
 
         <script>
-            (function () {
-                var params = new URLSearchParams(location.search);
-                var tid = params.get('task');
-                if (!tid) return;
-                var banner = document.getElementById('task-deep-link-banner');
-                var titleEl = document.getElementById('task-deep-link-title');
-                var idEl = document.getElementById('task-deep-link-id');
-                if (!banner || !titleEl || !idEl) return;
-                var DEMO = {
-                    t1: 'Checklist + Daily work – Ca sáng tuần 06',
-                    t2: 'Điều hành kinh doanh – Báo cáo tuần 05',
-                    t3: 'Quy trình vệ sinh định kỳ (mở lại)',
-                    t4: 'Kiểm tra trưng bày kệ A1 – chỉnh sửa',
-                    t5: 'Báo cáo PCCC định kỳ',
-                    t6: 'Vệ sinh kho – video bổ sung',
-                    t7: 'Chấm điểm mystery shopper – tháng 1'
-                };
-                titleEl.textContent = DEMO[tid] || 'Công việc';
-                idEl.textContent = '(' + tid + ')';
-                banner.classList.add('is-visible');
-            })();
             (function () {
                 function updateTaskFilledCount() {
                     var container = document.getElementById('standard-detail-sections');
@@ -1413,32 +1643,6 @@
                     select.selectedIndex = 0;
                     syncSupervisorsToStandards();
                 });
-                window.__rebuildSupervisorChipsFromDraft = function (pairs) {
-                    if (!select || !list) return;
-                    list.innerHTML = '';
-                    added = [];
-                    excludedBySection = {};
-                    if (!pairs || !pairs.length) return;
-                    pairs.forEach(function (item) {
-                        var value = item.value;
-                        var text = item.label || '';
-                        if (!value || added.indexOf(value) >= 0) return;
-                        added.push(value);
-                        var chip = document.createElement('span');
-                        chip.className = 'supervisor-chip inline-flex items-center gap-1 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-md pl-2 pr-1 py-1 text-[10px] font-medium text-slate-700 dark:text-slate-200 shadow-sm';
-                        chip.setAttribute('data-value', value);
-                        chip.setAttribute('data-label', text);
-                        chip.innerHTML = '<span class="max-w-[140px] truncate">' + escapeHtml(text) + '</span><button type="button" class="remove-supervisor p-0.5 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-colors shrink-0" title="Bỏ"><span class="material-symbols-outlined text-sm">close</span></button>';
-                        list.appendChild(chip);
-                        chip.querySelector('.remove-supervisor').addEventListener('click', function () {
-                            added = added.filter(function (v) { return v !== value; });
-                            chip.remove();
-                            syncSupervisorsToStandards();
-                        });
-                    });
-                    select.selectedIndex = 0;
-                    syncSupervisorsToStandards();
-                };
             })();
             (function () {
                 var select = document.getElementById('add-store-select');
@@ -1469,28 +1673,6 @@
                     });
                     select.selectedIndex = 0;
                 });
-                window.__rebuildStoreChipsFromDraft = function (pairs) {
-                    if (!select || !list) return;
-                    list.innerHTML = '';
-                    added = [];
-                    if (!pairs || !pairs.length) return;
-                    pairs.forEach(function (item) {
-                        var value = item.value;
-                        var text = item.text || '';
-                        if (!value || added.indexOf(value) >= 0) return;
-                        added.push(value);
-                        var chip = document.createElement('span');
-                        chip.className = 'store-chip inline-flex items-center gap-1 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-md pl-2 pr-1 py-1 text-[10px] font-medium text-slate-700 dark:text-slate-200 shadow-sm';
-                        chip.setAttribute('data-value', value);
-                        chip.innerHTML = '<span class="max-w-[140px] truncate">' + escapeHtml(text) + '</span><button type="button" class="remove-store p-0.5 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-colors shrink-0" title="Bỏ"><span class="material-symbols-outlined text-sm">close</span></button>';
-                        list.appendChild(chip);
-                        chip.querySelector('.remove-store').addEventListener('click', function () {
-                            added = added.filter(function (v) { return v !== value; });
-                            chip.remove();
-                        });
-                    });
-                    select.selectedIndex = 0;
-                };
             })();
             (function () {
                 var input = document.getElementById('config-tag-input');
@@ -1738,137 +1920,27 @@
                 });
             })();
             (function () {
-                var DRAFT_KEY = 'todoStandards_myTasks_draft_v1';
-                function walkControl(el) {
-                    if (el.tagName === 'INPUT') {
-                        if (el.type === 'checkbox') {
-                            if (el.name === 'repeat-day') return { type: 'repeat', value: el.value, checked: el.checked };
-                            return null;
+                function scrollCriterionBlock(sectionId, kind) {
+                    var sec = document.getElementById(sectionId);
+                    if (!sec) return;
+                    if (kind === 'text') {
+                        var ta = sec.querySelector('textarea.border-dashed') || sec.querySelector('.space-y-2 textarea');
+                        if (ta) {
+                            ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            try { ta.focus({ preventScroll: true }); } catch (e) { /* readonly */ }
                         }
-                        if (el.type === 'file' || el.type === 'button') return null;
-                        return { type: 'input', val: el.value };
+                        return;
                     }
-                    if (el.tagName === 'TEXTAREA') return { type: 'ta', val: el.value };
-                    if (el.tagName === 'SELECT') return { type: 'sel', val: el.value };
-                    return null;
+                    var target = kind === 'standard'
+                        ? sec.querySelector('.img-list:not([data-max-images]):not([data-max-videos])')
+                        : sec.querySelector('.img-list[data-max-images], .img-list[data-max-videos]');
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-                function collectDraftData() {
-                    var root = document.getElementById('standard-sections-container');
-                    if (!root) return null;
-                    var controls = [];
-                    root.querySelectorAll('input, textarea, select').forEach(function (el) {
-                        var o = walkControl(el);
-                        if (o) controls.push(o);
-                    });
-                    var rt = document.getElementById('report-track');
-                    var stores = [];
-                    document.querySelectorAll('#store-list .store-chip').forEach(function (c) {
-                        var sp = c.querySelector('span');
-                        stores.push({ value: c.getAttribute('data-value'), text: sp ? sp.textContent.trim() : '' });
-                    });
-                    var supervisors = [];
-                    document.querySelectorAll('#supervisor-list .supervisor-chip').forEach(function (c) {
-                        supervisors.push({ value: c.getAttribute('data-value'), label: c.getAttribute('data-label') || '' });
-                    });
-                    var tags = [];
-                    document.querySelectorAll('#config-tag-list .config-tag-chip').forEach(function (chip) {
-                        var sp = chip.querySelector('span');
-                        if (sp) tags.push(sp.textContent.trim());
-                    });
-                    return {
-                        v: 1,
-                        savedAt: Date.now(),
-                        reportTrack: rt ? rt.value : 'on',
-                        controls: controls,
-                        stores: stores,
-                        supervisors: supervisors,
-                        tags: tags
-                    };
-                }
-                function applyDraftData(d) {
-                    if (!d || !d.controls || !Array.isArray(d.controls)) return;
-                    var root = document.getElementById('standard-sections-container');
-                    if (!root) return;
-                    var flat = [];
-                    root.querySelectorAll('input, textarea, select').forEach(function (el) {
-                        var o = walkControl(el);
-                        if (o) flat.push({ el: el, o: o });
-                    });
-                    var n = Math.min(flat.length, d.controls.length);
-                    for (var i = 0; i < n; i++) {
-                        var item = flat[i];
-                        var c = d.controls[i];
-                        var el = item.el;
-                        if (c.type === 'repeat' && item.o.type === 'repeat' && el.value === c.value) {
-                            el.checked = !!c.checked;
-                        } else if (c.type === item.o.type && c.type !== 'repeat') {
-                            el.value = c.val != null ? c.val : '';
-                        }
-                    }
-                    var rt = document.getElementById('report-track');
-                    if (rt && d.reportTrack) {
-                        rt.value = d.reportTrack;
-                        var lab = document.querySelector('.report-track-option[data-value="' + d.reportTrack + '"]');
-                        if (lab) lab.click();
-                    }
-                    if (window.__rebuildStoreChipsFromDraft) window.__rebuildStoreChipsFromDraft(d.stores || []);
-                    if (window.__rebuildSupervisorChipsFromDraft) window.__rebuildSupervisorChipsFromDraft(d.supervisors || []);
-                    if (d.tags && d.tags.length) {
-                        var tagList = document.getElementById('config-tag-list');
-                        if (tagList) {
-                            tagList.innerHTML = '';
-                            d.tags.forEach(function (text) {
-                                if (!text) return;
-                                var chip = document.createElement('span');
-                                chip.className = 'config-tag-chip inline-flex items-center gap-1 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded pl-1.5 pr-1 py-0.5 text-[10px] font-medium text-slate-700 dark:text-slate-200';
-                                chip.innerHTML = '<span class="max-w-[120px] truncate">' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span><button type="button" class="remove-config-tag p-0.5 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-colors shrink-0" title="Bỏ"><span class="material-symbols-outlined text-sm">close</span></button>';
-                                tagList.appendChild(chip);
-                                chip.querySelector('.remove-config-tag').addEventListener('click', function () { chip.remove(); });
-                            });
-                        }
-                    }
-                    document.dispatchEvent(new CustomEvent('criterion-checks-refresh'));
-                    if (window.__syncTaskProgressCounts) window.__syncTaskProgressCounts();
-                    document.dispatchEvent(new CustomEvent('task-filled-count-updated'));
-                }
-                function saveDraft() {
-                    var data = collectDraftData();
-                    if (!data) return false;
-                    try {
-                        localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
-                        return true;
-                    } catch (e) {
-                        return false;
-                    }
-                }
-                function loadDraft() {
-                    try {
-                        var raw = localStorage.getItem(DRAFT_KEY);
-                        if (!raw) return null;
-                        return JSON.parse(raw);
-                    } catch (e) {
-                        return null;
-                    }
-                }
-                var draftBtn = document.getElementById('task-draft-btn');
-                if (draftBtn) {
-                    draftBtn.addEventListener('click', function () {
-                        var ok = saveDraft();
-                        var label = draftBtn.querySelector('.task-draft-label');
-                        var orig = label ? label.textContent : '';
-                        if (label) label.textContent = ok ? 'Đã lưu nháp' : 'Lưu thất bại';
-                        setTimeout(function () {
-                            if (label) label.textContent = orig || 'Lưu nháp';
-                        }, ok ? 1800 : 2200);
-                    });
-                }
-                window.__saveTaskDraft = saveDraft;
-                window.__loadTaskDraft = loadDraft;
-                window.__applyTaskDraft = applyDraftData;
-                setTimeout(function () {
-                    var d = loadDraft();
-                    if (d && d.controls && d.controls.length) applyDraftData(d);
-                }, 0);
+                document.addEventListener('click', function (e) {
+                    var el = e.target.closest('[data-criterion-scroll][data-criterion-section]');
+                    if (!el) return;
+                    scrollCriterionBlock(el.getAttribute('data-criterion-section'), el.getAttribute('data-criterion-scroll'));
+                });
             })();
         </script>
     </div>

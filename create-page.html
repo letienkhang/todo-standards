@@ -63,10 +63,20 @@
                 <span class="nav-link-text truncate">Tổng quan</span>
                 <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
             </a>
-            <a href="my-tasks.html" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+            <a href="my-tasks.html" id="nav-my-tasks" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
                 <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
                 <span class="nav-link-text truncate">Công việc của tôi</span>
                 <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
+            </a>
+            <a href="my-again-task.html" id="nav-reopened-task" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">published_with_changes</span>
+                <span class="nav-link-text truncate">Công việc mở lại</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc mở lại</span>
+            </a>
+            <a href="execute-task.html" id="nav-execute-task" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">engineering</span>
+                <span class="nav-link-text truncate">Thực hiện công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Thực hiện công việc</span>
             </a>
             <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                 <span class="material-symbols-outlined text-xl shrink-0">list_alt</span>
@@ -107,7 +117,7 @@
             </button>
         </div>
     </nav>
-    <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();</script>
+    <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();(function(){var r=document.getElementById('nav-reopened-task'),e=document.getElementById('nav-execute-task');var f=(location.pathname||'').split('/').pop()||'';if(f.indexOf('?')!==-1)f=f.split('?')[0];if(f.indexOf('#')!==-1)f=f.split('#')[0];var aid=f==='my-again-task.html'?'nav-reopened-task':f==='execute-task.html'?'nav-execute-task':null;if(aid){var el=document.getElementById(aid);if(el){el.classList.add('nav-item-active');el.setAttribute('aria-current','page');}document.querySelectorAll('#sidebar-nav a.nav-item-active').forEach(function(n){if(n.id===aid)return;n.classList.remove('nav-item-active');n.classList.add('text-slate-600','dark:text-slate-400','hover:bg-slate-100','dark:hover:bg-slate-800');n.removeAttribute('aria-current');});}else{if(r){r.classList.remove('nav-item-active');r.removeAttribute('aria-current');}if(e){e.classList.remove('nav-item-active');e.removeAttribute('aria-current');}}})();</script>
     <div class="flex-1 flex flex-col min-h-0 min-w-0">
     <header
         class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">

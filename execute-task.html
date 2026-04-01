@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Thực hiện công việc - Lọc &amp; chọn công việc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1E293B",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply font-display text-black dark:text-slate-200 bg-background-light dark:bg-background-dark; }
+        }
+        .table-row-hover:hover {
+            background-color: rgba(59, 130, 246, 0.04);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .table-scroll::-webkit-scrollbar { height: 6px; }
+        .table-scroll::-webkit-scrollbar-track { background: transparent; }
+        .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .table-scroll::-webkit-scrollbar-thumb { background: #475569; }
+        .nav-item-active { background-color: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+        .dark .nav-item-active { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .filter-panel-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            overflow: hidden;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        .filter-panel-wrapper.open {
+            grid-template-rows: 1fr;
+        }
+        .filter-panel-wrapper > div {
+            min-height: 0;
+        }
+        #sidebar-nav { transition: width 0.2s ease-out; }
+        #sidebar-nav.nav-collapsed { width: 4rem; min-width: 4rem; }
+        #sidebar-nav.nav-collapsed .nav-link-text { opacity: 0; width: 0; overflow: hidden; min-width: 0; padding: 0; }
+        .nav-flyout { display: none; }
+        #sidebar-nav.nav-collapsed .nav-flyout { display: block; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+        #sidebar-nav.nav-collapsed a:hover .nav-flyout, #sidebar-nav.nav-collapsed button:hover .nav-flyout { opacity: 1; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-expanded { display: none; }
+        #sidebar-nav.nav-collapsed .nav-toggle-icon-collapsed { display: inline-block; }
+        #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
+        .filter-chip { @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer select-none; }
+        .filter-chip input { @apply sr-only; }
+        .filter-chip:has(input:checked) { @apply border-primary bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-300; }
+        .filter-chip:not(:has(input:checked)) { @apply border-border-light dark:border-border-dark bg-white dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600; }
+    </style>
+</head>
+
+<body class="transition-colors duration-200 flex min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark">
+    <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out" aria-label="Menu chính">
+        <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">dashboard</span>
+                <span class="nav-link-text truncate">Tổng quan</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
+            </a>
+            <a href="my-tasks.html" id="nav-my-tasks" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
+                <span class="nav-link-text truncate">Công việc của tôi</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
+            </a>
+            <a href="my-again-task.html" id="nav-reopened-task" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">published_with_changes</span>
+                <span class="nav-link-text truncate">Công việc mở lại</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc mở lại</span>
+            </a>
+            <a href="execute-task.html" id="nav-execute-task" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">engineering</span>
+                <span class="nav-link-text truncate">Thực hiện công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Thực hiện công việc</span>
+            </a>
+            <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">list_alt</span>
+                <span class="nav-link-text truncate">Danh sách công việc</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách công việc</span>
+            </a>
+            <a href="list-person.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">person</span>
+                <span class="nav-link-text truncate">Danh sách cá nhân</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Danh sách cá nhân</span>
+            </a>
+            <a href="audit-list.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">grading</span>
+                <span class="nav-link-text truncate">Chấm điểm</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Chấm điểm</span>
+            </a>
+            <a href="#" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">bar_chart</span>
+                <span class="nav-link-text truncate">Báo cáo</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Báo cáo</span>
+            </a>
+            <a href="ui-mobile.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="material-symbols-outlined text-xl shrink-0">phone_android</span>
+                <span class="nav-link-text truncate">Giao diện mobile</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện mobile</span>
+            </a>
+        </div>
+        <div class="border-t border-border-light dark:border-border-dark p-2 flex flex-col gap-0.5">
+            <button type="button" id="navToggle" class="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Thu gọn menu">
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-expanded">chevron_left</span>
+                <span class="material-symbols-outlined text-xl shrink-0 nav-toggle-icon-collapsed">chevron_right</span>
+                <span class="nav-link-text truncate">Thu gọn</span>
+            </button>
+            <button type="button" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')" aria-label="Giao diện">
+                <span class="material-symbols-outlined text-xl shrink-0">dark_mode</span>
+                <span class="nav-link-text truncate">Giao diện</span>
+                <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Giao diện</span>
+            </button>
+        </div>
+    </nav>
+    <script>(function(){var n=document.getElementById('sidebar-nav'),t=document.getElementById('navToggle');if(n&&t){if(localStorage.getItem('navCollapsed')==='1')n.classList.add('nav-collapsed');t.addEventListener('click',function(){n.classList.toggle('nav-collapsed');localStorage.setItem('navCollapsed',n.classList.contains('nav-collapsed')?'1':'0');});}})();(function(){var r=document.getElementById('nav-reopened-task'),e=document.getElementById('nav-execute-task');var f=(location.pathname||'').split('/').pop()||'';if(f.indexOf('?')!==-1)f=f.split('?')[0];if(f.indexOf('#')!==-1)f=f.split('#')[0];var aid=f==='my-again-task.html'?'nav-reopened-task':f==='execute-task.html'?'nav-execute-task':null;if(aid){var el=document.getElementById(aid);if(el){el.classList.add('nav-item-active');el.setAttribute('aria-current','page');}document.querySelectorAll('#sidebar-nav a.nav-item-active').forEach(function(n){if(n.id===aid)return;n.classList.remove('nav-item-active');n.classList.add('text-slate-600','dark:text-slate-400','hover:bg-slate-100','dark:hover:bg-slate-800');n.removeAttribute('aria-current');});}else{if(r){r.classList.remove('nav-item-active');r.removeAttribute('aria-current');}if(e){e.classList.remove('nav-item-active');e.removeAttribute('aria-current');}}})();</script>
+
+    <div class="flex-1 flex flex-col min-h-0 min-w-0 w-full">
+        <header
+            class="sticky top-0 z-50 bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4 min-w-0">
+                <div class="min-w-0">
+                    <h1 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Thực hiện công việc</h1>
+                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Lọc &amp; mở chi tiết tại Công việc của tôi</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+                <button type="button" id="btnToggleFilter" aria-expanded="false" aria-controls="filterPanelWrap"
+                    class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                    title="Bộ lọc tìm kiếm">
+                    <span class="material-symbols-outlined">filter_alt</span>
+                </button>
+                <button type="button" class="hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+                    onclick="document.documentElement.classList.toggle('dark')" aria-hidden="true">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                </button>
+                <a href="my-tasks.html"
+                    class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-lg">folder_shared</span>
+                    Công việc của tôi
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-1 flex flex-col min-h-0 p-4 sm:p-6 w-full min-w-0">
+            <div class="flex-1 flex flex-col gap-4 lg:gap-6 min-h-0 min-w-0">
+                <div id="filterPanelWrap" class="filter-panel-wrapper flex-shrink-0" role="region" aria-label="Bộ lọc tìm kiếm">
+                    <div class="min-h-0">
+                        <aside class="w-full">
+                            <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-3 sm:p-4">
+                                <div class="flex flex-col gap-3">
+                                    <div class="space-y-1 min-w-0">
+                                        <label class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Từ khóa</label>
+                                        <div class="relative">
+                                            <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
+                                                <span class="material-symbols-outlined text-sm">search</span>
+                                            </span>
+                                            <input id="filterKeyword" class="w-full pl-8 pr-2.5 py-2 text-sm border border-border-light dark:border-border-dark rounded-lg bg-white dark:bg-slate-800 text-black dark:text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-shadow" placeholder="Tên công việc, mã…" type="text" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Cửa hàng <span class="text-slate-400 font-normal normal-case">(chọn nhiều)</span></p>
+                                        <div id="filter-stores" class="flex flex-wrap gap-2"></div>
+                                    </div>
+                                    <div>
+                                        <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Người nhận việc</p>
+                                        <div id="filter-users" class="flex flex-wrap gap-2"></div>
+                                    </div>
+                                    <div>
+                                        <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Nguồn / loại</p>
+                                        <div id="filter-sources" class="flex flex-wrap gap-2"></div>
+                                    </div>
+                                    <div class="flex flex-wrap items-center justify-end gap-2 pt-1 border-t border-border-light dark:border-border-dark">
+                                        <button id="btnFilter" type="button" class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-800">
+                                            Lọc kết quả
+                                        </button>
+                                        <button id="btnRefreshFilter" type="button" class="p-2 border border-border-light dark:border-border-dark rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20" title="Làm mới bộ lọc">
+                                            <span class="material-symbols-outlined text-xl">refresh</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col min-w-0 min-h-0">
+                    <div
+                        class="flex-shrink-0 border-b border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-t-xl shadow-sm overflow-x-auto no-scrollbar">
+                        <nav class="flex px-2 sm:px-4" role="tablist">
+                            <button id="tabAll" type="button" role="tab" aria-selected="true" data-tab="all"
+                                class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold border-b-2 border-primary text-primary transition-all whitespace-nowrap">
+                                Tất cả công việc
+                            </button>
+                            <button id="tabPriority" type="button" role="tab" aria-selected="false" data-tab="priority"
+                                class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-all whitespace-nowrap flex items-center gap-2">
+                                Mở lại &amp; từ GS
+                                <span id="priorityBadge" class="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2 py-0.5 rounded-full text-[10px] font-bold">0</span>
+                            </button>
+                        </nav>
+                    </div>
+                    <div
+                        class="flex-1 flex flex-col min-h-0 bg-card-light dark:bg-card-dark rounded-b-xl shadow-sm border border-border-light dark:border-border-dark border-t-0 overflow-hidden">
+                        <div class="flex-shrink-0 p-3 sm:p-4 border-b border-border-light dark:border-border-dark flex items-center justify-between gap-2">
+                            <h2 class="text-xs sm:text-sm font-bold text-black dark:text-slate-300 uppercase tracking-wide truncate">Danh sách thực hiện <span id="tableCountLabel">(0)</span></h2>
+                        </div>
+                        <div class="flex-1 min-h-0 overflow-auto table-scroll">
+                            <table class="w-full text-left border-collapse min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-slate-800/50 text-black dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                        <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Công việc</th>
+                                        <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark hidden sm:table-cell">Cửa hàng</th>
+                                        <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark hidden md:table-cell">Người nhận</th>
+                                        <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark">Nguồn</th>
+                                        <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark hidden lg:table-cell whitespace-nowrap">
+                                            <div class="flex items-center gap-1 cursor-default">
+                                                Hạn
+                                                <span class="material-symbols-outlined text-sm">unfold_more</span>
+                                            </div>
+                                        </th>
+                                        <th class="px-3 sm:px-6 py-3 sm:py-4 border-b border-border-light dark:border-border-dark w-28 text-right"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="taskTableBody" class="divide-y divide-border-light dark:divide-border-dark"></tbody>
+                            </table>
+                        </div>
+                        <p id="emptyState" class="hidden px-4 py-10 text-center text-sm text-slate-500 dark:text-slate-400 border-t border-border-light dark:border-border-dark">Không có công việc khớp bộ lọc. Thử bỏ bớt điều kiện hoặc từ khóa.</p>
+                        <div
+                            class="flex-shrink-0 px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between border-t border-border-light dark:border-border-dark gap-3">
+                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-6 text-xs sm:text-sm text-black dark:text-slate-400">
+                                <span id="paginationInfo">0 trong tổng 0</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button id="btnPrevPage" type="button"
+                                    class="px-2 sm:px-3 py-1.5 sm:py-2 border border-border-light dark:border-border-dark rounded-lg text-black dark:text-slate-500 flex items-center gap-1 text-xs sm:text-sm bg-slate-50 dark:bg-slate-800 cursor-not-allowed opacity-60"
+                                    disabled aria-disabled="true">
+                                    <span class="material-symbols-outlined text-sm sm:text-base">chevron_left</span>
+                                    <span class="hidden sm:inline">Trước</span>
+                                </button>
+                                <span id="btnCurrentPage" class="w-8 h-8 sm:w-10 sm:h-10 bg-primary text-white flex items-center justify-center rounded-lg font-medium text-xs sm:text-sm">1</span>
+                                <button id="btnNextPage" type="button"
+                                    class="px-2 sm:px-3 py-1.5 sm:py-2 border border-border-light dark:border-border-dark rounded-lg text-black dark:text-slate-300 flex items-center gap-1 text-xs sm:text-sm bg-card-light dark:bg-card-dark hover:bg-slate-100 dark:hover:bg-slate-800 cursor-not-allowed opacity-60"
+                                    disabled aria-disabled="true">
+                                    <span class="hidden sm:inline">Sau</span>
+                                    <span class="material-symbols-outlined text-sm sm:text-base">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <button
+        class="fixed bottom-6 right-6 p-2 text-black dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors z-50"
+        onclick="document.documentElement.classList.toggle('dark')" type="button" aria-label="Đổi giao diện sáng tối">
+        <span class="material-symbols-outlined hidden dark:block text-yellow-400">light_mode</span>
+        <span class="material-symbols-outlined block dark:hidden">dark_mode</span>
+    </button>
+
+    <script>
+        (function () {
+            var TASKS = [
+                { id: 't1', title: 'Checklist + Daily work – Ca sáng tuần 06', store: 'CH Q1', user: 'Nguyễn An', source: 'new', due: '08/02/2026' },
+                { id: 't2', title: 'Điều hành kinh doanh – Báo cáo tuần 05', store: 'CH Tân Bình', user: 'Trần Lan', source: 'new', due: '10/02/2026' },
+                { id: 't3', title: 'Quy trình vệ sinh định kỳ (mở lại)', store: 'CH Q1', user: 'Nguyễn An', source: 'reopen', due: '12/02/2026' },
+                { id: 't4', title: 'Kiểm tra trưng bày kệ A1 – chỉnh sửa', store: 'CH Thủ Đức', user: 'Lê Minh', source: 'supervisor', due: '09/02/2026' },
+                { id: 't5', title: 'Báo cáo PCCC định kỳ', store: 'CH Tân Bình', user: 'Trần Lan', source: 'new', due: '15/02/2026' },
+                { id: 't6', title: 'Vệ sinh kho – video bổ sung', store: 'CH Thủ Đức', user: 'Lê Minh', source: 'reopen', due: '11/02/2026' },
+                { id: 't7', title: 'Chấm điểm mystery shopper – tháng 1', store: 'CH Q1', user: 'Nguyễn An', source: 'supervisor', due: '20/02/2026' }
+            ];
+            var STORES = ['CH Q1', 'CH Tân Bình', 'CH Thủ Đức'];
+            var USERS = ['Nguyễn An', 'Trần Lan', 'Lê Minh'];
+            var SOURCES = [
+                { id: 'new', label: 'Mới giao' },
+                { id: 'reopen', label: 'Mở lại' },
+                { id: 'supervisor', label: 'Gửi từ GS' }
+            ];
+
+            var activeTab = 'all';
+            var tabAll = document.getElementById('tabAll');
+            var tabPriority = document.getElementById('tabPriority');
+            var priorityBadge = document.getElementById('priorityBadge');
+            var tabActiveClasses = 'tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm border-b-2 border-primary text-primary font-semibold transition-all whitespace-nowrap';
+            var tabInactiveClasses = 'tab-btn px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-medium transition-all whitespace-nowrap';
+
+            var priorityCount = TASKS.filter(function (t) {
+                return t.source === 'reopen' || t.source === 'supervisor';
+            }).length;
+            if (priorityBadge) priorityBadge.textContent = String(priorityCount);
+
+            var btnToggleFilter = document.getElementById('btnToggleFilter');
+            var filterPanelWrap = document.getElementById('filterPanelWrap');
+            if (btnToggleFilter && filterPanelWrap) {
+                btnToggleFilter.addEventListener('click', function () {
+                    var isOpen = filterPanelWrap.classList.toggle('open');
+                    btnToggleFilter.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            }
+
+            function setActiveTab(tab) {
+                activeTab = tab;
+                if (tabAll) {
+                    tabAll.setAttribute('aria-selected', tab === 'all');
+                    tabAll.className = tab === 'all' ? tabActiveClasses : tabInactiveClasses;
+                }
+                if (tabPriority) {
+                    tabPriority.setAttribute('aria-selected', tab === 'priority');
+                    tabPriority.className = (tab === 'priority' ? tabActiveClasses : tabInactiveClasses) + ' flex items-center gap-2';
+                }
+                run();
+            }
+            if (tabAll) tabAll.addEventListener('click', function () { setActiveTab('all'); });
+            if (tabPriority) tabPriority.addEventListener('click', function () { setActiveTab('priority'); });
+
+            function buildChips(containerId, items, nameAttr) {
+                var el = document.getElementById(containerId);
+                if (!el) return;
+                el.innerHTML = '';
+                items.forEach(function (item) {
+                    var val = typeof item === 'string' ? item : item.id;
+                    var label = typeof item === 'string' ? item : item.label;
+                    var lab = document.createElement('label');
+                    lab.className = 'filter-chip';
+                    lab.innerHTML = '<input type="checkbox" name="' + nameAttr + '" value="' + val.replace(/"/g, '&quot;') + '" />' +
+                        '<span class="material-symbols-outlined text-sm">check</span>' + label;
+                    el.appendChild(lab);
+                });
+            }
+
+            buildChips('filter-stores', STORES, 'store');
+            buildChips('filter-users', USERS, 'user');
+            buildChips('filter-sources', SOURCES, 'source');
+
+            function selectedValues(name) {
+                return Array.prototype.map.call(document.querySelectorAll('input[name="' + name + '"]:checked'), function (i) { return i.value; });
+            }
+
+            function filterTasks() {
+                var stores = selectedValues('store');
+                var users = selectedValues('user');
+                var sources = selectedValues('source');
+                var kw = (document.getElementById('filterKeyword').value || '').trim().toLowerCase();
+
+                return TASKS.filter(function (t) {
+                    if (activeTab === 'priority' && t.source !== 'reopen' && t.source !== 'supervisor') return false;
+                    if (stores.length && stores.indexOf(t.store) === -1) return false;
+                    if (users.length && users.indexOf(t.user) === -1) return false;
+                    if (sources.length && sources.indexOf(t.source) === -1) return false;
+                    if (kw && (t.title.toLowerCase().indexOf(kw) === -1 && t.id.toLowerCase().indexOf(kw) === -1)) return false;
+                    return true;
+                });
+            }
+
+            function sourceLabel(s) {
+                var m = { new: 'Mới giao', reopen: 'Mở lại', supervisor: 'Gửi từ GS' };
+                return m[s] || s;
+            }
+
+            function sourcePillClass(s) {
+                if (s === 'reopen') return 'px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300';
+                if (s === 'supervisor') return 'px-2 py-1 rounded-full text-xs font-medium bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-300';
+                return 'px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-600 dark:text-slate-200';
+            }
+
+            function render(rows) {
+                var tb = document.getElementById('taskTableBody');
+                var empty = document.getElementById('emptyState');
+                var tableCountLabel = document.getElementById('tableCountLabel');
+                var paginationInfo = document.getElementById('paginationInfo');
+                tb.innerHTML = '';
+                var n = rows.length;
+                if (tableCountLabel) tableCountLabel.textContent = '(' + n + ')';
+                if (paginationInfo) {
+                    paginationInfo.textContent = n ? ('1 – ' + n + ' trong tổng ' + n) : '0 trong tổng 0';
+                }
+                if (!n) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                empty.classList.add('hidden');
+                rows.forEach(function (t) {
+                    var tr = document.createElement('tr');
+                    tr.className = 'table-row-hover text-sm';
+                    var href = 'my-tasks.html?task=' + encodeURIComponent(t.id);
+                    tr.innerHTML =
+                        '<td class="px-3 sm:px-6 py-3 sm:py-4 align-top min-w-0 max-w-[220px] sm:max-w-none">' +
+                        '<a class="font-medium text-black dark:text-slate-200 leading-snug hover:text-primary dark:hover:text-blue-400 block truncate" href="' + href + '">' + escapeHtml(t.title) + '</a>' +
+                        '<p class="text-[10px] text-slate-400 mt-0.5 font-mono">' + escapeHtml(t.id) + '</p></td>' +
+                        '<td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 hidden sm:table-cell font-bold min-w-0 max-w-[140px] sm:max-w-none truncate">' + escapeHtml(t.store) + '</td>' +
+                        '<td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 hidden md:table-cell truncate">' + escapeHtml(t.user) + '</td>' +
+                        '<td class="px-3 sm:px-6 py-3 sm:py-4"><span class="' + sourcePillClass(t.source) + '">' + escapeHtml(sourceLabel(t.source)) + '</span></td>' +
+                        '<td class="px-3 sm:px-6 py-3 sm:py-4 text-black dark:text-slate-300 hidden lg:table-cell whitespace-nowrap text-xs sm:text-sm">' + escapeHtml(t.due) + '</td>' +
+                        '<td class="px-3 sm:px-6 py-3 sm:py-4 text-right"><a href="' + href + '" class="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline">Mở<span class="material-symbols-outlined text-sm">arrow_forward</span></a></td>';
+                    tb.appendChild(tr);
+                });
+            }
+
+            function escapeHtml(s) {
+                var d = document.createElement('div');
+                d.textContent = s;
+                return d.innerHTML;
+            }
+
+            function run() {
+                render(filterTasks());
+            }
+
+            var btnFilter = document.getElementById('btnFilter');
+            var btnRefreshFilter = document.getElementById('btnRefreshFilter');
+            if (btnFilter) btnFilter.addEventListener('click', run);
+            if (btnRefreshFilter) {
+                btnRefreshFilter.addEventListener('click', function () {
+                    document.querySelectorAll('#filter-stores input, #filter-users input, #filter-sources input').forEach(function (i) { i.checked = false; });
+                    var kw = document.getElementById('filterKeyword');
+                    if (kw) kw.value = '';
+                    setActiveTab('all');
+                });
+            }
+            var filterKeyword = document.getElementById('filterKeyword');
+            if (filterKeyword) {
+                filterKeyword.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') { e.preventDefault(); run(); }
+                });
+            }
+
+            run();
+        })();
+    </script>
+</body>
+
+</html>
