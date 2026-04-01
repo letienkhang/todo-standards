@@ -53,13 +53,13 @@
         #sidebar-nav .nav-toggle-icon-collapsed { display: none; }
         .section-label { @apply block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight mb-2; }
         .text-slot { @apply min-h-[100px] rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col items-center justify-center gap-2 p-4; }
-        .video-slot { @apply w-full max-w-md aspect-video rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-900/80 dark:bg-slate-800/80 flex flex-col items-center justify-center gap-2 overflow-hidden cursor-pointer hover:border-primary/50 hover:bg-slate-800/80 dark:hover:bg-slate-700/50 transition-colors; }
-        /* Ảnh tiêu chuẩn / thực tế – desktop (từ ui-mobile) */
+        /* Ảnh / video thực tế – desktop: cùng kích thước ô w-28 h-28 */
         .img-list { @apply flex flex-wrap gap-3; }
         .empty-slot-desk { @apply w-28 h-28 rounded-xl flex-shrink-0 border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/50 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all cursor-pointer; }
         .empty-slot-desk .material-symbols-outlined { @apply text-slate-400 group-hover:text-primary; }
         .demo-img-slot-desk { @apply w-28 h-28 rounded-xl flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 relative; }
         .demo-img-slot-desk img { @apply w-full h-full object-cover; }
+        .demo-video-slot-desk { @apply w-28 h-28 rounded-xl flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 relative; }
         .img-slot-remove-desk { @apply absolute top-1 right-1 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center p-0 border-0 hover:bg-red-500 transition-colors cursor-pointer; }
         .img-slot-remove-desk .material-symbols-outlined { font-size: 18px; }
         /* Highlight lỗi báo cáo – dùng class để không bị Tailwind ghi đè */
@@ -92,16 +92,93 @@
             color: #e2e8f0;
         }
         .dark .task-progress-btn:hover { background: #334155; }
+        .criterion-check-indicator.is-complete {
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.45);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .dark .criterion-check-indicator.is-complete {
+            color: #34d399;
+            border-color: rgba(52, 211, 153, 0.45);
+            background: rgba(6, 78, 59, 0.35);
+        }
         .task-progress-btn.state-complete {
             background: #3B82F6;
             border-color: #3B82F6;
             color: #fff;
         }
         .task-progress-btn.state-complete:hover { background: #2563eb; }
+        /* Sidebar tiêu chí: đủ điều kiện + neo khi cuộn nội dung */
+        .standard-nav-item .standard-nav-check {
+            display: none;
+        }
+        .standard-nav-item.nav-item-complete {
+            border-color: rgba(16, 185, 129, 0.45);
+            background: rgba(16, 185, 129, 0.06);
+        }
+        .dark .standard-nav-item.nav-item-complete {
+            border-color: rgba(52, 211, 153, 0.45);
+            background: rgba(6, 78, 59, 0.25);
+        }
+        .standard-nav-item.nav-item-complete .standard-nav-num {
+            color: #10b981;
+        }
+        .dark .standard-nav-item.nav-item-complete .standard-nav-num {
+            color: #34d399;
+        }
+        .standard-nav-item.nav-item-complete .standard-nav-check {
+            display: inline-flex;
+        }
+        /* Cột trái cố định; cột phải: ô grid có chiều cao bị giới hạn → scroll riêng trong #standard-sections-container */
+        #standard-work-layout {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 0%;
+            min-height: 0;
+            min-width: 0;
+        }
+        @media (min-width: 1024px) {
+            #standard-work-layout {
+                display: grid;
+                grid-template-columns: 20rem minmax(0, 1fr);
+                grid-template-rows: minmax(0, 1fr);
+                align-items: stretch;
+            }
+        }
+        #standard-nav-aside {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+        @media (min-width: 1024px) {
+            #standard-nav-aside {
+                width: 20rem;
+                align-self: start;
+                max-height: 100%;
+            }
+        }
+        /* Chỉ khối này cuộn; overscroll không kéo cả trang */
+        #standard-sections-container {
+            flex: 1 1 0%;
+            min-width: 0;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+        }
+        @media (min-width: 1024px) {
+            #standard-sections-container {
+                height: 100%;
+                max-height: 100%;
+            }
+        }
     </style>
 </head>
 
-<body class="transition-colors duration-200 flex min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark">
+<body class="transition-colors duration-200 flex h-screen max-h-screen min-h-0 overflow-hidden bg-background-light dark:bg-background-dark">
     <nav id="sidebar-nav" class="flex flex-col w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark transition-[width] duration-200 ease-out" aria-label="Menu chính">
         <div class="p-2 flex flex-col gap-0.5 flex-1 min-h-0">
             <a href="index.html" class="nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
@@ -173,23 +250,24 @@
                     class="task-progress-btn px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all shadow-sm border">
                     <span id="task-progress-icon" class="material-symbols-outlined text-lg">task_alt</span>
                     <span id="task-progress-label" class="flex items-center">
-                        <span id="task-progress-counts"><span id="task-filled-count">0</span> / <span id="task-total-count">6</span></span>
+                        <span id="task-progress-counts"><span id="task-filled-count">0</span> / <span id="task-total-count">7</span></span>
                         <span id="task-progress-done" class="hidden">Hoàn tất và gửi thông tin</span>
                     </span>
                 </button>
             </div>
         </header>
-        <main class="w-full min-w-0 flex-1 min-h-0 p-6 ml-0 flex flex-col">
+        <main class="w-full min-w-0 flex-1 min-h-0 p-6 ml-0 flex flex-col overflow-hidden">
             <div
-                class="bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl shadow-sm overflow-hidden flex flex-col lg:flex-row flex-1 min-h-0">
-                <aside
-                    class="w-full lg:w-80 border-r border-border-light dark:border-border-dark flex flex-col bg-slate-50/50 dark:bg-slate-900/20">
+                class="bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
+                <div id="standard-work-layout">
+                <aside id="standard-nav-aside"
+                    class="w-full border-b lg:border-b-0 lg:border-r border-border-light dark:border-border-dark flex flex-col bg-slate-50/50 dark:bg-slate-900/20 min-h-0 z-10">
                     <div class="p-4 border-b border-border-light dark:border-border-dark bg-white dark:bg-card-dark">
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Cấu trúc tiêu chuẩn
                             </h2>
                             <span id="standard-count-badge"
-                                class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">06
+                                class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">07
                                 MỤC</span>
                         </div>
                         <div class="relative">
@@ -215,8 +293,8 @@
                         <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
                             data-scroll-to="tieu-chuan-1" role="button" tabindex="0">
                             <div class="flex items-start gap-3">
-                                <span class="text-xs font-bold text-slate-400 mt-1">01</span>
-                                <div>
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">01</span>
+                                <div class="min-w-0 flex-1">
                                     <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vệ sinh cửa
                                         chính
                                         &amp; Sảnh</h3>
@@ -224,80 +302,99 @@
                                         chân...
                                     </p>
                                 </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
                             </div>
                         </div>
                         <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
                             data-scroll-to="tieu-chuan-2" role="button" tabindex="0">
                             <div class="flex items-start gap-3">
-                                <span class="text-xs font-bold text-slate-400 mt-1">02</span>
-                                <div>
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">02</span>
+                                <div class="min-w-0 flex-1">
                                     <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Kiểm tra trưng
                                         bày
                                         kệ A1</h3>
                                     <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Bảng giá, hạn sử dụng...
                                     </p>
                                 </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
                             </div>
                         </div>
                         <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
                             data-scroll-to="tieu-chuan-3" role="button" tabindex="0">
                             <div class="flex items-start gap-3">
-                                <span class="text-xs font-bold text-slate-400 mt-1">03</span>
-                                <div>
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">03</span>
+                                <div class="min-w-0 flex-1">
                                     <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vệ sinh khu vực
                                         kho</h3>
                                     <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Sắp xếp, FEFO, vệ sinh
                                         sàn...</p>
                                 </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
                             </div>
                         </div>
                         <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
                             data-scroll-to="tieu-chuan-4" role="button" tabindex="0">
                             <div class="flex items-start gap-3">
-                                <span class="text-xs font-bold text-slate-400 mt-1">04</span>
-                                <div>
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">04</span>
+                                <div class="min-w-0 flex-1">
                                     <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Kiểm tra tủ
                                         lạnh
                                         &amp; Tủ đông</h3>
                                     <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhiệt độ, lau dọn, hạn
                                         sử dụng...</p>
                                 </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
                             </div>
                         </div>
                         <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
                             data-scroll-to="tieu-chuan-5" role="button" tabindex="0">
                             <div class="flex items-start gap-3">
-                                <span class="text-xs font-bold text-slate-400 mt-1">05</span>
-                                <div>
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">05</span>
+                                <div class="min-w-0 flex-1">
                                     <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Vệ sinh khu vực
                                         WC</h3>
                                     <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhà vệ sinh, bồn rửa, giấy
                                         vệ sinh...</p>
                                 </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
                             </div>
                         </div>
                         <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
                             data-scroll-to="tieu-chuan-6" role="button" tabindex="0">
                             <div class="flex items-start gap-3">
-                                <span class="text-xs font-bold text-slate-400 mt-1">06</span>
-                                <div>
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">06</span>
+                                <div class="min-w-0 flex-1">
                                     <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Kiểm tra an
                                         toàn
                                         PCCC</h3>
                                     <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Bình chữa cháy, lối
                                         thoát hiểm...</p>
                                 </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
                             </div>
                         </div>
+                        <div class="standard-nav-item p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent cursor-pointer transition-all"
+                            data-scroll-to="tieu-chuan-7" role="button" tabindex="0">
+                            <div class="flex items-start gap-3">
+                                <span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">07</span>
+                                <div class="min-w-0 flex-1">
+                                    <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Báo cáo bằng văn bản</h3>
+                                    <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nội dung báo cáo định kỳ, ghi chú...</p>
+                                </div>
+                                <span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span>
+                            </div>
+                        </div>
+                        <!-- Tạm ẩn: bỏ class "hidden" ở wrapper để bật lại -->
+                        <div class="hidden" id="add-standard-btn-wrap" aria-hidden="true">
                         <button id="add-standard-btn" type="button"
                             class="w-full mt-4 py-2 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-slate-400 hover:text-primary hover:border-primary transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase">
                             <span class="material-symbols-outlined text-base">add_circle</span>
                             Thêm tiêu chuẩn mới
                         </button>
+                        </div>
                     </div>
                 </aside>
-                <div class="flex-1 overflow-y-auto custom-scrollbar bg-white dark:bg-card-dark">
-                    <div id="standard-sections-container" class="p-8 w-full max-w-full space-y-10">
+                    <div id="standard-sections-container" class="custom-scrollbar bg-white dark:bg-card-dark p-8 w-full max-w-full space-y-10">
                         <section id="cau-hinh-chung" class="w-full">
                             <div
                                 class="flex items-center gap-3 mb-5 border-b border-border-light dark:border-border-dark pb-4">
@@ -310,9 +407,12 @@
                                         class="text-base font-bold text-slate-900 dark:text-white uppercase tracking-tight">
                                         Cấu hình chung</h2>
                                     <p class="text-xs text-slate-400">Thiết lập thông tin nền tảng cho bộ tiêu chuẩn</p>
+                                    <p class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-1">Chỉ xem</p>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <fieldset disabled
+                                class="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0 border-0 p-0 m-0 disabled:opacity-[0.92]">
+                                <legend class="sr-only">Cấu hình chung — chỉ xem, không chỉnh sửa</legend>
                                 <!-- Card 1: Thông tin cơ bản -->
                                 <div
                                     class="rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-5 shadow-sm">
@@ -343,7 +443,7 @@
                                                 placeholder="Nhập mô tả bộ tiêu chuẩn (VD: Quy trình vệ sinh định kỳ áp dụng cho toàn hệ thống cửa hàng...)"
                                                 rows="3"></textarea>
                                         </div>
-                                        <div>
+                                        <div class="hidden" aria-hidden="true">
                                             <label
                                                 class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 tracking-widest">Tag</label>
                                             <div class="flex gap-2">
@@ -374,6 +474,7 @@
                                             triển khai</h3>
                                     </div>
                                     <div class="space-y-5">
+                                        <div class="hidden" aria-hidden="true">
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div>
                                                 <label
@@ -424,6 +525,7 @@
                                                 <div id="supervisor-list"
                                                     class="flex flex-wrap gap-1.5 mt-1.5 min-h-[22px]"></div>
                                             </div>
+                                        </div>
                                         </div>
                                         <div>
                                             <label
@@ -534,18 +636,19 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </fieldset>
                         </section>
                         <div id="standard-detail-sections" class="max-w-5xl w-full space-y-10">
                             <section id="tieu-chuan-1"
                                 class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
-                                <div class="flex items-start justify-between mb-8">
-                                    <div class="flex items-center gap-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
                                         <div
-                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
                                             <span class="text-lg font-bold text-white dark:text-slate-900">01</span>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Vệ sinh khu vực
                                                 cửa
                                                 chính &amp; Sảnh</h3>
@@ -554,16 +657,10 @@
                                                 Chi
                                                 tiết tiêu chuẩn vận hành</p>
                                         </div>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <button
-                                            class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all">
-                                            <span class="material-symbols-outlined text-xl">content_copy</span>
-                                        </button>
-                                        <button
-                                            class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all">
-                                            <span class="material-symbols-outlined text-xl">delete</span>
-                                        </button>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đủ ảnh thực tế theo tối thiểu">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="space-y-8">
@@ -573,8 +670,8 @@
                                             <span class="material-symbols-outlined text-base">notes</span> Mô tả công
                                             việc
                                         </label>
-                                        <textarea
-                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
+                                        <textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-200 dark:focus:border-slate-600 resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả chi tiết các bước thực hiện...">Đảm bảo kính cửa chính luôn sạch sẽ, không có dấu tay. Thảm chùi chân được đặt ngay ngắn và hút bụi sạch sẽ trước khi mở cửa.</textarea>
                                     </div>
                                     <div class="space-y-6">
@@ -596,16 +693,16 @@
                                             </div>
                                         </div>
                                         <div class="w-full">
-                                            <span class="section-label">Ảnh thực tế</span>
-                                            <div class="img-list">
-                                                <div class="demo-img-slot-desk">
-                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
-                                                    <img src="https://picsum.photos/280/280?random=3" alt="Thực tế 1" />
-                                                </div>
+                                            <span class="section-label">Ảnh thực tế <span class="text-slate-400 font-normal normal-case tracking-normal">(Tối thiểu 2 ảnh)</span></span>
+                                            <div class="img-list" data-max-images="2">
                                                 <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
                                                     <span class="material-symbols-outlined text-3xl">add_a_photo</span>
                                                     <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
                                                 </button>
+                                                <div class="demo-img-slot-desk">
+                                                    <button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button>
+                                                    <img src="https://picsum.photos/280/280?random=3" alt="Thực tế 1" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -613,13 +710,14 @@
                             </section>
                             <section id="tieu-chuan-2"
                                 class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
-                                <div class="flex items-start justify-between mb-8">
-                                    <div class="flex items-center gap-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
                                         <div
-                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
                                             <span class="text-lg font-bold text-white dark:text-slate-900">02</span>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kiểm tra trưng
                                                 bày
                                                 kệ
@@ -629,14 +727,10 @@
                                                 Chi
                                                 tiết tiêu chuẩn vận hành</p>
                                         </div>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <button
-                                            class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">content_copy</span></button>
-                                        <button
-                                            class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">delete</span></button>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đủ ảnh thực tế theo tối thiểu">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="space-y-8">
@@ -645,8 +739,8 @@
                                             class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
                                                 class="material-symbols-outlined text-base">notes</span> Mô tả công
                                             việc</label>
-                                        <textarea
-                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
+                                        <textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-200 dark:focus:border-slate-600 resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả chi tiết...">Kiểm tra bảng giá, hạn sử dụng sản phẩm trên kệ A1. Đảm bảo trưng bày gọn gàng, đúng quy định.</textarea>
                                     </div>
                                     <div class="space-y-6">
@@ -664,8 +758,8 @@
                                             </div>
                                         </div>
                                         <div class="w-full">
-                                            <span class="section-label">Ảnh thực tế</span>
-                                            <div class="img-list">
+                                            <span class="section-label">Ảnh thực tế <span class="text-slate-400 font-normal normal-case tracking-normal">(Tối thiểu 2 ảnh)</span></span>
+                                            <div class="img-list" data-max-images="2">
                                                 <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
                                                     <span class="material-symbols-outlined text-3xl">add_a_photo</span>
                                                     <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
@@ -681,13 +775,14 @@
                             </section>
                             <section id="tieu-chuan-3"
                                 class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
-                                <div class="flex items-start justify-between mb-8">
-                                    <div class="flex items-center gap-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
                                         <div
-                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
                                             <span class="text-lg font-bold text-white dark:text-slate-900">03</span>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Vệ sinh khu vực
                                                 kho
                                             </h3>
@@ -696,12 +791,11 @@
                                                 Chi
                                                 tiết tiêu chuẩn vận hành</p>
                                         </div>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đủ video theo tối thiểu">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-2"><button
-                                            class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                            class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">delete</span></button></div>
                                 </div>
                                 <div class="space-y-8">
                                     <div><label
@@ -711,24 +805,29 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Sắp xếp kho theo FEFO, vệ sinh sàn và kệ, kiểm tra nhiệt độ bảo quản.</textarea>
                                     </div>
-                                    <div class="space-y-2">
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Video</label>
-                                        <div class="video-slot text-slate-400" role="button" tabindex="0">
-                                            <span class="material-symbols-outlined text-4xl">videocam</span>
-                                            <span class="text-xs font-medium">Chưa có video — nhấn để tải lên hoặc quay</span>
+                                    <div class="space-y-6">
+                                        <div class="w-full">
+                                            <span class="section-label">Video <span class="text-slate-400 font-normal normal-case tracking-normal">(Tối thiểu 2 video)</span></span>
+                                            <div class="img-list" data-max-videos="2">
+                                                <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm video">
+                                                    <span class="material-symbols-outlined text-3xl">videocam</span>
+                                                    <span class="text-[10px] font-medium mt-1">Thêm video</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-4"
                                 class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
-                                <div class="flex items-start justify-between mb-8">
-                                    <div class="flex items-center gap-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
                                         <div
-                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
                                             <span class="text-lg font-bold text-white dark:text-slate-900">04</span>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kiểm tra tủ
                                                 lạnh
                                                 &amp;
@@ -738,38 +837,38 @@
                                                 Chi
                                                 tiết tiêu chuẩn vận hành</p>
                                         </div>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đã nhập nội dung">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-2"><button
-                                            class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                            class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">delete</span></button></div>
                                 </div>
                                 <div class="space-y-8">
                                     <div><label
                                             class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
                                                 class="material-symbols-outlined text-base">notes</span> Mô tả công
-                                            việc</label><textarea
-                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
+                                            việc</label><textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-200 dark:focus:border-slate-600 resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Kiểm tra nhiệt độ tủ lạnh/tủ đông, lau dọn, kiểm tra hạn sử dụng sản phẩm bảo quản.</textarea>
                                     </div>
                                     <div class="space-y-2">
                                         <label class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase mb-2"><span class="material-symbols-outlined text-base">description</span> Văn bản / Mô tả</label>
-                                        <textarea
-                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary focus:border-primary resize-y min-h-[120px] placeholder:text-slate-400"
+                                        <textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-300 dark:focus:border-slate-600 resize-none min-h-[120px] placeholder:text-slate-400"
                                             placeholder="Nhập nội dung mô tả hoặc ghi chú cho tiêu chí này..."></textarea>
                                     </div>
                                 </div>
                             </section>
                             <section id="tieu-chuan-5"
                                 class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
-                                <div class="flex items-start justify-between mb-8">
-                                    <div class="flex items-center gap-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
                                         <div
-                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
                                             <span class="text-lg font-bold text-white dark:text-slate-900">05</span>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Vệ sinh khu vực
                                                 WC
                                             </h3>
@@ -778,19 +877,18 @@
                                                 Chi
                                                 tiết tiêu chuẩn vận hành</p>
                                         </div>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đủ ảnh thực tế theo tối thiểu">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-2"><button
-                                            class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                            class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">delete</span></button></div>
                                 </div>
                                 <div class="space-y-8">
                                     <div><label
                                             class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
                                                 class="material-symbols-outlined text-base">notes</span> Mô tả công
-                                            việc</label><textarea
-                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
+                                            việc</label><textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-200 dark:focus:border-slate-600 resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Vệ sinh nhà vệ sinh, bồn rửa, bổ sung giấy vệ sinh và xà phòng. Đảm bảo khô ráo, thông thoáng.</textarea>
                                     </div>
                                     <div class="space-y-6">
@@ -808,8 +906,8 @@
                                             </div>
                                         </div>
                                         <div class="w-full">
-                                            <span class="section-label">Ảnh thực tế</span>
-                                            <div class="img-list">
+                                            <span class="section-label">Ảnh thực tế <span class="text-slate-400 font-normal normal-case tracking-normal">(Tối thiểu 2 ảnh)</span></span>
+                                            <div class="img-list" data-max-images="2">
                                                 <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
                                                     <span class="material-symbols-outlined text-3xl">add_a_photo</span>
                                                     <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
@@ -821,13 +919,14 @@
                             </section>
                             <section id="tieu-chuan-6"
                                 class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
-                                <div class="flex items-start justify-between mb-8">
-                                    <div class="flex items-center gap-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
                                         <div
-                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
                                             <span class="text-lg font-bold text-white dark:text-slate-900">06</span>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Kiểm tra an
                                                 toàn
                                                 PCCC
@@ -837,19 +936,18 @@
                                                 Chi
                                                 tiết tiêu chuẩn vận hành</p>
                                         </div>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đủ ảnh thực tế theo tối thiểu">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-2"><button
-                                            class="p-2.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">content_copy</span></button><button
-                                            class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all"><span
-                                                class="material-symbols-outlined text-xl">delete</span></button></div>
                                 </div>
                                 <div class="space-y-8">
                                     <div><label
                                             class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest"><span
                                                 class="material-symbols-outlined text-base">notes</span> Mô tả công
-                                            việc</label><textarea
-                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm focus:ring-primary resize-none min-h-[100px]"
+                                            việc</label><textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-200 dark:focus:border-slate-600 resize-none min-h-[100px]"
                                             placeholder="Nhập mô tả...">Kiểm tra bình chữa cháy còn hạn, lối thoát hiểm thông thoáng, bảng hướng dẫn PCCC đầy đủ.</textarea>
                                     </div>
                                     <div class="space-y-6">
@@ -871,8 +969,8 @@
                                             </div>
                                         </div>
                                         <div class="w-full">
-                                            <span class="section-label">Ảnh thực tế</span>
-                                            <div class="img-list">
+                                            <span class="section-label">Ảnh thực tế <span class="text-slate-400 font-normal normal-case tracking-normal">(Tối thiểu 2 ảnh)</span></span>
+                                            <div class="img-list" data-max-images="2">
                                                 <button type="button" class="img-add-btn empty-slot-desk text-primary border-primary/30 bg-primary/5 group" aria-label="Thêm ảnh">
                                                     <span class="material-symbols-outlined text-3xl">add_a_photo</span>
                                                     <span class="text-[10px] font-medium mt-1">Thêm ảnh</span>
@@ -883,6 +981,47 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section id="tieu-chuan-7"
+                                class="pt-10 border-t border-slate-100 dark:border-slate-800 scroll-mt-4">
+                                <div class="mb-8">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="flex items-center gap-4 min-w-0">
+                                        <div
+                                            class="h-12 w-12 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg shrink-0">
+                                            <span class="text-lg font-bold text-white dark:text-slate-900">07</span>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Báo cáo bằng văn bản</h3>
+                                            <p
+                                                class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">
+                                                Chi
+                                                tiết tiêu chuẩn vận hành</p>
+                                        </div>
+                                        </div>
+                                        <div class="criterion-check-indicator shrink-0 flex items-center justify-center w-10 h-10 rounded-full border-2 border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-400" title="Đã nhập báo cáo văn bản">
+                                            <span class="material-symbols-outlined text-2xl criterion-check-icon">check_circle</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-8">
+                                    <div>
+                                        <label
+                                            class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
+                                            <span class="material-symbols-outlined text-base">notes</span> Mô tả công
+                                            việc
+                                        </label>
+                                        <textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-200 dark:focus:border-slate-600 resize-none min-h-[100px]"
+                                            placeholder="Nhập mô tả chi tiết các bước thực hiện...">Ghi nhận tình hình cửa hàng theo biểu mẫu: doanh thu ca, tồn kho nổi bật, sự cố (nếu có). Báo cáo bằng văn bản, không bắt buộc ảnh/video.</textarea>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase mb-2"><span class="material-symbols-outlined text-base">description</span> Báo cáo bằng văn bản</label>
+                                        <textarea readonly
+                                            class="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-sm cursor-default focus:ring-0 focus:border-slate-300 dark:focus:border-slate-600 resize-none min-h-[120px] placeholder:text-slate-400"
+                                            placeholder="Nhập nội dung báo cáo chi tiết (văn bản) cho tiêu chí này..."></textarea>
                                     </div>
                                 </div>
                             </section>
@@ -919,23 +1058,13 @@
                                             <label for="report-desc" class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-2 tracking-widest">Mô tả / Góp ý</label>
                                             <textarea id="report-desc" name="report-desc" rows="4" placeholder="Nhập mô tả báo cáo hoặc góp ý..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 placeholder-slate-400 text-sm resize-y min-h-[100px] focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
                                         </div>
-                                        <div class="w-full">
-                                            <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase mb-2 tracking-widest">Tải file lên</label>
-                                            <div class="report-file-zone relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10" id="report-file-zone">
-                                                <input type="file" id="report-file-input" name="report-file" class="absolute opacity-0 w-0 h-0" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" multiple />
-                                                <label for="report-file-input" class="cursor-pointer flex flex-col items-center gap-2 py-2">
-                                                    <span class="material-symbols-outlined text-4xl text-slate-400 dark:text-slate-500">upload_file</span>
-                                                    <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Nhấn để chọn file hoặc kéo thả</span>
-                                                    <span class="text-[10px] text-slate-400 dark:text-slate-500">PDF, Word, Excel, ảnh</span>
-                                                </label>
-                                                <ul class="report-file-list mt-3 text-left text-sm text-slate-600 dark:text-slate-300 space-y-1.5 hidden" id="report-file-list"></ul>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </section>
                         </div>
                     </div>
+                </div>
+            </div>
         </main>
 
         <script>
@@ -949,27 +1078,18 @@
                     var total = sections.length;
                     var filled = 0;
                     sections.forEach(function (section) {
-                        var hasContent = false;
-                        section.querySelectorAll('textarea').forEach(function (ta) {
-                            if ((ta.value || '').trim().length > 0) hasContent = true;
-                        });
-                        if (hasContent) filled++;
+                        if (section.querySelector('.criterion-check-indicator.is-complete')) filled++;
                     });
                     filledEl.textContent = filled;
                     if (totalEl) totalEl.textContent = total;
                     document.dispatchEvent(new CustomEvent('task-filled-count-updated'));
                 }
+                window.__syncTaskProgressCounts = updateTaskFilledCount;
                 updateTaskFilledCount();
-                document.getElementById('standard-detail-sections') && document.getElementById('standard-detail-sections').addEventListener('input', function (e) {
-                    if (e.target && e.target.tagName === 'TEXTAREA') updateTaskFilledCount();
-                });
             })();
             (function () {
                 var btn = document.getElementById('task-progress-btn');
-                var reportBlock = document.getElementById('report-block');
                 var errorsEl = document.getElementById('report-block-errors');
-                var errorsTextEl = document.getElementById('report-block-errors-text');
-                var reportTrack = document.getElementById('report-track');
                 var reportDesc = document.getElementById('report-desc');
                 var trackWrap = document.getElementById('report-track-wrap');
                 var countsEl = document.getElementById('task-progress-counts');
@@ -980,22 +1100,22 @@
                     if (trackWrap) trackWrap.classList.remove('report-field-error');
                     if (reportDesc) reportDesc.classList.remove('report-field-error');
                 }
-                function showReportErrors(messages) {
-                    if (errorsTextEl) errorsTextEl.textContent = messages.join(' ');
-                    if (errorsEl) errorsEl.classList.remove('hidden');
-                    if (messages.some(function (m) { return m.indexOf('Tiến độ') !== -1 || m.indexOf('On track') !== -1; }) && trackWrap) trackWrap.classList.add('report-field-error');
-                    if (messages.some(function (m) { return m.indexOf('mô tả') !== -1 || m.indexOf('góp ý') !== -1; }) && reportDesc) {
-                        reportDesc.classList.add('report-field-error');
-                    }
-                }
                 function isFormComplete() {
                     var filledEl = document.getElementById('task-filled-count');
                     var totalEl = document.getElementById('task-total-count');
                     var filled = filledEl ? parseInt(filledEl.textContent, 10) : 0;
                     var total = totalEl ? parseInt(totalEl.textContent, 10) : 0;
-                    var track = (reportTrack && reportTrack.value) ? reportTrack.value.trim() : '';
-                    var desc = reportDesc ? (reportDesc.value || '').trim() : '';
-                    return total > 0 && filled >= total && (track === 'on' || track === 'off') && desc.length > 0;
+                    return total > 0 && filled >= total;
+                }
+                function findFirstIncompleteSection() {
+                    var container = document.getElementById('standard-detail-sections');
+                    if (!container) return null;
+                    var sections = container.querySelectorAll('section[id^="tieu-chuan-"]');
+                    for (var i = 0; i < sections.length; i++) {
+                        var sec = sections[i];
+                        if (!sec.querySelector('.criterion-check-indicator.is-complete')) return sec;
+                    }
+                    return null;
                 }
                 function updateProgressButtonState() {
                     if (!btn || !countsEl || !doneEl || !iconEl) return;
@@ -1005,50 +1125,109 @@
                         countsEl.classList.add('hidden');
                         doneEl.classList.remove('hidden');
                         iconEl.textContent = 'check_circle';
+                        btn.setAttribute('title', 'Gửi thông tin');
+                        btn.setAttribute('aria-label', 'Gửi thông tin');
                     } else {
                         btn.classList.remove('state-complete');
                         countsEl.classList.remove('hidden');
                         doneEl.classList.add('hidden');
                         iconEl.textContent = 'task_alt';
+                        btn.setAttribute('title', 'Chuyển đến tiêu chí chưa hoàn thành đầu tiên');
+                        btn.setAttribute('aria-label', 'Chuyển đến tiêu chí chưa hoàn thành đầu tiên');
                     }
                 }
                 updateProgressButtonState();
                 document.addEventListener('task-filled-count-updated', updateProgressButtonState);
                 if (reportDesc) {
-                    reportDesc.addEventListener('input', function () { clearReportErrors(); updateProgressButtonState(); });
+                    reportDesc.addEventListener('input', function () { clearReportErrors(); });
                     reportDesc.addEventListener('focus', clearReportErrors);
                 }
                 document.addEventListener('click', function (e) {
                     if (e.target.closest('.report-track-option')) {
-                        setTimeout(function () { clearReportErrors(); updateProgressButtonState(); }, 0);
+                        setTimeout(function () { clearReportErrors(); }, 0);
                     }
                 });
-                if (btn && reportBlock) {
+                if (btn) {
                     btn.addEventListener('click', function () {
                         clearReportErrors();
-                        var track = (reportTrack && reportTrack.value) ? reportTrack.value.trim() : '';
-                        var desc = reportDesc ? (reportDesc.value || '').trim() : '';
-                        var errors = [];
-                        if (track !== 'on' && track !== 'off') {
-                            errors.push('Vui lòng chọn tiến độ: On track hoặc Off track.');
-                        }
-                        if (!desc) {
-                            errors.push('Vui lòng nhập mô tả / góp ý báo cáo.');
-                        }
-                        if (errors.length > 0) {
-                            reportBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            showReportErrors(errors);
-                            updateProgressButtonState();
-                            return;
-                        }
                         if (isFormComplete()) {
                             updateProgressButtonState();
                             alert('Đã gửi thông tin.');
+                            return;
+                        }
+                        var first = findFirstIncompleteSection();
+                        if (first) {
+                            first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            var syncNav = function () {
+                                if (window.__applyStandardNavActive) window.__applyStandardNavActive(first.id);
+                                if (window.__updateStandardNavScrollSpy) window.__updateStandardNavScrollSpy();
+                            };
+                            setTimeout(syncNav, 50);
+                            setTimeout(syncNav, 400);
                         }
                     });
                 }
             })();
             (function () {
+                var scrollRoot = document.getElementById('standard-sections-container');
+                function applyStandardNavActive(activeId) {
+                    document.querySelectorAll('.standard-nav-item[data-scroll-to]').forEach(function (nav) {
+                        var id = nav.getAttribute('data-scroll-to');
+                        var active = id === activeId;
+                        if (active) {
+                            nav.classList.add('bg-primary/5', 'border-primary/20');
+                            nav.classList.remove('border-transparent');
+                        } else {
+                            nav.classList.remove('bg-primary/5', 'border-primary/20');
+                            nav.classList.add('border');
+                            if (nav.classList.contains('nav-item-complete')) {
+                                nav.classList.remove('border-transparent');
+                            } else {
+                                nav.classList.add('border-transparent');
+                            }
+                        }
+                    });
+                }
+                window.__applyStandardNavActive = applyStandardNavActive;
+                function updateStandardNavScrollSpy() {
+                    if (!scrollRoot) return;
+                    var nearBottom = scrollRoot.scrollHeight - scrollRoot.scrollTop - scrollRoot.clientHeight < 8;
+                    if (nearBottom) {
+                        var navItems = document.querySelectorAll('.standard-nav-item[data-scroll-to]');
+                        var lastNav = navItems[navItems.length - 1];
+                        if (lastNav) {
+                            applyStandardNavActive(lastNav.getAttribute('data-scroll-to'));
+                            return;
+                        }
+                    }
+                    var rootRect = scrollRoot.getBoundingClientRect();
+                    var line = rootRect.top + 72;
+                    var activeId = null;
+                    document.querySelectorAll('.standard-nav-item[data-scroll-to]').forEach(function (nav) {
+                        var id = nav.getAttribute('data-scroll-to');
+                        var el = document.getElementById(id);
+                        if (!el) return;
+                        var top = el.getBoundingClientRect().top;
+                        if (top <= line) activeId = id;
+                    });
+                    if (!activeId) {
+                        var firstNav = document.querySelector('.standard-nav-item[data-scroll-to]');
+                        if (firstNav) activeId = firstNav.getAttribute('data-scroll-to');
+                    }
+                    if (activeId) applyStandardNavActive(activeId);
+                }
+                window.__updateStandardNavScrollSpy = updateStandardNavScrollSpy;
+                var scrollSpyRaf = null;
+                if (scrollRoot) {
+                    scrollRoot.addEventListener('scroll', function () {
+                        if (scrollSpyRaf) cancelAnimationFrame(scrollSpyRaf);
+                        scrollSpyRaf = requestAnimationFrame(updateStandardNavScrollSpy);
+                    });
+                    window.addEventListener('resize', function () {
+                        updateStandardNavScrollSpy();
+                    });
+                    updateStandardNavScrollSpy();
+                }
                 document.addEventListener('click', function (e) {
                     var item = e.target.closest('.standard-nav-item');
                     if (!item) return;
@@ -1057,12 +1236,7 @@
                     var target = document.getElementById(id);
                     if (target) {
                         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        document.querySelectorAll('.standard-nav-item').forEach(function (el) {
-                            el.classList.remove('bg-primary/5', 'border-primary/20');
-                            el.classList.add('border', 'border-transparent');
-                        });
-                        item.classList.add('bg-primary/5', 'border-primary/20');
-                        item.classList.remove('border-transparent');
+                        applyStandardNavActive(id);
                     }
                 });
             })();
@@ -1237,61 +1411,126 @@
                 setOptionStyles();
             })();
             (function () {
-                var fileInput = document.getElementById('report-file-input');
-                var fileList = document.getElementById('report-file-list');
-                var fileZone = document.getElementById('report-file-zone');
-                if (fileInput && fileList) {
-                    fileInput.addEventListener('change', function () {
-                        var files = Array.from(fileInput.files || []);
-                        fileList.innerHTML = '';
-                        if (files.length) {
-                            fileList.classList.remove('hidden');
-                            files.forEach(function (f) {
-                                var li = document.createElement('li');
-                                li.className = 'flex items-center gap-2';
-                                li.innerHTML = '<span class="material-symbols-outlined text-[16px] text-slate-500">insert_drive_file</span><span class="truncate flex-1">' + (f.name || 'File') + '</span>';
-                                fileList.appendChild(li);
+                function updateCriterionCheck(section) {
+                    if (!section || !section.id || section.id.indexOf('tieu-chuan-') !== 0) return;
+                    var indicator = section.querySelector('.criterion-check-indicator');
+                    if (!indicator) return;
+                    var checks = [];
+                    section.querySelectorAll('.img-list[data-max-images]').forEach(function (list) {
+                        var min = parseInt(list.getAttribute('data-max-images'), 10) || 0;
+                        var n = list.querySelectorAll('.demo-img-slot-desk').length;
+                        checks.push(min > 0 && n >= min);
+                    });
+                    section.querySelectorAll('.img-list[data-max-videos]').forEach(function (list) {
+                        var minV = parseInt(list.getAttribute('data-max-videos'), 10) || 0;
+                        var nV = list.querySelectorAll('.demo-video-slot-desk').length;
+                        checks.push(minV > 0 && nV >= minV);
+                    });
+                    if (checks.length === 0) {
+                        var tas = section.querySelectorAll('textarea');
+                        if (tas.length) {
+                            var allText = Array.prototype.every.call(tas, function (ta) {
+                                return (ta.value || '').trim().length > 0;
                             });
+                            checks.push(allText);
                         } else {
-                            fileList.classList.add('hidden');
+                            checks.push(false);
+                        }
+                    }
+                    var ok = checks.length > 0 && checks.every(function (x) { return x; });
+                    indicator.classList.toggle('is-complete', ok);
+                }
+                function syncStandardNavCompletion() {
+                    document.querySelectorAll('.standard-nav-item[data-scroll-to^="tieu-chuan-"]').forEach(function (nav) {
+                        var id = nav.getAttribute('data-scroll-to');
+                        var section = document.getElementById(id);
+                        var ok = section && section.querySelector('.criterion-check-indicator.is-complete');
+                        nav.classList.toggle('nav-item-complete', !!ok);
+                    });
+                }
+                window.__syncStandardNavCompletion = syncStandardNavCompletion;
+                function updateAllCriterionChecks() {
+                    document.querySelectorAll('section[id^="tieu-chuan-"]').forEach(updateCriterionCheck);
+                    if (window.__syncTaskProgressCounts) window.__syncTaskProgressCounts();
+                    syncStandardNavCompletion();
+                }
+                var detailSec = document.getElementById('standard-detail-sections');
+                if (detailSec) {
+                    detailSec.addEventListener('input', function (e) {
+                        if (e.target && e.target.tagName === 'TEXTAREA') {
+                            var sec = e.target.closest('section[id^="tieu-chuan-"]');
+                            if (sec) updateCriterionCheck(sec);
+                            if (window.__syncTaskProgressCounts) window.__syncTaskProgressCounts();
+                            if (window.__syncStandardNavCompletion) window.__syncStandardNavCompletion();
                         }
                     });
                 }
-                if (fileZone && fileInput) {
-                    fileZone.addEventListener('dragover', function (e) { e.preventDefault(); fileZone.classList.add('border-primary', 'bg-primary/10'); });
-                    fileZone.addEventListener('dragleave', function () { fileZone.classList.remove('border-primary', 'bg-primary/10'); });
-                    fileZone.addEventListener('drop', function (e) {
-                        e.preventDefault();
-                        fileZone.classList.remove('border-primary', 'bg-primary/10');
-                        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
-                            fileInput.files = e.dataTransfer.files;
-                            fileInput.dispatchEvent(new Event('change'));
-                        }
-                    });
-                }
+                document.addEventListener('criterion-checks-refresh', updateAllCriterionChecks);
+                updateAllCriterionChecks();
             })();
             (function () {
                 var imgCounter = 100;
+                function syncActualMediaList(list) {
+                    if (!list) return;
+                    var maxAttr = list.getAttribute('data-max-images') || list.getAttribute('data-max-videos');
+                    if (!maxAttr) return;
+                    var max = parseInt(maxAttr, 10);
+                    if (!max || max < 1) return;
+                    var isVideo = list.hasAttribute('data-max-videos');
+                    var n = isVideo
+                        ? list.querySelectorAll('.demo-video-slot-desk').length
+                        : list.querySelectorAll('.demo-img-slot-desk').length;
+                    var addBtn = list.querySelector('.img-add-btn');
+                    if (addBtn) addBtn.classList.toggle('hidden', n >= max);
+                }
+                document.querySelectorAll('.img-list[data-max-images], .img-list[data-max-videos]').forEach(syncActualMediaList);
+                document.addEventListener('sync-actual-image-limits', function () {
+                    document.querySelectorAll('.img-list[data-max-images], .img-list[data-max-videos]').forEach(syncActualMediaList);
+                });
                 document.addEventListener('click', function (e) {
                     var addBtn = e.target.closest('.img-add-btn');
                     if (addBtn) {
                         var list = addBtn.closest('.img-list');
                         if (!list) return;
+                        var maxAttr = list.getAttribute('data-max-images') || list.getAttribute('data-max-videos');
+                        if (maxAttr) {
+                            var max = parseInt(maxAttr, 10);
+                            var isVideo = list.hasAttribute('data-max-videos');
+                            var n = isVideo
+                                ? list.querySelectorAll('.demo-video-slot-desk').length
+                                : list.querySelectorAll('.demo-img-slot-desk').length;
+                            if (n >= max) return;
+                        }
                         imgCounter++;
                         var slot = document.createElement('div');
-                        slot.className = 'demo-img-slot-desk';
-                        slot.innerHTML = '<button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button><img src="https://picsum.photos/280/280?random=' + imgCounter + '" alt="Ảnh mới" />';
-                        if (addBtn.nextSibling) {
+                        if (list.hasAttribute('data-max-videos')) {
+                            slot.className = 'demo-video-slot-desk';
+                            slot.innerHTML = '<button type="button" class="img-slot-remove-desk" aria-label="Xóa video"><span class="material-symbols-outlined">close</span></button>' +
+                                '<div class="absolute inset-0 flex flex-col items-center justify-center gap-0.5 p-1 pointer-events-none">' +
+                                '<span class="material-symbols-outlined text-2xl text-slate-400">videocam</span>' +
+                                '<span class="text-[9px] font-medium text-slate-500 dark:text-slate-400 text-center leading-tight">Video</span></div>';
+                        } else {
+                            slot.className = 'demo-img-slot-desk';
+                            slot.innerHTML = '<button type="button" class="img-slot-remove-desk" aria-label="Xóa ảnh"><span class="material-symbols-outlined">close</span></button><img src="https://picsum.photos/280/280?random=' + imgCounter + '" alt="Ảnh mới" />';
+                        }
+                        if (list.getAttribute('data-max-images') || list.getAttribute('data-max-videos')) {
+                            list.appendChild(slot);
+                        } else if (addBtn.nextSibling) {
                             list.appendChild(slot);
                         } else {
                             list.insertBefore(slot, addBtn);
                         }
+                        syncActualMediaList(list);
+                        document.dispatchEvent(new Event('criterion-checks-refresh'));
                         return;
                     }
                     var removeBtn = e.target.closest('.img-slot-remove-desk');
                     if (removeBtn) {
-                        var slot = removeBtn.closest('.demo-img-slot-desk');
+                        var slot = removeBtn.closest('.demo-img-slot-desk, .demo-video-slot-desk');
+                        var list = slot ? slot.closest('.img-list') : null;
                         if (slot) slot.remove();
+                        if (list) syncActualMediaList(list);
+                        document.dispatchEvent(new Event('criterion-checks-refresh'));
                     }
                 });
             })();
@@ -1313,11 +1552,13 @@
                     sidebarItem.setAttribute('role', 'button');
                     sidebarItem.setAttribute('tabindex', '0');
                     sidebarItem.innerHTML = '<div class="flex items-start gap-3">' +
-                        '<span class="text-xs font-bold text-slate-400 mt-1">' + numStr + '</span>' +
-                        '<div><h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400">Tiêu chuẩn mới</h3>' +
-                        '<p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhập tên và mô tả bên cạnh</p></div></div>';
+                        '<span class="standard-nav-num text-xs font-bold text-slate-400 mt-1">' + numStr + '</span>' +
+                        '<div class="min-w-0 flex-1"><h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400">Tiêu chuẩn mới</h3>' +
+                        '<p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">Nhập tên và mô tả bên cạnh</p></div>' +
+                        '<span class="standard-nav-check shrink-0 material-symbols-outlined text-lg text-emerald-500 mt-0.5" aria-hidden="true">check_circle</span></div>';
                     btn.parentNode.insertBefore(sidebarItem, btn);
-                    var lastSection = document.getElementById('tieu-chuan-6');
+                    var existing = container.querySelectorAll('section[id^="tieu-chuan-"]');
+                    var lastSection = existing[existing.length - 1];
                     if (!lastSection) return;
                     var newSection = lastSection.cloneNode(true);
                     newSection.id = nextId;
@@ -1356,9 +1597,17 @@
                         el.classList.add('placeholder:text-slate-400');
                     });
                     newSection.querySelectorAll('.standard-supervisor-cards').forEach(function (el) { el.innerHTML = ''; });
-                    detailContainer.appendChild(newSection);
+                    var reportBlockEl = document.getElementById('report-block');
+                    if (reportBlockEl && reportBlockEl.parentNode === detailContainer) {
+                        detailContainer.insertBefore(newSection, reportBlockEl);
+                    } else {
+                        detailContainer.appendChild(newSection);
+                    }
                     var target = document.getElementById(nextId);
                     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.dispatchEvent(new Event('sync-actual-image-limits'));
+                    document.dispatchEvent(new Event('criterion-checks-refresh'));
+                    if (window.__updateStandardNavScrollSpy) window.__updateStandardNavScrollSpy();
                 });
             })();
         </script>
