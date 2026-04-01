@@ -205,7 +205,7 @@
                 <span class="nav-link-text truncate">Tổng quan</span>
                 <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Tổng quan</span>
             </a>
-            <a href="my-tasks.html" id="nav-my-tasks" class="nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
+            <a href="my-tasks.html" id="nav-my-tasks" class="!hidden nav-item-active nav-link group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors" title="Tạm ẩn: Công việc của tôi">
                 <span class="material-symbols-outlined text-xl shrink-0">folder_shared</span>
                 <span class="nav-link-text truncate">Công việc của tôi</span>
                 <span class="nav-flyout absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-sm shadow-lg z-[100] whitespace-nowrap">Công việc của tôi</span>
@@ -1135,13 +1135,15 @@
                 var idEl = document.getElementById('task-deep-link-id');
                 if (!banner || !titleEl || !idEl) return;
                 var DEMO = {
-                    t1: 'Checklist + Daily work – Ca sáng tuần 06',
-                    t2: 'Điều hành kinh doanh – Báo cáo tuần 05',
-                    t3: 'Quy trình vệ sinh định kỳ (mở lại)',
-                    t4: 'Kiểm tra trưng bày kệ A1 – chỉnh sửa',
-                    t5: 'Báo cáo PCCC định kỳ',
-                    t6: 'Vệ sinh kho – video bổ sung',
-                    t7: 'Chấm điểm mystery shopper – tháng 1'
+                    t1: 'ChecklisT CÔNG VIệC',
+                    t2: 'ChecklisT CÔNG VIệC',
+                    t3: 'ChecklisT CÔNG VIệC',
+                    t4: 'ChecklisT CÔNG VIệC',
+                    t5: 'ChecklisT CÔNG VIệC',
+                    t6: 'ChecklisT CÔNG VIệC',
+                    t7: 'ChecklisT CÔNG VIệC',
+                    t8: 'ChecklisT CÔNG VIệC',
+                    t9: 'ChecklisT CÔNG VIệC'
                 };
                 titleEl.textContent = DEMO[tid] || 'Công việc';
                 idEl.textContent = '(' + tid + ')';
